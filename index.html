@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noama Games — Oyun Platformu</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300e5ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='60' font-weight='900' fill='%2307070d' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070d;--bg2:#0d0d18;--card:#12121f;--card2:#181826;--line:rgba(255,255,255,.08);--text:#eef0ff;--muted:#8f93b3;--neon:#7c5cff;--cyan:#00e5ff;--pink:#ff2e88;--green:#2bff88;--orange:#ffb020;--gold:#ffb020}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+input,button,textarea,select{font-family:inherit}
+#loading{position:fixed;inset:0;background:#07070d;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+#loading.hide{display:none}
+.spinner{width:50px;height:50px;border:3px solid rgba(255,255,255,.1);border-top-color:#7c5cff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loading p{color:#8f93b3;font-size:.9rem}
+#auth-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;background:radial-gradient(circle at 15% 20%,rgba(124,92,255,.35),transparent 50%),radial-gradient(circle at 85% 80%,rgba(0,229,255,.28),transparent 50%),#07070d}
+#auth-screen.active{display:flex}
+#auth-screen::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 75%)}
+.auth-box{position:relative;z-index:1;width:100%;max-width:420px;background:rgba(18,18,31,.85);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;padding:44px 34px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 60px rgba(124,92,255,.15)}
+.auth-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:8px}
+.auth-logo-mark{width:44px;height:44px;border-radius:13px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:#07070d;box-shadow:0 0 30px rgba(124,92,255,.6)}
+.auth-logo-text{font-size:1.4rem;font-weight:900;letter-spacing:.14em;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.auth-sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:32px;letter-spacing:.05em}
+.google-btn{width:100%;padding:14px;border-radius:12px;background:#fff;color:#202124;border:none;font-weight:600;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 24px rgba(255,255,255,.15);font-family:inherit}
+.google-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(255,255,255,.25)}
+.google-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.google-icon{width:20px;height:20px}
+.auth-msg{padding:12px 14px;border-radius:10px;font-size:.85rem;margin-top:16px;display:none;background:rgba(255,46,136,.12);border:1px solid rgba(255,46,136,.3);color:#ff85b3}
+.auth-msg.show{display:block}
+
+#app-screen{display:none;min-height:100vh}
+#app-screen.active{display:flex}
+.sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.sidebar-head{padding:24px 22px 20px;border-bottom:1px solid var(--line)}
+.sidebar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.sidebar-logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:.95rem;font-weight:700;color:#07070d;box-shadow:0 0 20px rgba(124,92,255,.5)}
+.sidebar-logo-text{font-size:1rem;font-weight:900;letter-spacing:.12em;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar-nav{flex:1;padding:18px 12px;overflow-y:auto}
+.nav-label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:14px 12px 8px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;cursor:pointer;transition:all .2s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.nav-item.active{background:linear-gradient(115deg,rgba(124,92,255,.18),rgba(0,229,255,.1));color:var(--text);box-shadow:inset 0 0 0 1px rgba(124,92,255,.25)}
+.nav-item .icon{font-size:1.15rem;width:22px;text-align:center}
+.nav-item .badge{margin-left:auto;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:100px;background:rgba(255,176,32,.15);color:#ffcb6b;letter-spacing:.05em}
+.nav-item .badge.admin{background:rgba(124,92,255,.2);color:#b9a8ff}
+.nav-item .badge.dev{background:rgba(43,255,136,.15);color:#6bffaa}
+.sidebar-user{padding:16px;border-top:1px solid var(--line)}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03)}
+.user-avatar{width:38px;height:38px;border-radius:10px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden}
+.user-avatar img{width:100%;height:100%;object-fit:cover}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+.logout-btn{width:36px;height:36px;border-radius:10px;background:rgba(255,46,136,.1);border:1px solid rgba(255,46,136,.25);color:#ff85b3;cursor:pointer;font-size:.95rem;transition:all .2s;flex-shrink:0}
+.logout-btn:hover{background:rgba(255,46,136,.2)}
+
+.main{flex:1;min-width:0;padding:36px 44px;overflow-y:auto;max-height:100vh}
+.view{display:none}
+.view.active{display:block}
+.view-head{margin-bottom:26px}
+.view-tag{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;display:block}
+.view-title{font-size:2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:8px}
+.view-desc{color:var(--muted);font-size:.95rem;font-weight:300;max-width:600px}
+
+.search-bar{position:relative;margin-bottom:14px}
+.search-bar input{width:100%;padding:13px 18px 13px 44px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-size:.92rem;transition:border-color .2s}
+.search-bar input:focus{outline:none;border-color:var(--neon)}
+.search-bar::before{content:'🔍';position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:.95rem;opacity:.6}
+.filter-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.filter-btn{padding:8px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s}
+.filter-btn:hover{color:var(--text);border-color:var(--neon)}
+.filter-btn.active{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;border-color:transparent}
+
+.games-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
+.game-tile{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s;position:relative}
+.game-tile:hover{border-color:rgba(124,92,255,.5);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 30px rgba(124,92,255,.15)}
+.game-cover{height:150px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden}
+.game-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--card) 5%,transparent 60%)}
+.game-of-year{position:absolute;top:12px;right:12px;z-index:2;background:linear-gradient(115deg,#ffb020,#ff2e88);color:#07070d;font-size:.68rem;font-weight:800;padding:5px 11px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 16px rgba(255,176,32,.5);display:flex;align-items:center;gap:4px}
+.wishlist-mini{position:absolute;top:12px;left:12px;z-index:2;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.wishlist-mini:hover{background:rgba(255,46,136,.4);transform:scale(1.1)}
+.wishlist-mini.active{background:rgba(255,46,136,.9);border-color:#ff2e88}
+.game-info{padding:18px 20px}
+.game-info h3{font-size:1.15rem;font-weight:800;margin-bottom:6px}
+.game-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.mini-tag{font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:rgba(124,92,255,.14);color:#b9a8ff;border:1px solid rgba(124,92,255,.25)}
+.mini-tag.beta{background:rgba(43,255,136,.12);color:#6bffaa;border-color:rgba(43,255,136,.3)}
+.mini-tag.dev{background:rgba(255,176,32,.12);color:#ffcb6b;border-color:rgba(255,176,32,.28)}
+.mini-tag.released{background:rgba(0,229,255,.12);color:#7ae8ff;border-color:rgba(0,229,255,.3)}
+.mini-tag.staff{background:linear-gradient(115deg,rgba(124,92,255,.25),rgba(0,229,255,.2));color:#fff;border-color:rgba(124,92,255,.5)}
+.game-price{font-family:'Space Mono',monospace;font-weight:700;font-size:1.05rem;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.game-rating{margin-top:6px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.stars-mini{color:#ffb020;letter-spacing:1px}
+
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:.85rem;margin-bottom:24px;transition:all .2s}
+.back-btn:hover{color:var(--text);border-color:var(--neon)}
+.game-detail-hero{border-radius:24px;overflow:hidden;border:1px solid var(--line);margin-bottom:28px;background:var(--card)}
+.game-detail-cover{height:260px;display:flex;align-items:center;justify-content:center;font-size:7rem;position:relative}
+.game-detail-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--card) 10%,transparent 80%)}
+.game-detail-body{padding:0 32px 32px;margin-top:-40px;position:relative;z-index:2}
+.game-detail-body h1{font-size:2.4rem;font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+.game-detail-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.game-detail-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.buy-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:100px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:800;font-size:1rem;border:none;cursor:pointer;letter-spacing:.02em;box-shadow:0 10px 30px rgba(124,92,255,.4);transition:transform .2s,box-shadow .2s;text-decoration:none}
+.buy-btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(124,92,255,.55)}
+.buy-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.buy-btn.green{background:linear-gradient(115deg,#2bff88,#00e5ff)}
+.wishlist-btn{padding:14px 22px;border-radius:100px;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
+.wishlist-btn:hover{border-color:#ff2e88;color:#ff85b3}
+.wishlist-btn.active{background:rgba(255,46,136,.15);border-color:#ff2e88;color:#ff85b3}
+.game-detail-price{font-family:'Space Mono',monospace;font-weight:700;font-size:1.6rem;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.game-detail-grid{display:grid;grid-template-columns:2fr 1fr;gap:36px}
+.game-detail-desc{color:var(--muted);font-weight:300;line-height:1.75}
+.game-detail-desc p{margin-bottom:14px}
+.game-detail-side{display:flex;flex-direction:column;gap:14px}
+.info-row{padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--line)}
+.info-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.info-value{font-size:.92rem;font-weight:600;color:var(--text)}
+.progress-bar{height:8px;border-radius:100px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#ffb020,#ff2e88);border-radius:100px;transition:width .5s ease}
+
+.review-section{margin-top:36px;padding-top:32px;border-top:1px solid var(--line)}
+.review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.review-head h3{font-size:1.3rem;font-weight:800}
+.review-summary{display:flex;align-items:center;gap:12px}
+.review-big-num{font-size:2.4rem;font-weight:900;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-family:'Space Mono',monospace;line-height:1}
+.review-stars{color:#ffb020;font-size:1.1rem;letter-spacing:2px}
+.review-count{font-size:.8rem;color:var(--muted)}
+.review-form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:22px}
+.review-form h4{font-size:1rem;font-weight:700;margin-bottom:14px}
+.star-picker{display:flex;gap:4px;margin-bottom:14px;font-size:1.8rem;cursor:pointer;user-select:none}
+.star-picker span{color:rgba(255,255,255,.15);transition:color .15s,transform .15s}
+.star-picker span.active{color:#ffb020}
+.review-form textarea{width:100%;padding:12px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.9rem;resize:vertical;min-height:80px;font-family:inherit}
+.review-form textarea:focus{outline:none;border-color:var(--neon)}
+.review-form button{margin-top:12px;padding:11px 24px;border-radius:10px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:700;font-size:.88rem;border:none;cursor:pointer}
+.review-list{display:grid;gap:12px}
+.review-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.review-card-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.review-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden}
+.review-avatar img{width:100%;height:100%;object-fit:cover}
+.review-author{font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.review-stars-sm{color:#ffb020;font-size:.85rem;letter-spacing:1px}
+.review-date{font-size:.72rem;color:var(--muted);font-family:'Space Mono',monospace;margin-left:auto}
+.review-text{color:var(--muted);font-size:.88rem;line-height:1.6}
+.review-delete{margin-left:auto;background:none;border:none;color:#ff85b3;cursor:pointer;font-size:.85rem;padding:2px 6px}
+.review-reply{margin-top:12px;margin-left:32px;padding:12px 14px;background:rgba(124,92,255,.06);border-left:2px solid var(--neon);border-radius:8px;font-size:.85rem}
+.review-reply-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.78rem;color:var(--muted)}
+.review-reply-text{color:var(--text)}
+.dev-badge{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:100px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;letter-spacing:.06em}
+.staff-badge{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:100px;background:linear-gradient(115deg,#ffb020,#ff2e88);color:#07070d;letter-spacing:.06em}
+.reply-btn{margin-top:8px;background:none;border:none;color:var(--cyan);cursor:pointer;font-size:.82rem;font-weight:600;padding:4px 0}
+.reply-form{margin-top:10px;margin-left:32px}
+.reply-form textarea{width:100%;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.85rem;resize:vertical;min-height:60px;font-family:inherit}
+.reply-form button{margin-top:8px;padding:8px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.8rem;font-weight:600}
+
+.feed-container{max-width:640px}
+.post-form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:24px}
+.post-form textarea{width:100%;padding:12px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.95rem;resize:vertical;min-height:80px;font-family:inherit}
+.post-form textarea:focus{outline:none;border-color:var(--neon)}
+.post-form-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.post-form-char{font-size:.78rem;color:var(--muted);font-family:'Space Mono',monospace}
+.post-btn{padding:10px 24px;border-radius:100px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:700;font-size:.88rem;border:none;cursor:pointer}
+.post-btn:disabled{opacity:.4;cursor:not-allowed}
+.post-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;position:relative}
+.post-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.post-avatar{width:40px;height:40px;border-radius:12px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden;font-size:.95rem}
+.post-avatar img{width:100%;height:100%;object-fit:cover}
+.post-name{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px}
+.post-username{color:var(--muted);font-size:.82rem}
+.post-menu-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;padding:2px 8px;border-radius:6px;margin-left:auto}
+.post-menu{position:absolute;top:50px;right:20px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:6px;min-width:140px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:10;display:none}
+.post-menu.open{display:block}
+.post-menu button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;background:none;border:none;color:var(--text);cursor:pointer;font-size:.85rem;border-radius:6px;text-align:left}
+.post-menu button:hover{background:rgba(255,255,255,.06)}
+.post-menu button.danger{color:#ff85b3}
+.post-text{color:var(--text);font-size:.95rem;line-height:1.6;margin-bottom:12px;word-wrap:break-word;white-space:pre-wrap}
+.post-actions{display:flex;gap:20px;padding-top:10px;border-top:1px solid var(--line)}
+.post-action{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;font-weight:600;padding:6px 8px;border-radius:6px}
+.post-action.liked{color:#ff2e88}
+.post-replies{padding-top:12px;margin-top:12px;border-top:1px solid var(--line);display:none}
+.post-replies.open{display:block}
+.reply-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.reply-item .reply-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden}
+.reply-item .reply-avatar img{width:100%;height:100%;object-fit:cover}
+.reply-body{flex:1;min-width:0}
+.reply-header{display:flex;align-items:center;gap:8px;margin-bottom:3px;font-size:.82rem}
+.reply-name{font-weight:700;color:var(--text)}
+.reply-header .reply-date{color:var(--muted);font-size:.72rem;font-family:'Space Mono',monospace}
+.reply-content{color:var(--muted);font-size:.85rem;line-height:1.5}
+.reply-input-row{margin-top:12px;display:flex;gap:8px}
+.reply-input-row input{flex:1;padding:9px 12px;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.85rem}
+.reply-input-row input:focus{outline:none;border-color:var(--neon)}
+.reply-input-row button{padding:9px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.82rem;font-weight:600}
+
+.dev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.dev-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;transition:transform .3s,border-color .3s}
+.dev-card:hover{transform:translateY(-5px);border-color:rgba(124,92,255,.4)}
+.dev-card.staff{border-color:rgba(255,176,32,.4);background:linear-gradient(180deg,rgba(255,176,32,.06),var(--card))}
+.dev-card-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.dev-card-avatar{width:60px;height:60px;border-radius:16px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem;color:#07070d;font-family:'Space Mono',monospace;overflow:hidden;flex-shrink:0}
+.dev-card-avatar img{width:100%;height:100%;object-fit:cover}
+.dev-card-name{font-size:1.05rem;font-weight:800;margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dev-card-username{font-size:.8rem;color:var(--muted)}
+.dev-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.dev-tag{font-size:.65rem;font-weight:700;padding:3px 9px;border-radius:100px;background:rgba(0,229,255,.12);color:#7ae8ff;border:1px solid rgba(0,229,255,.25);text-transform:uppercase;letter-spacing:.05em}
+.dev-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.dev-stat{text-align:center}
+.dev-stat-num{font-family:'Space Mono',monospace;font-weight:800;font-size:1.15rem;display:block;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.dev-stat-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+.profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:24px}
+.profile-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 24px;text-align:center}
+.profile-avatar-big{width:100px;height:100px;border-radius:24px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:900;color:#07070d;font-family:'Space Mono',monospace;margin:0 auto 18px;box-shadow:0 10px 40px rgba(124,92,255,.4);overflow:hidden}
+.profile-avatar-big img{width:100%;height:100%;object-fit:cover}
+.profile-card h2{font-size:1.4rem;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
+.profile-role{font-size:.85rem;color:var(--cyan);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:20px}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.profile-stat{text-align:center}
+.profile-stat-num{font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block}
+.profile-stat-label{font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.profile-panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;margin-bottom:20px}
+.profile-panel h3{font-size:1.1rem;font-weight:800;margin-bottom:16px}
+.profile-empty{padding:30px;text-align:center;color:var(--muted);font-size:.88rem;background:rgba(255,255,255,.02);border-radius:12px;border:1px dashed var(--line)}
+
+.admin-panel{background:var(--card);border:1px solid rgba(124,92,255,.3);border-radius:20px;padding:28px 30px;margin-bottom:24px;position:relative;overflow:hidden}
+.admin-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--cyan),var(--pink))}
+.admin-panel h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+.admin-panel > p{color:var(--muted);font-size:.88rem;margin-bottom:20px}
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line)}
+.admin-table td{padding:14px 12px;border-bottom:1px solid var(--line);font-size:.9rem;vertical-align:middle}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-actions{display:flex;gap:8px}
+.mini-btn{padding:7px 14px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);transition:all .2s}
+.mini-btn:hover{background:rgba(124,92,255,.15);border-color:var(--neon)}
+.mini-btn.danger{color:#ff85b3;border-color:rgba(255,46,136,.3)}
+.mini-btn.gold{background:rgba(255,176,32,.12);border-color:rgba(255,176,32,.35);color:#ffcb6b}
+.mini-btn.green{background:rgba(43,255,136,.12);border-color:rgba(43,255,136,.35);color:#6bffaa}
+.mini-btn.active{background:linear-gradient(115deg,#ffb020,#ff2e88);color:#07070d;border-color:transparent}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field{display:flex;flex-direction:column;gap:6px}
+.form-field.full{grid-column:1 / -1}
+.form-field label{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.form-field input,.form-field textarea,.form-field select{padding:11px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.9rem;transition:border-color .2s}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{outline:none;border-color:var(--neon)}
+.form-field textarea{resize:vertical;min-height:80px;font-family:inherit}
+
+.modal-bg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
+.modal-bg.active{display:flex}
+.modal{background:var(--card);border:1px solid var(--line);border-radius:22px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:32px;box-shadow:0 40px 100px rgba(0,0,0,.7)}
+.modal h3{font-size:1.3rem;font-weight:800;margin-bottom:22px}
+.modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.modal-actions .btn{padding:11px 22px;border-radius:10px;font-weight:700;cursor:pointer;font-size:.9rem;border:none}
+.btn-save{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d}
+.btn-cancel{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line)!important}
+.empty{padding:60px 30px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+.empty-icon{font-size:3rem;margin-bottom:14px;opacity:.5}
+.empty h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.mobile-menu-btn{display:none;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);cursor:pointer;align-items:center;justify-content:center;font-size:1.2rem;margin-right:10px}
+
+/* ============================================
+   ANIMASYONLAR
+   ============================================ */
+#auth-screen{transition:opacity .5s cubic-bezier(.4,0,.2,1), transform .5s cubic-bezier(.4,0,.2,1)}
+#auth-screen.fade-out{opacity:0;transform:scale(1.05);pointer-events:none}
+#app-screen{opacity:0}
+#app-screen.active{display:flex;animation:appFadeIn .6s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes appFadeIn{0%{opacity:0;transform:scale(.98)}100%{opacity:1;transform:scale(1)}}
+
+.auth-box{animation:authBoxIn .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes authBoxIn{0%{opacity:0;transform:translateY(30px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+.google-btn{position:relative;overflow:hidden}
+.google-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(124,92,255,.35) 0%,transparent 70%);opacity:0;transition:opacity .4s}
+.google-btn:hover::before{opacity:1}
+.google-btn.loading{animation:btnPulse 1.5s ease-in-out infinite;pointer-events:none}
+@keyframes btnPulse{0%,100%{transform:scale(1);box-shadow:0 8px 24px rgba(255,255,255,.15)}50%{transform:scale(1.02);box-shadow:0 12px 40px rgba(124,92,255,.4)}}
+
+.view.active{animation:viewSlideIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes viewSlideIn{0%{opacity:0;transform:translateY(18px) scale(.99)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+@keyframes cardStagger{0%{opacity:0;transform:translateY(24px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.game-tile,.dev-card,.post-card,.review-card,.update-card{animation:cardStagger .5s cubic-bezier(.2,.8,.2,1) backwards}
+.game-tile:nth-child(1),.dev-card:nth-child(1),.post-card:nth-child(1){animation-delay:.05s}
+.game-tile:nth-child(2),.dev-card:nth-child(2),.post-card:nth-child(2){animation-delay:.1s}
+.game-tile:nth-child(3),.dev-card:nth-child(3),.post-card:nth-child(3){animation-delay:.15s}
+.game-tile:nth-child(4),.dev-card:nth-child(4),.post-card:nth-child(4){animation-delay:.2s}
+.game-tile:nth-child(5),.dev-card:nth-child(5){animation-delay:.25s}
+.game-tile:nth-child(6),.dev-card:nth-child(6){animation-delay:.3s}
+.game-tile:nth-child(n+7),.dev-card:nth-child(n+7){animation-delay:.35s}
+
+.game-tile:hover{transform:translateY(-8px) scale(1.02)}
+.game-tile:active{transform:translateY(-4px) scale(.99);transition:transform .1s}
+
+.nav-item{position:relative;transition:all .3s cubic-bezier(.2,.8,.2,1)}
+.nav-item::before{content:'';position:absolute;left:0;top:50%;width:3px;height:0;background:linear-gradient(180deg,var(--neon),var(--cyan));border-radius:0 3px 3px 0;transform:translateY(-50%);transition:height .3s cubic-bezier(.2,.8,.2,1)}
+.nav-item.active::before{height:60%}
+.nav-item:hover{transform:translateX(3px)}
+
+.btn,.mini-btn,.buy-btn,.post-btn{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rippleAnim .6s linear;pointer-events:none}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+
+.login-success{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:120px;height:120px;border-radius:50%;background:linear-gradient(115deg,#2bff88,#00e5ff);z-index:9999;display:flex;align-items:center;justify-content:center;box-shadow:0 0 80px rgba(43,255,136,.6);animation:successPop .8s cubic-bezier(.2,.8,.2,1) forwards}
+.login-success svg{width:60px;height:60px;stroke:#07070d;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;animation:drawCheck .5s .3s ease forwards}
+@keyframes successPop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.15);opacity:1}70%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+
+.spinner{box-shadow:0 0 30px rgba(124,92,255,.4)}
+#loading p{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+.modal-bg.active .modal{animation:modalIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes modalIn{0%{opacity:0;transform:scale(.9) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+
+.update-card{transition:transform .3s,border-color .3s,box-shadow .3s}
+.update-card:hover{transform:translateX(6px) scale(1.01);box-shadow:0 10px 30px rgba(124,92,255,.15)}
+
+.user-avatar,.post-avatar,.dev-card-avatar,.profile-avatar-big{transition:box-shadow .3s}
+.user-avatar:hover{box-shadow:0 0 20px rgba(124,92,255,.6)}
+
+.filter-btn{transition:all .25s cubic-bezier(.2,.8,.2,1)}
+.filter-btn:hover{transform:translateY(-2px)}
+.filter-btn.active{box-shadow:0 6px 20px rgba(124,92,255,.35)}
+
+@keyframes heartBeat{0%{transform:scale(1)}25%{transform:scale(1.3)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.post-action.liked{animation:heartBeat .4s}
+.wishlist-mini.active{animation:heartBeat .4s}
+
+.review-form{animation:cardStagger .5s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:.1s}
+
+.progress-fill{position:relative;overflow:hidden}
+.progress-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:progressShine 2s infinite}
+@keyframes progressShine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+@media(max-width:900px){.game-detail-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}}
+@media(max-width:760px){
+  #app-screen.active{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;flex-direction:row;align-items:center;padding:12px 16px;border-right:none;border-bottom:1px solid var(--line)}
+  .sidebar-head{padding:0;border:none;flex:1}
+  .sidebar-nav{display:none}
+  .sidebar-nav.mobile-open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--bg2);z-index:99;padding:20px;max-height:calc(100vh - 64px);border-bottom:1px solid var(--line);animation:slideInRight .35s cubic-bezier(.2,.8,.2,1)}
+  @keyframes slideInRight{0%{opacity:0;transform:translateX(30px)}100%{opacity:1;transform:translateX(0)}}
+  .sidebar-user{padding:0;border:none}
+  .user-info{display:none}
+  .main{padding:26px 20px;max-height:none}
+  .mobile-menu-btn{display:flex}
+  .view-title{font-size:1.5rem}
+  .game-detail-body h1{font-size:1.7rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <p>Yukleniyor...</p>
+</div>
+
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">N</div>
+      <div class="auth-logo-text">NOAMA GAMES</div>
+    </div>
+    <div class="auth-sub">Platforma Google hesabinla giris yap</div>
+    <button class="google-btn" id="googleSignInBtn">
+      <svg class="google-icon" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+        <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+        <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+        <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+      </svg>
+      Google ile Giris Yap
+    </button>
+    <div class="auth-msg" id="authMsg"></div>
+  </div>
+</div>
+
+<div id="app-screen">
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <a class="sidebar-logo">
+        <div class="sidebar-logo-mark">N</div>
+        <div class="sidebar-logo-text">NOAMA</div>
+      </a>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="nav-label">Magaza</div>
+      <button class="nav-item active" data-view="games"><span class="icon">🎮</span><span>Oyunlar</span></button>
+      <button class="nav-item" data-view="feed"><span class="icon">📰</span><span>Akis</span></button>
+      <button class="nav-item" data-view="announcements"><span class="icon">📢</span><span>Duyurular</span></button>
+      <button class="nav-item" data-view="developers"><span class="icon">👥</span><span>Gelistiriciler</span></button>
+      <div class="nav-label">Hesabim</div>
+      <button class="nav-item" data-view="profile"><span class="icon">👤</span><span>Profil</span></button>
+      <button class="nav-item" data-view="wishlist"><span class="icon">❤️</span><span>Istek Listem</span><span class="badge" id="wishlistBadge" style="display:none">0</span></button>
+      <div class="nav-label" id="devLabel" style="display:none">Gelistirici</div>
+      <button class="nav-item" data-view="admin-add" id="devAddNav" style="display:none">
+        <span class="icon">➕</span><span>Oyun Yukle</span>
+        <span class="badge dev">DEV</span>
+      </button>
+      <div class="nav-label" id="adminLabel" style="display:none">Yonetim</div>
+      <button class="nav-item" data-view="admin" id="adminNav" style="display:none">
+        <span class="icon">⚙️</span><span>Admin Panel</span>
+        <span class="badge admin">ADMIN</span>
+      </button>
+      <button class="nav-item" data-view="dev-manager" id="devManagerNav" style="display:none">
+        <span class="icon">🛠️</span><span>Gelistirici Yonetimi</span>
+      </button>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-card">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="userName">-</div>
+          <div class="user-role" id="userRole">-</div>
+        </div>
+        <button class="logout-btn" id="logoutBtn">⏻</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main" id="mainContent">
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+    <section class="view active" id="view-games">
+      <div class="view-head">
+        <span class="view-tag">// Magaza</span>
+        <h1 class="view-title">Oyunlar</h1>
+        <p class="view-desc">Noama Games'te yayinlanan tum oyunlar.</p>
+      </div>
+      <div class="search-bar"><input type="text" id="searchInput" placeholder="Oyun ara..."></div>
+      <div class="filter-row">
+        <button class="filter-btn active" data-filter="all">Tumu</button>
+        <button class="filter-btn" data-filter="released">Yayinda</button>
+        <button class="filter-btn" data-filter="beta">Acik Beta</button>
+        <button class="filter-btn" data-filter="dev">Gelistiriliyor</button>
+        <button class="filter-btn" data-filter="free">Ucretsiz</button>
+      </div>
+      <div class="games-row" id="gamesRow"></div>
+    </section>
+
+    <section class="view" id="view-game-detail">
+      <button class="back-btn" id="backToGames">← Oyunlara Don</button>
+      <div id="gameDetailContent"></div>
+    </section>
+
+    <section class="view" id="view-feed">
+      <div class="view-head">
+        <span class="view-tag">// Akis</span>
+        <h1 class="view-title">Noama Akis</h1>
+        <p class="view-desc">Gelistiricilerden son haberler.</p>
+      </div>
+      <div class="feed-container">
+        <div class="post-form" id="postForm">
+          <textarea id="postText" placeholder="Ne dusunuyorsun?" maxlength="500"></textarea>
+          <div class="post-form-footer">
+            <span class="post-form-char"><span id="postCharCount">0</span>/500</span>
+            <button class="post-btn" id="postSubmitBtn" disabled>Paylas</button>
+          </div>
+        </div>
+        <div id="postsList"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-announcements">
+      <div class="view-head">
+        <span class="view-tag">// Duyurular</span>
+        <h1 class="view-title">Gelismeler ve Duyurular</h1>
+        <p class="view-desc">Noama Games'ten resmi duyurular.</p>
+      </div>
+      <div class="updates-list" id="updatesList" style="display:grid;gap:14px;max-width:860px"></div>
+    </section>
+
+    <section class="view" id="view-developers">
+      <div class="view-head">
+        <span class="view-tag">// Topluluk</span>
+        <h1 class="view-title">Gelistiriciler</h1>
+        <p class="view-desc">Platformda oyun yayinlayan gelistiriciler.</p>
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn active" data-devfilter="all">Tumu</button>
+        <button class="filter-btn" data-devfilter="staff">Noama Calisanlari</button>
+        <button class="filter-btn" data-devfilter="verified">Onayli</button>
+      </div>
+      <div class="dev-grid" id="devGrid"></div>
+    </section>
+
+    <section class="view" id="view-profile">
+      <div class="view-head">
+        <span class="view-tag">// Hesabim</span>
+        <h1 class="view-title">Profil</h1>
+      </div>
+      <div class="profile-grid">
+        <div>
+          <div class="profile-card">
+            <div class="profile-avatar-big" id="profileBigAvatar">?</div>
+            <h2 id="profileName">-</h2>
+            <div class="profile-role" id="profileRole">-</div>
+            <div id="profileTags" class="dev-tags" style="justify-content:center;margin-top:12px"></div>
+            <div class="profile-stats">
+              <div class="profile-stat"><span class="profile-stat-num" id="profileReviewCount">0</span><span class="profile-stat-label">Yorum</span></div>
+              <div class="profile-stat"><span class="profile-stat-num" id="profileWishlistCount">0</span><span class="profile-stat-label">Istek</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="profile-panel" id="myGamesPanel" style="display:none">
+            <h3>🎮 Oyunlarim</h3>
+            <div id="myGamesList"></div>
+          </div>
+          <div class="profile-panel">
+            <h3>💬 Yorumlarim</h3>
+            <div id="myReviews"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-wishlist">
+      <div class="view-head">
+        <span class="view-tag">// Hesabim</span>
+        <h1 class="view-title">Istek Listem</h1>
+      </div>
+      <div class="games-row" id="wishlistRow"></div>
+    </section>
+
+    <section class="view" id="view-admin">
+      <div class="view-head">
+        <span class="view-tag">// Yonetim</span>
+        <h1 class="view-title">Admin Panel</h1>
+      </div>
+
+      <div class="admin-panel">
+        <h2>🎮 Oyun Yonetimi</h2>
+        <table class="admin-table">
+          <thead><tr><th>Oyun</th><th>Durum</th><th>Fiyat</th><th>Yilin</th><th style="text-align:right">Islem</th></tr></thead>
+          <tbody id="adminGamesBody"></tbody>
+        </table>
+      </div>
+
+      <div class="admin-panel">
+        <h2>📢 Duyuru Yonetimi</h2>
+        <div class="form-grid" style="margin-bottom:18px">
+          <div class="form-field">
+            <label>Etiket</label>
+            <select id="annTag">
+              <option value="Duyuru">Duyuru</option>
+              <option value="Karar">Karar</option>
+              <option value="Guncelleme">Guncelleme</option>
+              <option value="Onemli">Onemli</option>
+            </select>
+          </div>
+          <div class="form-field"><label>Tarih</label><input type="date" id="annDate"></div>
+          <div class="form-field full"><label>Baslik</label><input type="text" id="annTitle"></div>
+          <div class="form-field full"><label>Mesaj</label><textarea id="annMessage"></textarea></div>
+        </div>
+        <button class="mini-btn gold" id="addAnnBtn">+ Duyuru Ekle</button>
+        <div id="adminAnnList" style="margin-top:20px"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-dev-manager">
+      <div class="view-head">
+        <span class="view-tag">// Yonetim</span>
+        <h1 class="view-title">Gelistirici Yonetimi</h1>
+      </div>
+
+      <div class="admin-panel">
+        <h2>➕ Yeni Gelistirici Ekle</h2>
+        <p>Google hesabinin e-postasini gir. Kullanici bir sonraki girisinde gelistirici olur.</p>
+        <div class="form-grid">
+          <div class="form-field full">
+            <label>E-posta Adresi</label>
+            <input type="email" id="devEmailInput" placeholder="ornek@gmail.com">
+          </div>
+          <div class="form-field">
+            <label>Etiketler (virgulle)</label>
+            <input type="text" id="devTagsInput" placeholder="Unity, 3D Sanatci">
+          </div>
+          <div class="form-field">
+            <label>Noama Calisani mi?</label>
+            <select id="devStaffSelect">
+              <option value="no">Hayir</option>
+              <option value="yes">Evet</option>
+            </select>
+          </div>
+        </div>
+        <button class="mini-btn green" id="addDevBtn" style="margin-top:14px">+ Gelistirici Yap</button>
+      </div>
+
+      <div class="admin-panel">
+        <h2>👥 Tum Gelistiriciler</h2>
+        <table class="admin-table">
+          <thead><tr><th>Kullanici</th><th>E-posta</th><th>Etiketler</th><th>Skor</th><th>Durum</th><th style="text-align:right">Islem</th></tr></thead>
+          <tbody id="devListBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-admin-add">
+      <div class="view-head">
+        <span class="view-tag">// Yonetim</span>
+        <h1 class="view-title">Oyun Yukle</h1>
+      </div>
+      <div class="admin-panel">
+        <div class="form-grid">
+          <div class="form-field"><label>Oyun Adi</label><input type="text" id="newTitle"></div>
+          <div class="form-field"><label>Emoji (Kapak)</label><input type="text" id="newEmoji" value="🎮" maxlength="4"></div>
+          <div class="form-field">
+            <label>Durum</label>
+            <select id="newStatus">
+              <option value="released">Yayinda</option>
+              <option value="beta">Acik Beta</option>
+              <option value="dev" selected>Gelistiriliyor</option>
+            </select>
+          </div>
+          <div class="form-field"><label>Fiyat (TL, 0 = ucretsiz)</label><input type="number" id="newPrice" value="0" min="0"></div>
+          <div class="form-field full"><label>Etiketler (virgulle)</label><input type="text" id="newTags"></div>
+          <div class="form-field"><label>Cikis Yili</label><input type="text" id="newYear" value="2026"></div>
+          <div class="form-field"><label>Planlanan Cikis Tarihi</label><input type="date" id="newReleaseDate"></div>
+          <div class="form-field full"><label>Gelistirme Yuzdesi (0-100)</label><input type="number" id="newProgress" value="0" min="0" max="100"></div>
+          <div class="form-field full"><label>Indirme Linki (EXE)</label><input type="text" id="newDownloadUrl" placeholder="https://..."></div>
+          <div class="form-field full"><label>EXE Dosya Adi</label><input type="text" id="newExeName" placeholder="OyunSetup.exe"></div>
+          <div class="form-field full"><label>Aciklama</label><textarea id="newLongDesc"></textarea></div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:20px">
+          <button class="mini-btn gold" id="createGameBtn">+ Oyunu Yayinla</button>
+          <button class="mini-btn" onclick="document.querySelector('[data-view=games]').click()">Iptal</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-bg" id="editGameModal">
+  <div class="modal">
+    <h3>Oyunu Duzenle</h3>
+    <div class="form-grid">
+      <div class="form-field full"><label>Oyun Adi</label><input type="text" id="editTitle"></div>
+      <div class="form-field"><label>Emoji</label><input type="text" id="editEmoji" maxlength="4"></div>
+      <div class="form-field">
+        <label>Durum</label>
+        <select id="editStatus">
+          <option value="released">Yayinda</option>
+          <option value="beta">Acik Beta</option>
+          <option value="dev">Gelistiriliyor</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Fiyat (TL)</label><input type="number" id="editPrice" min="0"></div>
+      <div class="form-field full"><label>Etiketler</label><input type="text" id="editTags"></div>
+      <div class="form-field"><label>Cikis Yili</label><input type="text" id="editYear"></div>
+      <div class="form-field"><label>Planlanan Cikis Tarihi</label><input type="date" id="editReleaseDate"></div>
+      <div class="form-field"><label>Gelistirme Yuzdesi</label><input type="number" id="editProgress" min="0" max="100"></div>
+      <div class="form-field full"><label>Indirme Linki (EXE)</label><input type="text" id="editDownloadUrl"></div>
+      <div class="form-field full"><label>EXE Dosya Adi</label><input type="text" id="editExeName"></div>
+      <div class="form-field full"><label>Aciklama</label><textarea id="editLongDesc"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="editCancel">Iptal</button>
+      <button class="btn btn-save" id="editSave">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut,
+  setPersistence, browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAxdt8cc-ApERlahlGtPqsUE5jM3OQBTh4",
+  authDomain: "noama-51b28.firebaseapp.com",
+  projectId: "noama-51b28",
+  storageBucket: "noama-51b28.firebasestorage.app",
+  messagingSenderId: "749222257650",
+  appId: "1:749222257650:web:627eae3941b5126838c16b",
+  measurementId: "G-52Q9KTZNHN"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const ADMIN_EMAIL = 'cemilprooyuncu@gmail.com';
+
+let currentUser = null;
+let currentUserDoc = null;
+let games = [];
+let announcements = [];
+let reviews = [];
+let posts = [];
+let users = [];
+let wishlistIds = [];
+let currentDevFilter = 'all';
+let subsStarted = false;
+
+const $ = id => document.getElementById(id);
+const unsubs = {};
+
+function isAdmin(){ return currentUser && currentUser.email === ADMIN_EMAIL; }
+function isDeveloper(){ return currentUserDoc && (currentUserDoc.role === 'developer' || isAdmin()); }
+function isStaff(){ return isAdmin() || (currentUserDoc && currentUserDoc.isStaff === true); }
+function myUsername(){ return currentUserDoc?.username || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Anonim'; }
+function myPhoto(){ return currentUser?.photoURL || ''; }
+
+// GOOGLE GIRIS
+$('googleSignInBtn').addEventListener('click', async () => {
+  const btn = $('googleSignInBtn');
+  btn.disabled = true;
+  btn.textContent = 'Giris yapiliyor...';
+  btn.classList.add('loading');
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error){
+    console.error('Giris hatasi:', error);
+    const msg = $('authMsg');
+    msg.textContent = 'Giris yapilamadi: ' + error.message;
+    msg.classList.add('show');
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btn.innerHTML = 'Google ile Giris Yap';
+  }
+});
+
+// BAŞARI ANİMASYONU
+function showLoginSuccess(){
+  const overlay = document.createElement('div');
+  overlay.className = 'login-success';
+  overlay.innerHTML = '<svg viewBox="0 0 52 52"><path d="M14 27 L22 35 L38 19"/></svg>';
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 1500);
+}
+
+// OTURUM
+onAuthStateChanged(auth, async (user) => {
+  $('loading').classList.add('hide');
+  if (user){
+    currentUser = user;
+
+    // Başarı animasyonu
+    showLoginSuccess();
+    const authScr = $('auth-screen');
+    authScr.classList.add('fade-out');
+    setTimeout(() => {
+      authScr.classList.remove('active');
+      authScr.classList.remove('fade-out');
+    }, 500);
+
+    const userRef = doc(db, 'users', user.uid);
+    try {
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()){
+        await setDoc(userRef, {
+          email: user.email,
+          username: user.displayName || user.email.split('@')[0],
+          photoURL: user.photoURL || '',
+          role: user.email === ADMIN_EMAIL ? 'admin' : 'user',
+          isStaff: user.email === ADMIN_EMAIL,
+          isVerified: user.email === ADMIN_EMAIL,
+          tags: [],
+          createdAt: new Date().toISOString()
+        });
+      } else {
+        if (user.email === ADMIN_EMAIL && userSnap.data().role !== 'admin'){
+          await updateDoc(userRef, { role: 'admin', isStaff: true, isVerified: true });
+        }
+      }
+      if (unsubs.user) unsubs.user();
+      unsubs.user = onSnapshot(userRef, (snap) => {
+        currentUserDoc = snap.exists() ? { uid: snap.id, ...snap.data() } : null;
+        updateUserUI();
+      });
+    } catch(e){
+      console.error('User doc hatasi:', e);
+    }
+
+    $('app-screen').classList.add('active');
+
+    if (!subsStarted){
+      subsStarted = true;
+      subscribeGames();
+      subscribeAnnouncements();
+      subscribeReviews();
+      subscribePosts();
+      subscribeUsers();
+      subscribeWishlist();
+    }
+  } else {
+    currentUser = null;
+    currentUserDoc = null;
+    Object.values(unsubs).forEach(fn => { if (fn) fn(); });
+    subsStarted = false;
+    $('auth-screen').classList.remove('fade-out');
+    $('auth-screen').classList.add('active');
+    $('app-screen').classList.remove('active');
+  }
+});
+
+setPersistence(auth, browserLocalPersistence).catch(err => console.warn('Persistence:', err));
+
+$('logoutBtn').addEventListener('click', async () => {
+  if (confirm('Cikis yapmak istediginize emin misiniz?')) await signOut(auth);
+});
+
+function updateUserUI(){
+  if (!currentUser) return;
+  const avatarEl = $('userAvatar');
+  avatarEl.innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
+  $('userName').textContent = myUsername();
+  const role = isAdmin() ? 'Yonetici' : isDeveloper() ? (isStaff() ? 'Noama Calisani' : 'Gelistirici') : 'Oyuncu';
+  $('userRole').textContent = role;
+
+  $('devAddNav').style.display = isDeveloper() ? 'flex' : 'none';
+  $('devLabel').style.display = isDeveloper() ? 'block' : 'none';
+  $('adminNav').style.display = isAdmin() ? 'flex' : 'none';
+  $('adminLabel').style.display = isAdmin() ? 'block' : 'none';
+  $('devManagerNav').style.display = isAdmin() ? 'flex' : 'none';
+}
+
+function subscribeGames(){
+  if (unsubs.games) unsubs.games();
+  unsubs.games = onSnapshot(collection(db, 'games'), async (snap) => {
+    games = [];
+    snap.forEach(d => games.push({ id: d.id, ...d.data() }));
+    if (games.length === 0 && isAdmin()){
+      await seedDefaults();
+      return;
+    }
+    renderGames();
+    if ($('view-admin').classList.contains('active')) renderAdmin();
+    if ($('view-game-detail').classList.contains('active')){
+      const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
+      if (id) openGameDetail(id);
+    }
+    if ($('view-profile').classList.contains('active')) renderProfile();
+  }, (err) => console.error('Games snapshot:', err));
+}
+
+async function seedDefaults(){
+  const dg = [
+    { title:'Bikerman', emoji:'🚴', coverFrom:'#00e5ff', coverTo:'#0a3d5c', tags:['Bisiklet','Macera','Platform'], status:'beta', description:'Bisikletinle zorlu parkurlarda dengeni koru.', longDesc:'Bikerman, reflekslerine guvenen oyuncular icin tasarlanmis bir platform oyunudur.', price:0, releaseYear:'2026', releaseDate:'2026-12-15', developer:'Noama Games', downloadUrl:'', exeName:'BikermanSetup.exe', devProgress:75, gameOfYear:false, ownerId:'noama', ownerName:'Noama Games' },
+    { title:'Driftel', emoji:'🏎️', coverFrom:'#ff2e88', coverTo:'#5c0a33', tags:['Acik Dunya','Yaris','Drift'], status:'dev', description:'Genis bir acik dunyada ozgurce drift at.', longDesc:'Driftel, sokak yarislari ve drift kulturune adanmis bir acik dunya oyunudur.', price:0, releaseYear:'2026', releaseDate:'2026-11-01', developer:'Noama Games', downloadUrl:'', exeName:'DriftelSetup.exe', devProgress:45, gameOfYear:false, ownerId:'noama', ownerName:'Noama Games' }
+  ];
+  for (const g of dg) await addDoc(collection(db, 'games'), g);
+  const da = [
+    { date:'2026-09-10', tag:'Duyuru', title:'Noama Games platformu yayinda!', message:'Artik tum oyunlarimiza tek yerden ulasabilirsiniz.' },
+    { date:'2026-09-05', tag:'Karar', title:'Bikerman beta ertelendi', message:'Beta testlerinde kritik bir hata tespit ettik.' }
+  ];
+  for (const a of da) await addDoc(collection(db, 'announcements'), a);
+}
+
+function subscribeAnnouncements(){
+  if (unsubs.ann) unsubs.ann();
+  unsubs.ann = onSnapshot(collection(db, 'announcements'), (snap) => {
+    announcements = [];
+    snap.forEach(d => announcements.push({ id: d.id, ...d.data() }));
+    renderAnnouncements();
+    if ($('view-admin').classList.contains('active')) renderAdmin();
+  }, (err) => console.error('Ann snapshot:', err));
+}
+
+function subscribeReviews(){
+  if (unsubs.reviews) unsubs.reviews();
+  unsubs.reviews = onSnapshot(collection(db, 'reviews'), (snap) => {
+    reviews = [];
+    snap.forEach(d => reviews.push({ id: d.id, ...d.data() }));
+    renderGames();
+    if ($('view-game-detail').classList.contains('active')){
+      const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
+      if (id) openGameDetail(id);
+    }
+    if ($('view-profile').classList.contains('active')) renderProfile();
+  }, (err) => console.error('Reviews snapshot:', err));
+}
+
+function subscribePosts(){
+  if (unsubs.posts) unsubs.posts();
+  unsubs.posts = onSnapshot(collection(db, 'posts'), (snap) => {
+    posts = [];
+    snap.forEach(d => posts.push({ id: d.id, ...d.data() }));
+    posts.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    renderPosts();
+  }, (err) => console.error('Posts snapshot:', err));
+}
+
+function subscribeUsers(){
+  if (unsubs.users) unsubs.users();
+  unsubs.users = onSnapshot(collection(db, 'users'), (snap) => {
+    users = [];
+    snap.forEach(d => users.push({ uid: d.id, ...d.data() }));
+    if ($('view-developers').classList.contains('active')) renderDevelopers();
+    if ($('view-dev-manager').classList.contains('active')) renderDevManager();
+    if ($('view-profile').classList.contains('active')) renderProfile();
+  }, (err) => console.error('Users snapshot:', err));
+}
+
+function subscribeWishlist(){
+  if (!currentUser) return;
+  if (unsubs.wish) unsubs.wish();
+  unsubs.wish = onSnapshot(collection(db, 'wishlists'), (snap) => {
+    wishlistIds = [];
+    snap.forEach(d => {
+      const data = d.data();
+      if (data.userId === currentUser.uid) wishlistIds.push(data.gameId);
+    });
+    const badge = $('wishlistBadge');
+    if (wishlistIds.length > 0){ badge.style.display = 'inline-block'; badge.textContent = wishlistIds.length; }
+    else badge.style.display = 'none';
+    if ($('view-wishlist').classList.contains('active')) renderWishlist();
+  }, (err) => console.error('Wishlist snapshot:', err));
+}
+
+// NAVIGASYON
+document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    showView(btn.dataset.view);
+    $('sidebarNav').classList.remove('mobile-open');
+    if (btn.dataset.view === 'profile') renderProfile();
+    if (btn.dataset.view === 'wishlist') renderWishlist();
+    if (btn.dataset.view === 'admin') renderAdmin();
+    if (btn.dataset.view === 'developers') renderDevelopers();
+    if (btn.dataset.view === 'dev-manager') renderDevManager();
+  });
+});
+
+function showView(name){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  $('view-' + name).classList.add('active');
+  $('mainContent').scrollTop = 0;
+}
+
+$('backToGames').addEventListener('click', () => {
+  showView('games');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.querySelector('.nav-item[data-view="games"]').classList.add('active');
+});
+
+$('mobileMenuBtn').addEventListener('click', () => {
+  $('sidebarNav').classList.toggle('mobile-open');
+});
+
+function statusText(s){ return s === 'beta' ? 'Acik Beta' : s === 'dev' ? 'Gelistiriliyor' : 'Yayinda'; }
+function priceText(g){
+  if (g.price > 0) return g.price + ' TL';
+  if (g.status === 'dev') return 'Yakinda';
+  return 'Ucretsiz';
+}
+function avgRating(gameId){
+  const rs = reviews.filter(r => r.gameId === gameId);
+  if (!rs.length) return 0;
+  return rs.reduce((s, r) => s + r.rating, 0) / rs.length;
+}
+function starString(n){ const f = Math.round(n); return '★'.repeat(f) + '☆'.repeat(5 - f); }
+function isInWishlist(id){ return wishlistIds.includes(id); }
+function timeAgo(iso){
+  if (!iso) return '';
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return 'az once';
+  if (diff < 3600) return Math.floor(diff/60) + ' dk once';
+  if (diff < 86400) return Math.floor(diff/3600) + ' sa once';
+  if (diff < 604800) return Math.floor(diff/86400) + ' gun once';
+  return new Date(iso).toLocaleDateString('tr-TR');
+}
+function userByUid(uid){ return users.find(u => u.uid === uid); }
+function escapeHtml(t){
+  return (t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+let currentFilter = 'all';
+let currentSearch = '';
+$('searchInput').addEventListener('input', e => { currentSearch = e.target.value; renderGames(); });
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderGames();
+  });
+});
+
+function getFilteredGames(){
+  let list = [...games];
+  if (currentFilter === 'released') list = list.filter(g => g.status === 'released');
+  else if (currentFilter === 'beta') list = list.filter(g => g.status === 'beta');
+  else if (currentFilter === 'dev') list = list.filter(g => g.status === 'dev');
+  else if (currentFilter === 'free') list = list.filter(g => g.price === 0);
+  if (currentSearch){
+    const q = currentSearch.toLowerCase();
+    list = list.filter(g => g.title.toLowerCase().includes(q) || (g.tags || []).some(t => t.toLowerCase().includes(q)));
+  }
+  return list;
+}
+
+function renderGames(){
+  const row = $('gamesRow');
+  if (!row) return;
+  const list = getFilteredGames();
+  if (!list.length){
+    row.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🎮</div><h3>Oyun bulunamadi</h3></div>';
+    return;
+  }
+  row.innerHTML = list.map(g => {
+    const rating = avgRating(g.id);
+    const inWish = isInWishlist(g.id);
+    const owner = userByUid(g.ownerId);
+    const isStaffGame = owner?.isStaff;
+    return `
+      <article class="game-tile" data-game-id="${g.id}">
+        <div class="game-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">
+          ${g.gameOfYear ? '<div class="game-of-year">🏆 Yilin Oyunu</div>' : ''}
+          <button class="wishlist-mini ${inWish ? 'active' : ''}" data-wish="${g.id}">${inWish ? '❤️' : '🤍'}</button>
+          ${g.emoji || '🎮'}
+        </div>
+        <div class="game-info">
+          <h3>${g.title}</h3>
+          <div class="game-tags">
+            <span class="mini-tag ${g.status}">${statusText(g.status)}</span>
+            ${isStaffGame ? '<span class="mini-tag staff">Noama</span>' : ''}
+            ${(g.tags || []).slice(0, 1).map(t => `<span class="mini-tag">${t}</span>`).join('')}
+          </div>
+          <div class="game-price">${priceText(g)}</div>
+          ${rating > 0 ? `<div class="game-rating"><span class="stars-mini">${starString(rating)}</span> ${rating.toFixed(1)}</div>` : ''}
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  row.querySelectorAll('.game-tile').forEach(tile => {
+    tile.addEventListener('click', e => {
+      if (e.target.closest('[data-wish]')) return;
+      openGameDetail(tile.dataset.gameId);
+    });
+  });
+  row.querySelectorAll('[data-wish]').forEach(btn => {
+    btn.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(btn.dataset.wish); });
+  });
+}
+
+async function toggleWishlist(gameId){
+  if (!currentUser) return;
+  const snap = await getDocs(collection(db, 'wishlists'));
+  let ex = null;
+  snap.forEach(d => {
+    const data = d.data();
+    if (data.userId === currentUser.uid && data.gameId === gameId) ex = d.id;
+  });
+  if (ex) await deleteDoc(doc(db, 'wishlists', ex));
+  else await addDoc(collection(db, 'wishlists'), { userId: currentUser.uid, gameId, addedAt: new Date().toISOString() });
+}
+
+function openGameDetail(id){
+  const g = games.find(x => x.id === id);
+  if (!g) return;
+  const rating = avgRating(g.id);
+  const reviewCount = reviews.filter(r => r.gameId === id).length;
+  const inWish = isInWishlist(g.id);
+  const gameReviews = reviews.filter(r => r.gameId === id).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const owner = userByUid(g.ownerId);
+  const canEdit = isAdmin() || (currentUser && g.ownerId === currentUser.uid);
+
+  let actionBtn = '';
+  if (g.status === 'dev') actionBtn = `<button class="buy-btn" disabled>Yakinda Geliyor</button>`;
+  else if (g.downloadUrl) actionBtn = `<a href="${g.downloadUrl}" target="_blank" class="buy-btn green" download>⬇️ Indir${g.exeName ? ' (' + g.exeName + ')' : ''}</a>`;
+  else if (g.price > 0) actionBtn = `<button class="buy-btn">🛒 Satin Al</button>`;
+  else actionBtn = `<button class="buy-btn" disabled>Indirme Linki Yok</button>`;
+
+  let progressHtml = '';
+  if (g.status === 'dev' && g.devProgress > 0){
+    progressHtml = `<div class="info-row"><div class="info-label">Gelistirme</div><div class="info-value">${g.devProgress}%</div><div class="progress-bar"><div class="progress-fill" style="width:${g.devProgress}%"></div></div></div>`;
+  }
+
+  const html = `
+    <div class="game-detail-hero" data-game-id="${g.id}">
+      <div class="game-detail-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">
+        ${g.gameOfYear ? '<div class="game-of-year" style="top:20px;right:20px;font-size:.8rem;padding:7px 14px;">🏆 Yilin Oyunu</div>' : ''}
+        ${g.emoji || '🎮'}
+      </div>
+      <div class="game-detail-body">
+        <h1>${g.title}</h1>
+        <div class="game-detail-meta">
+          <span class="mini-tag ${g.status}">${statusText(g.status)}</span>
+          ${owner?.isStaff ? '<span class="mini-tag staff">Noama Calisani</span>' : ''}
+          ${(g.tags || []).map(t => `<span class="mini-tag">${t}</span>`).join('')}
+        </div>
+        <div class="game-detail-actions">
+          ${actionBtn}
+          <button class="wishlist-btn ${inWish ? 'active' : ''}" id="detailWishBtn">${inWish ? '❤️ Istek Listemde' : '🤍 Istek Listesine Ekle'}</button>
+          <div><span class="game-detail-price">${priceText(g)}</span></div>
+        </div>
+        <div class="game-detail-grid">
+          <div class="game-detail-desc">
+            <h3 style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:12px;">Oyun Hakkinda</h3>
+            <p>${g.longDesc || g.description || 'Aciklama yok.'}</p>
+          </div>
+          <div class="game-detail-side">
+            <div class="info-row"><div class="info-label">Gelistirici</div><div class="info-value">${g.developer || (owner?.username || 'Noama Games')}</div></div>
+            <div class="info-row"><div class="info-label">Cikis Yili</div><div class="info-value">${g.releaseYear || '-'}</div></div>
+            ${g.releaseDate ? `<div class="info-row"><div class="info-label">Planlanan Cikis</div><div class="info-value">${g.releaseDate}</div></div>` : ''}
+            ${progressHtml}
+            ${rating > 0 ? `<div class="info-row"><div class="info-label">Puan</div><div class="info-value" style="color:#ffb020">${starString(rating)} ${rating.toFixed(1)}</div></div>` : ''}
+          </div>
+        </div>
+        <div class="review-section">
+          <div class="review-head">
+            <h3>💬 Yorumlar (${reviewCount})</h3>
+            ${rating > 0 ? `<div class="review-summary"><span class="review-big-num">${rating.toFixed(1)}</span><div><div class="review-stars">${starString(rating)}</div><div class="review-count">${reviewCount} degerlendirme</div></div></div>` : ''}
+          </div>
+          <div class="review-form">
+            <h4>Yorum Yap</h4>
+            <div class="star-picker" id="starPicker">
+              <span data-star="1">★</span><span data-star="2">★</span><span data-star="3">★</span><span data-star="4">★</span><span data-star="5">★</span>
+            </div>
+            <textarea id="reviewText" placeholder="Oyun hakkinda ne dusunuyorsun?"></textarea>
+            <button id="submitReviewBtn">Yorumu Gonder</button>
+          </div>
+          <div class="review-list">
+            ${gameReviews.length === 0 ? '<p style="color:var(--muted);font-size:.88rem;text-align:center;padding:20px">Henuz yorum yok.</p>' :
+              gameReviews.map(r => {
+                const ru = userByUid(r.userId);
+                const isDev = ru && (ru.role === 'developer' || ru.role === 'admin');
+                const isStaffUser = ru && ru.isStaff;
+                return `
+                <div class="review-card">
+                  <div class="review-card-head">
+                    <div class="review-avatar">${r.photoURL ? `<img src="${r.photoURL}">` : (r.username || '?')[0].toUpperCase()}</div>
+                    <span class="review-author">
+                      ${r.username}
+                      ${isStaffUser ? '<span class="staff-badge">NOAMA</span>' : isDev ? '<span class="dev-badge">GELISTIRICI</span>' : ''}
+                    </span>
+                    <span class="review-stars-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                    <span class="review-date">${r.date}</span>
+                    ${(currentUser && (currentUser.uid === r.userId || isAdmin())) ? `<button class="review-delete" data-del-review="${r.id}">🗑️</button>` : ''}
+                  </div>
+                  <p class="review-text">${escapeHtml(r.text)}</p>
+                  ${r.reply ? `
+                    <div class="review-reply">
+                      <div class="review-reply-head">
+                        <strong>${r.reply.username}</strong>
+                        ${r.reply.isStaff ? '<span class="staff-badge">NOAMA</span>' : '<span class="dev-badge">GELISTIRICI</span>'}
+                        <span style="margin-left:auto">${r.reply.date}</span>
+                      </div>
+                      <div class="review-reply-text">${escapeHtml(r.reply.text)}</div>
+                    </div>
+                  ` : ''}
+                  ${canEdit && !r.reply ? `<button class="reply-btn" data-reply-to="${r.id}">↩ Yanitla</button>` : ''}
+                  <div class="reply-form" id="reply-form-${r.id}" style="display:none">
+                    <textarea id="reply-text-${r.id}" placeholder="Yanitini yaz..."></textarea>
+                    <button data-submit-reply="${r.id}">Gonder</button>
+                  </div>
+                </div>
+              `}).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  $('gameDetailContent').innerHTML = html;
+  showView('game-detail');
+  $('mainContent').scrollTop = 0;
+
+  $('detailWishBtn').addEventListener('click', () => toggleWishlist(g.id));
+
+  let selectedStar = 0;
+  const picker = $('starPicker');
+  picker.querySelectorAll('span').forEach(star => {
+    star.addEventListener('click', () => {
+      selectedStar = parseInt(star.dataset.star);
+      picker.querySelectorAll('span').forEach(s => s.classList.toggle('active', parseInt(s.dataset.star) <= selectedStar));
+    });
+  });
+
+  $('submitReviewBtn').addEventListener('click', async () => {
+    const text = $('reviewText').value.trim();
+    if (!selectedStar){ alert('Lutfen puan ver.'); return; }
+    if (!text){ alert('Yorum yaz.'); return; }
+    await addDoc(collection(db, 'reviews'), {
+      gameId: g.id,
+      userId: currentUser.uid,
+      username: myUsername(),
+      photoURL: myPhoto(),
+      rating: selectedStar,
+      text,
+      date: new Date().toISOString().slice(0, 10)
+    });
+  });
+
+  document.querySelectorAll('[data-del-review]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Yorumu sil?')) return;
+      await deleteDoc(doc(db, 'reviews', btn.dataset.delReview));
+    });
+  });
+
+  document.querySelectorAll('[data-reply-to]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rid = btn.dataset.replyTo;
+      const form = $('reply-form-' + rid);
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    });
+  });
+  document.querySelectorAll('[data-submit-reply]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const rid = btn.dataset.submitReply;
+      const text = $('reply-text-' + rid).value.trim();
+      if (!text) return;
+      await updateDoc(doc(db, 'reviews', rid), {
+        reply: {
+          userId: currentUser.uid,
+          username: myUsername(),
+          text,
+          date: new Date().toISOString().slice(0, 10),
+          isStaff: isStaff(),
+          isDeveloper: isDeveloper()
+        }
+      });
+    });
+  });
+}
+
+$('postText').addEventListener('input', e => {
+  const len = e.target.value.length;
+  $('postCharCount').textContent = len;
+  $('postSubmitBtn').disabled = len === 0;
+});
+
+$('postSubmitBtn').addEventListener('click', async () => {
+  const text = $('postText').value.trim();
+  if (!text) return;
+  await addDoc(collection(db, 'posts'), {
+    userId: currentUser.uid,
+    username: myUsername(),
+    photoURL: myPhoto(),
+    text,
+    likes: [],
+    replies: [],
+    createdAt: new Date().toISOString()
+  });
+  $('postText').value = '';
+  $('postCharCount').textContent = '0';
+  $('postSubmitBtn').disabled = true;
+});
+
+function renderPosts(){
+  const list = $('postsList');
+  if (!posts.length){
+    list.innerHTML = '<div class="empty"><div class="empty-icon">📰</div><h3>Henuz paylasim yok</h3><p>Ilk paylasimi sen yap!</p></div>';
+    return;
+  }
+  list.innerHTML = posts.map(p => {
+    const u = userByUid(p.userId);
+    const isDev = u && (u.role === 'developer' || u.role === 'admin');
+    const isStaffUser = u && u.isStaff;
+    const isLiked = (p.likes || []).includes(currentUser.uid);
+    const canDelete = isAdmin() || p.userId === currentUser.uid;
+    const replies = p.replies || [];
+    return `
+      <article class="post-card" data-post-id="${p.id}">
+        <div class="post-head">
+          <div class="post-avatar">${p.photoURL ? `<img src="${p.photoURL}">` : (p.username || '?')[0].toUpperCase()}</div>
+          <div style="flex:1;min-width:0">
+            <div class="post-name">
+              ${p.username}
+              ${isStaffUser ? '<span class="staff-badge">NOAMA</span>' : isDev ? '<span class="dev-badge">GELISTIRICI</span>' : ''}
+            </div>
+            <div class="post-username">${timeAgo(p.createdAt)}</div>
+          </div>
+          <button class="post-menu-btn" data-menu-toggle="${p.id}">⋯</button>
+        </div>
+        <div class="post-menu" id="menu-${p.id}">
+          ${canDelete ? `<button class="danger" data-del-post="${p.id}">🗑️ Sil</button>` : ''}
+          <button data-copy-post="${p.id}">🔗 Kopyala</button>
+        </div>
+        <div class="post-text">${escapeHtml(p.text)}</div>
+        <div class="post-actions">
+          <button class="post-action ${isLiked ? 'liked' : ''}" data-like-post="${p.id}">
+            ${isLiked ? '❤️' : '🤍'} <span>${(p.likes || []).length}</span>
+          </button>
+          <button class="post-action" data-replies-toggle="${p.id}">
+            💬 <span>${replies.length}</span>
+          </button>
+        </div>
+        <div class="post-replies" id="replies-${p.id}">
+          ${replies.map(r => `
+            <div class="reply-item">
+              <div class="reply-avatar">${r.photoURL ? `<img src="${r.photoURL}">` : (r.username || '?')[0].toUpperCase()}</div>
+              <div class="reply-body">
+                <div class="reply-header">
+                  <span class="reply-name">${r.username}</span>
+                  <span class="reply-date">${timeAgo(r.date)}</span>
+                </div>
+                <div class="reply-content">${escapeHtml(r.text)}</div>
+              </div>
+            </div>
+          `).join('')}
+          <div class="reply-input-row">
+            <input type="text" id="reply-input-${p.id}" placeholder="Yanit yaz..." maxlength="200">
+            <button data-submit-post-reply="${p.id}">Gonder</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  list.querySelectorAll('[data-menu-toggle]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.menuToggle;
+      document.querySelectorAll('.post-menu.open').forEach(m => { if (m.id !== 'menu-' + id) m.classList.remove('open'); });
+      $('menu-' + id).classList.toggle('open');
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.post-menu.open').forEach(m => m.classList.remove('open'));
+  });
+
+  list.querySelectorAll('[data-like-post]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pid = btn.dataset.likePost;
+      const p = posts.find(x => x.id === pid);
+      if (!p) return;
+      const likes = p.likes || [];
+      const newLikes = likes.includes(currentUser.uid) ? likes.filter(u => u !== currentUser.uid) : [...likes, currentUser.uid];
+      await updateDoc(doc(db, 'posts', pid), { likes: newLikes });
+    });
+  });
+
+  list.querySelectorAll('[data-replies-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $('replies-' + btn.dataset.repliesToggle).classList.toggle('open');
+    });
+  });
+
+  list.querySelectorAll('[data-submit-post-reply]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const pid = btn.dataset.submitPostReply;
+      const input = $('reply-input-' + pid);
+      const text = input.value.trim();
+      if (!text) return;
+      const p = posts.find(x => x.id === pid);
+      const newReplies = [...(p.replies || []), {
+        userId: currentUser.uid,
+        username: myUsername(),
+        photoURL: myPhoto(),
+        text,
+        date: new Date().toISOString()
+      }];
+      await updateDoc(doc(db, 'posts', pid), { replies: newReplies });
+      input.value = '';
+    });
+  });
+
+  list.querySelectorAll('[data-del-post]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Bu paylasimi silmek istediginize emin misiniz?')) return;
+      await deleteDoc(doc(db, 'posts', btn.dataset.delPost));
+    });
+  });
+
+  list.querySelectorAll('[data-copy-post]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = posts.find(x => x.id === btn.dataset.copyPost);
+      navigator.clipboard.writeText(p.text);
+      alert('Metin kopyalandi!');
+    });
+  });
+}
+
+function renderAnnouncements(){
+  const list = $('updatesList');
+  if (!list) return;
+  if (!announcements.length){
+    list.innerHTML = '<div class="empty"><div class="empty-icon">📢</div><h3>Henuz duyuru yok</h3></div>';
+    return;
+  }
+  const sorted = [...announcements].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  list.innerHTML = sorted.map(a => `
+    <article class="update-card" style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;position:relative">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+        <span class="mini-tag">${a.tag}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)">${a.date}</span>
+      </div>
+      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:6px">${a.title}</h3>
+      <p style="color:var(--muted);font-size:.9rem">${escapeHtml(a.message)}</p>
+    </article>
+  `).join('');
+}
+
+document.querySelectorAll('.filter-btn[data-devfilter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-devfilter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentDevFilter = btn.dataset.devfilter;
+    renderDevelopers();
+  });
+});
+
+function devScore(u){
+  const ug = games.filter(g => g.ownerId === u.uid);
+  const gcount = ug.length;
+  const rs = reviews.filter(r => ug.some(g => g.id === r.gameId));
+  const avg = rs.length ? rs.reduce((s, r) => s + r.rating, 0) / rs.length : 0;
+  return { gcount, avg, score: gcount * 10 + avg * 5 };
+}
+
+function renderDevelopers(){
+  const grid = $('devGrid');
+  let devs = users.filter(u => u.role === 'developer' || u.role === 'admin');
+  if (currentDevFilter === 'staff') devs = devs.filter(u => u.isStaff);
+  else if (currentDevFilter === 'verified') devs = devs.filter(u => u.isVerified);
+  devs.sort((a, b) => {
+    if (a.isStaff && !b.isStaff) return -1;
+    if (!a.isStaff && b.isStaff) return 1;
+    return devScore(b).score - devScore(a).score;
+  });
+
+  if (!devs.length){
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">👥</div><h3>Gelistirici yok</h3></div>';
+    return;
+  }
+  grid.innerHTML = devs.map(u => {
+    const s = devScore(u);
+    return `
+      <div class="dev-card ${u.isStaff ? 'staff' : ''}">
+        <div class="dev-card-head">
+          <div class="dev-card-avatar">${u.photoURL ? `<img src="${u.photoURL}">` : (u.username || '?')[0].toUpperCase()}</div>
+          <div style="flex:1;min-width:0">
+            <div class="dev-card-name">
+              ${u.username}
+              ${u.isStaff ? '<span class="staff-badge">NOAMA</span>' : u.isVerified ? '<span class="dev-badge">ONAYLI</span>' : ''}
+            </div>
+            <div class="dev-card-username">@${(u.username || '').toLowerCase().replace(/\s/g, '')}</div>
+          </div>
+        </div>
+        ${u.tags && u.tags.length ? `<div class="dev-tags">${u.tags.map(t => `<span class="dev-tag">${t}</span>`).join('')}</div>` : ''}
+        <div class="dev-stats">
+          <div class="dev-stat"><span class="dev-stat-num">${s.gcount}</span><span class="dev-stat-label">Oyun</span></div>
+          <div class="dev-stat"><span class="dev-stat-num">${s.avg.toFixed(1)}</span><span class="dev-stat-label">Puan</span></div>
+          <div class="dev-stat"><span class="dev-stat-num">${s.score.toFixed(0)}</span><span class="dev-stat-label">Skor</span></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderProfile(){
+  if (!currentUser || !currentUserDoc) return;
+  const a = $('profileBigAvatar');
+  a.innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
+  $('profileName').innerHTML = myUsername() + (isStaff() ? ' <span class="staff-badge">NOAMA</span>' : isDeveloper() ? ' <span class="dev-badge">GELISTIRICI</span>' : '');
+  $('profileRole').textContent = isAdmin() ? 'Yonetici' : isDeveloper() ? 'Gelistirici' : 'Oyuncu';
+
+  const tagsEl = $('profileTags');
+  if (currentUserDoc.tags && currentUserDoc.tags.length){
+    tagsEl.innerHTML = currentUserDoc.tags.map(t => `<span class="dev-tag">${t}</span>`).join('');
+  } else tagsEl.innerHTML = '';
+
+  const myReviews = reviews.filter(r => r.userId === currentUser.uid);
+  $('profileReviewCount').textContent = myReviews.length;
+  $('profileWishlistCount').textContent = wishlistIds.length;
+
+  const myGamesPanel = $('myGamesPanel');
+  const myGamesList = $('myGamesList');
+  if (isDeveloper()){
+    const myG = games.filter(g => g.ownerId === currentUser.uid);
+    myGamesPanel.style.display = 'block';
+    myGamesList.innerHTML = myG.length
+      ? myG.map(g => `<div style="padding:10px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:8px"><strong>${g.emoji} ${g.title}</strong> <span style="color:var(--muted);font-size:.8rem">- ${statusText(g.status)}</span></div>`).join('')
+      : '<div class="profile-empty">Henuz oyun yuklemedin.</div>';
+  } else {
+    myGamesPanel.style.display = 'none';
+  }
+
+  const box = $('myReviews');
+  if (!myReviews.length){
+    box.innerHTML = '<div class="profile-empty">Henuz yorum yapmadin.</div>';
+  } else {
+    box.innerHTML = myReviews.map(r => {
+      const g = games.find(x => x.id === r.gameId);
+      return `
+        <div class="review-card" style="margin-bottom:10px">
+          <div class="review-card-head">
+            <span class="review-author">${g ? g.emoji + ' ' + g.title : 'Bilinmeyen'}</span>
+            <span class="review-stars-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+            <span class="review-date">${r.date}</span>
+          </div>
+          <p class="review-text">${escapeHtml(r.text)}</p>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+function renderWishlist(){
+  const row = $('wishlistRow');
+  const list = games.filter(g => wishlistIds.includes(g.id));
+  if (!list.length){
+    row.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">💔</div><h3>Istek listen bos</h3></div>';
+    return;
+  }
+  row.innerHTML = list.map(g => {
+    const rating = avgRating(g.id);
+    return `
+      <article class="game-tile" data-game-id="${g.id}">
+        <div class="game-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">
+          <button class="wishlist-mini active" data-wish="${g.id}">❤️</button>
+          ${g.emoji || '🎮'}
+        </div>
+        <div class="game-info">
+          <h3>${g.title}</h3>
+          <div class="game-tags"><span class="mini-tag ${g.status}">${statusText(g.status)}</span></div>
+          <div class="game-price">${priceText(g)}</div>
+          ${rating > 0 ? `<div class="game-rating"><span class="stars-mini">${starString(rating)}</span> ${rating.toFixed(1)}</div>` : ''}
+        </div>
+      </article>
+    `;
+  }).join('');
+  row.querySelectorAll('.game-tile').forEach(t => {
+    t.addEventListener('click', e => {
+      if (e.target.closest('[data-wish]')) return;
+      openGameDetail(t.dataset.gameId);
+    });
+  });
+  row.querySelectorAll('[data-wish]').forEach(b => {
+    b.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(b.dataset.wish); });
+  });
+}
+
+function renderAdmin(){
+  if (!isAdmin()) return;
+  const tbody = $('adminGamesBody');
+  tbody.innerHTML = games.map(g => `
+    <tr>
+      <td><strong>${g.emoji} ${g.title}</strong></td>
+      <td>${statusText(g.status)}</td>
+      <td>${priceText(g)}</td>
+      <td><button class="mini-btn ${g.gameOfYear ? 'active' : 'gold'}" data-toggle-year="${g.id}">${g.gameOfYear ? '🏆' : 'Sec'}</button></td>
+      <td style="text-align:right"><div class="admin-actions" style="justify-content:flex-end">
+        <button class="mini-btn" data-edit="${g.id}">✏️</button>
+        <button class="mini-btn danger" data-del-game="${g.id}">🗑️</button>
+      </div></td>
+    </tr>
+  `).join('');
+
+  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditModal(b.dataset.edit)));
+  tbody.querySelectorAll('[data-toggle-year]').forEach(b => {
+    b.addEventListener('click', async () => {
+      const id = b.dataset.toggleYear;
+      const t = games.find(g => g.id === id);
+      const nv = !t.gameOfYear;
+      for (const g of games) if (g.gameOfYear && g.id !== id) await updateDoc(doc(db, 'games', g.id), { gameOfYear: false });
+      await updateDoc(doc(db, 'games', id), { gameOfYear: nv });
+    });
+  });
+  tbody.querySelectorAll('[data-del-game]').forEach(b => {
+    b.addEventListener('click', async () => {
+      if (!confirm('Oyunu sil?')) return;
+      await deleteDoc(doc(db, 'games', b.dataset.delGame));
+    });
+  });
+
+  const annList = $('adminAnnList');
+  const sorted = [...announcements].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  annList.innerHTML = sorted.map(a => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:8px">
+      <span class="mini-tag">${a.tag}</span>
+      <span style="flex:1;font-size:.88rem;font-weight:600">${a.title}</span>
+      <span style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted)">${a.date}</span>
+      <button class="mini-btn danger" data-del-ann="${a.id}">🗑️</button>
+    </div>
+  `).join('');
+  annList.querySelectorAll('[data-del-ann]').forEach(b => {
+    b.addEventListener('click', async () => {
+      if (!confirm('Duyuruyu sil?')) return;
+      await deleteDoc(doc(db, 'announcements', b.dataset.delAnn));
+    });
+  });
+
+  const di = $('annDate');
+  if (!di.value) di.value = new Date().toISOString().slice(0, 10);
+}
+
+$('addAnnBtn').addEventListener('click', async () => {
+  if (!isAdmin()) return;
+  const tag = $('annTag').value;
+  const date = $('annDate').value;
+  const title = $('annTitle').value.trim();
+  const message = $('annMessage').value.trim();
+  if (!title || !message || !date) return alert('Doldur hepsini.');
+  await addDoc(collection(db, 'announcements'), { date, tag, title, message, createdAt: new Date().toISOString() });
+  $('annTitle').value = '';
+  $('annMessage').value = '';
+});
+
+$('addDevBtn').addEventListener('click', async () => {
+  if (!isAdmin()) return;
+  const email = $('devEmailInput').value.trim().toLowerCase();
+  if (!email) return alert('E-posta gir.');
+  const tags = $('devTagsInput').value.split(',').map(t => t.trim()).filter(Boolean);
+  const isStaffVal = $('devStaffSelect').value === 'yes';
+  const u = users.find(x => (x.email || '').toLowerCase() === email);
+  if (!u){
+    alert('Bu e-posta ile kayitli kullanici bulunamadi. Kullanici once siteye Google ile giris yapmali.');
+    return;
+  }
+  await updateDoc(doc(db, 'users', u.uid), {
+    role: 'developer',
+    isStaff: isStaffVal,
+    isVerified: true,
+    tags
+  });
+  alert('Gelistirici yapildi! ✅');
+  $('devEmailInput').value = '';
+  $('devTagsInput').value = '';
+});
+
+function renderDevManager(){
+  if (!isAdmin()) return;
+  const tbody = $('devListBody');
+  const devs = users.filter(u => u.role === 'developer' || u.role === 'admin');
+  if (!devs.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Henuz gelistirici yok</td></tr>';
+    return;
+  }
+  tbody.innerHTML = devs.map(u => {
+    const s = devScore(u);
+    return `
+      <tr>
+        <td><strong>${u.username}</strong>${u.isStaff ? ' <span class="staff-badge">NOAMA</span>' : ''}</td>
+        <td style="font-size:.82rem">${u.email || '-'}</td>
+        <td><div class="dev-tags">${(u.tags || []).map(t => `<span class="dev-tag">${t}</span>`).join('') || '-'}</div></td>
+        <td>${s.score.toFixed(0)}</td>
+        <td>${u.isVerified ? '✅ Onayli' : '⏳ Onaysiz'}</td>
+        <td style="text-align:right">
+          <div class="admin-actions" style="justify-content:flex-end">
+            <button class="mini-btn ${u.isVerified ? '' : 'green'}" data-verify="${u.uid}">${u.isVerified ? 'Onayi Kaldir' : 'Onayla'}</button>
+            <button class="mini-btn ${u.isStaff ? 'active' : 'gold'}" data-staff="${u.uid}">${u.isStaff ? '🏆 Noama' : 'Noama Yap'}</button>
+            <button class="mini-btn danger" data-demote="${u.uid}">Gelistiriciligi Al</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tbody.querySelectorAll('[data-verify]').forEach(b => {
+    b.addEventListener('click', async () => {
+      const u = users.find(x => x.uid === b.dataset.verify);
+      await updateDoc(doc(db, 'users', u.uid), { isVerified: !u.isVerified });
+    });
+  });
+  tbody.querySelectorAll('[data-staff]').forEach(b => {
+    b.addEventListener('click', async () => {
+      const u = users.find(x => x.uid === b.dataset.staff);
+      await updateDoc(doc(db, 'users', u.uid), { isStaff: !u.isStaff });
+    });
+  });
+  tbody.querySelectorAll('[data-demote]').forEach(b => {
+    b.addEventListener('click', async () => {
+      if (!confirm('Gelistiricilikten cikarmak istiyor musun?')) return;
+      const u = users.find(x => x.uid === b.dataset.demote);
+      await updateDoc(doc(db, 'users', u.uid), { role: 'user', isVerified: false });
+    });
+  });
+}
+
+$('createGameBtn').addEventListener('click', async () => {
+  if (!isDeveloper()) return alert('Yetkin yok.');
+  const title = $('newTitle').value.trim();
+  if (!title) return alert('Oyun adi zorunlu.');
+  const palette = [['#00e5ff','#0a3d5c'],['#ff2e88','#5c0a33'],['#7c5cff','#2a1a6e'],['#ffb020','#5c3a0a'],['#2bff88','#0a5c33'],['#b14aff','#3d0a5c']];
+  const colors = palette[Math.floor(Math.random() * palette.length)];
+  const newGame = {
+    title,
+    emoji: $('newEmoji').value.trim() || '🎮',
+    coverFrom: colors[0],
+    coverTo: colors[1],
+    tags: $('newTags').value.split(',').map(t => t.trim()).filter(Boolean),
+    status: $('newStatus').value,
+    description: $('newLongDesc').value.trim().slice(0, 120) || 'Yeni oyun.',
+    longDesc: $('newLongDesc').value.trim() || 'Aciklama yok.',
+    price: parseInt($('newPrice').value, 10) || 0,
+    releaseYear: $('newYear').value.trim(),
+    releaseDate: $('newReleaseDate').value,
+    developer: myUsername(),
+    ownerId: currentUser.uid,
+    ownerName: myUsername(),
+    downloadUrl: $('newDownloadUrl').value.trim(),
+    exeName: $('newExeName').value.trim(),
+    devProgress: parseInt($('newProgress').value, 10) || 0,
+    gameOfYear: false,
+    createdAt: new Date().toISOString()
+  };
+  await addDoc(collection(db, 'games'), newGame);
+  ['newTitle','newTags','newLongDesc','newDownloadUrl','newExeName','newReleaseDate'].forEach(id => $(id).value = '');
+  $('newEmoji').value = '🎮';
+  $('newPrice').value = '0';
+  $('newProgress').value = '0';
+  alert('Oyun yayinlandi! ✅');
+  document.querySelector('[data-view="games"]').click();
+});
+
+let editingGameId = null;
+function openEditModal(id){
+  const g = games.find(x => x.id === id);
+  if (!g) return;
+  editingGameId = id;
+  $('editTitle').value = g.title || '';
+  $('editEmoji').value = g.emoji || '';
+  $('editStatus').value = g.status || 'dev';
+  $('editPrice').value = g.price || 0;
+  $('editTags').value = (g.tags || []).join(', ');
+  $('editYear').value = g.releaseYear || '';
+  $('editReleaseDate').value = g.releaseDate || '';
+  $('editProgress').value = g.devProgress || 0;
+  $('editDownloadUrl').value = g.downloadUrl || '';
+  $('editExeName').value = g.exeName || '';
+  $('editLongDesc').value = g.longDesc || g.description || '';
+  $('editGameModal').classList.add('active');
+}
+
+$('editCancel').addEventListener('click', () => {
+  $('editGameModal').classList.remove('active');
+  editingGameId = null;
+});
+
+$('editSave').addEventListener('click', async () => {
+  if (!editingGameId) return;
+  const d = $('editLongDesc').value.trim();
+  await updateDoc(doc(db, 'games', editingGameId), {
+    title: $('editTitle').value.trim(),
+    emoji: $('editEmoji').value.trim(),
+    status: $('editStatus').value,
+    price: parseInt($('editPrice').value, 10) || 0,
+    tags: $('editTags').value.split(',').map(t => t.trim()).filter(Boolean),
+    releaseYear: $('editYear').value.trim(),
+    releaseDate: $('editReleaseDate').value,
+    devProgress: parseInt($('editProgress').value, 10) || 0,
+    downloadUrl: $('editDownloadUrl').value.trim(),
+    exeName: $('editExeName').value.trim(),
+    longDesc: d,
+    description: d.length > 120 ? d.slice(0, 117) + '...' : d
+  });
+  $('editGameModal').classList.remove('active');
+  editingGameId = null;
+});
+
+$('editGameModal').addEventListener('click', e => {
+  if (e.target.id === 'editGameModal'){
+    e.target.classList.remove('active');
+    editingGameId = null;
+  }
+});
+
+// RIPPLE efekti
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn, .mini-btn, .buy-btn, .post-btn, .filter-btn');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+});
+
+// GUVENLIK AGI
+setTimeout(() => {
+  if (!$('loading').classList.contains('hide') && !$('app-screen').classList.contains('active')){
+    $('loading').classList.add('hide');
+    $('auth-screen').classList.add('active');
+  }
+}, 8000);
+</script>
+</body>
+</html>
