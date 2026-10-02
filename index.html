@@ -2,90 +2,128 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Noama Games — Oyun Platformu</title>
+<meta name="theme-color" content="#07070d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Noama">
+<meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300e5ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='60' font-weight='900' fill='%2307070d' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300e5ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='60' font-weight='900' fill='%2307070d' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#07070d;--bg2:#0d0d18;--card:#12121f;--card2:#181826;--line:rgba(255,255,255,.08);--text:#eef0ff;--muted:#8f93b3;--neon:#7c5cff;--cyan:#00e5ff;--pink:#ff2e88;--green:#2bff88;--orange:#ffb020;--gold:#ffb020}
+:root{--bg:#07070d;--bg2:#0d0d18;--card:#12121f;--card2:#181826;--line:rgba(255,255,255,.08);--text:#eef0ff;--muted:#8f93b3;--neon:#7c5cff;--cyan:#00e5ff;--pink:#ff2e88;--green:#2bff88;--orange:#ffb020}
+[data-theme="light"]{--bg:#f5f6fa;--bg2:#ffffff;--card:#ffffff;--card2:#f0f1f7;--line:rgba(0,0,0,.08);--text:#0f1020;--muted:#6b6f85}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
-body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
-input,button,textarea,select{font-family:inherit}
-#loading{position:fixed;inset:0;background:#07070d;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;transition:background .3s,color .3s}
+input,button,textarea,select{font-family:inherit;color:inherit}
+#loading{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
 #loading.hide{display:none}
-.spinner{width:50px;height:50px;border:3px solid rgba(255,255,255,.1);border-top-color:#7c5cff;border-radius:50%;animation:spin 1s linear infinite}
+.spinner{width:50px;height:50px;border:3px solid rgba(124,92,255,.15);border-top-color:#7c5cff;border-radius:50%;animation:spin 1s linear infinite;box-shadow:0 0 30px rgba(124,92,255,.4)}
 @keyframes spin{to{transform:rotate(360deg)}}
-#loading p{color:#8f93b3;font-size:.9rem}
-#auth-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;background:radial-gradient(circle at 15% 20%,rgba(124,92,255,.35),transparent 50%),radial-gradient(circle at 85% 80%,rgba(0,229,255,.28),transparent 50%),#07070d}
+#loading p{color:var(--muted);font-size:.9rem;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+#auth-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;background:radial-gradient(circle at 15% 20%,rgba(124,92,255,.35),transparent 50%),radial-gradient(circle at 85% 80%,rgba(0,229,255,.28),transparent 50%),var(--bg);transition:opacity .5s,transform .5s}
 #auth-screen.active{display:flex}
+#auth-screen.fade-out{opacity:0;transform:scale(1.05);pointer-events:none}
 #auth-screen::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(circle at 50% 50%,#000 30%,transparent 75%)}
-.auth-box{position:relative;z-index:1;width:100%;max-width:420px;background:rgba(18,18,31,.85);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;padding:44px 34px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 60px rgba(124,92,255,.15)}
+.auth-box{position:relative;z-index:1;width:100%;max-width:420px;background:var(--card);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;padding:44px 34px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 60px rgba(124,92,255,.15);animation:authBoxIn .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes authBoxIn{0%{opacity:0;transform:translateY(30px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
 .auth-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:8px}
 .auth-logo-mark{width:44px;height:44px;border-radius:13px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:#07070d;box-shadow:0 0 30px rgba(124,92,255,.6)}
 .auth-logo-text{font-size:1.4rem;font-weight:900;letter-spacing:.14em;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .auth-sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:32px;letter-spacing:.05em}
-.google-btn{width:100%;padding:14px;border-radius:12px;background:#fff;color:#202124;border:none;font-weight:600;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 24px rgba(255,255,255,.15);font-family:inherit}
+.google-btn{width:100%;padding:14px;border-radius:12px;background:#fff;color:#202124;border:none;font-weight:600;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 24px rgba(255,255,255,.15);position:relative;overflow:hidden}
 .google-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(255,255,255,.25)}
-.google-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.google-btn.loading{animation:btnPulse 1.5s ease-in-out infinite;pointer-events:none}
+@keyframes btnPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02);box-shadow:0 12px 40px rgba(124,92,255,.4)}}
 .google-icon{width:20px;height:20px}
 .auth-msg{padding:12px 14px;border-radius:10px;font-size:.85rem;margin-top:16px;display:none;background:rgba(255,46,136,.12);border:1px solid rgba(255,46,136,.3);color:#ff85b3}
 .auth-msg.show{display:block}
+#app-screen{display:none;min-height:100vh;opacity:0}
+#app-screen.active{display:flex;animation:appFadeIn .6s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes appFadeIn{0%{opacity:0;transform:scale(.98)}100%{opacity:1;transform:scale(1)}}
 
-#app-screen{display:none;min-height:100vh}
-#app-screen.active{display:flex}
+/* SIDEBAR */
 .sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
-.sidebar-head{padding:24px 22px 20px;border-bottom:1px solid var(--line)}
+.sidebar-head{padding:24px 22px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
 .sidebar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .sidebar-logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:.95rem;font-weight:700;color:#07070d;box-shadow:0 0 20px rgba(124,92,255,.5)}
 .sidebar-logo-text{font-size:1rem;font-weight:900;letter-spacing:.12em;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.theme-toggle{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);cursor:pointer;font-size:1rem;transition:all .3s;display:flex;align-items:center;justify-content:center}
+.theme-toggle:hover{transform:rotate(20deg) scale(1.1);border-color:var(--neon)}
 .sidebar-nav{flex:1;padding:18px 12px;overflow-y:auto}
 .nav-label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:14px 12px 8px}
-.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;cursor:pointer;transition:all .2s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
-.nav-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--muted);font-size:.9rem;font-weight:500;cursor:pointer;transition:all .3s cubic-bezier(.2,.8,.2,1);margin-bottom:2px;border:none;background:none;width:100%;text-align:left;position:relative}
+.nav-item::before{content:'';position:absolute;left:0;top:50%;width:3px;height:0;background:linear-gradient(180deg,var(--neon),var(--cyan));border-radius:0 3px 3px 0;transform:translateY(-50%);transition:height .3s}
+.nav-item.active::before{height:60%}
+.nav-item:hover{background:rgba(124,92,255,.06);color:var(--text);transform:translateX(3px)}
 .nav-item.active{background:linear-gradient(115deg,rgba(124,92,255,.18),rgba(0,229,255,.1));color:var(--text);box-shadow:inset 0 0 0 1px rgba(124,92,255,.25)}
 .nav-item .icon{font-size:1.15rem;width:22px;text-align:center}
-.nav-item .badge{margin-left:auto;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:100px;background:rgba(255,176,32,.15);color:#ffcb6b;letter-spacing:.05em}
+.nav-item .badge{margin-left:auto;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:100px;background:rgba(255,176,32,.15);color:#ffcb6b}
 .nav-item .badge.admin{background:rgba(124,92,255,.2);color:#b9a8ff}
 .nav-item .badge.dev{background:rgba(43,255,136,.15);color:#6bffaa}
+.nav-item .badge.red{background:rgba(255,46,136,.2);color:#ff85b3}
 .sidebar-user{padding:16px;border-top:1px solid var(--line)}
-.user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03)}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);cursor:pointer;transition:all .2s}
+.user-card:hover{background:rgba(124,92,255,.1)}
 .user-avatar{width:38px;height:38px;border-radius:10px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden}
 .user-avatar img{width:100%;height:100%;object-fit:cover}
 .user-info{flex:1;min-width:0}
 .user-name{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-role{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+.user-role{font-size:.7rem;color:var(--muted)}
 .logout-btn{width:36px;height:36px;border-radius:10px;background:rgba(255,46,136,.1);border:1px solid rgba(255,46,136,.25);color:#ff85b3;cursor:pointer;font-size:.95rem;transition:all .2s;flex-shrink:0}
 .logout-btn:hover{background:rgba(255,46,136,.2)}
 
+/* MAIN */
 .main{flex:1;min-width:0;padding:36px 44px;overflow-y:auto;max-height:100vh}
 .view{display:none}
-.view.active{display:block}
-.view-head{margin-bottom:26px}
+.view.active{display:block;animation:viewSlideIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes viewSlideIn{0%{opacity:0;transform:translateY(18px) scale(.99)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.view-head{margin-bottom:26px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.view-head > div:first-child{flex:1;min-width:200px}
 .view-tag{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;display:block}
 .view-title{font-size:2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:8px}
 .view-desc{color:var(--muted);font-size:.95rem;font-weight:300;max-width:600px}
 
+/* ARAMA */
 .search-bar{position:relative;margin-bottom:14px}
 .search-bar input{width:100%;padding:13px 18px 13px 44px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-size:.92rem;transition:border-color .2s}
-.search-bar input:focus{outline:none;border-color:var(--neon)}
+.search-bar input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px rgba(124,92,255,.1)}
 .search-bar::before{content:'🔍';position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:.95rem;opacity:.6}
-.filter-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
-.filter-btn{padding:8px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s}
-.filter-btn:hover{color:var(--text);border-color:var(--neon)}
-.filter-btn.active{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;border-color:transparent}
+.search-suggestions{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:8px;z-index:50;box-shadow:0 20px 50px rgba(0,0,0,.5);display:none;max-height:300px;overflow-y:auto}
+.search-suggestions.show{display:block}
+.suggestion-item{padding:9px 12px;border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:center;gap:10px}
+.suggestion-item:hover{background:rgba(124,92,255,.1)}
+.suggestion-item .sug-icon{font-size:1.2rem}
+.suggestion-item .sug-meta{color:var(--muted);font-size:.75rem;margin-left:auto}
 
+/* FILTRE */
+.filter-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.filter-btn{padding:8px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden}
+.filter-btn:hover{color:var(--text);border-color:var(--neon);transform:translateY(-2px)}
+.filter-btn.active{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;border-color:transparent;box-shadow:0 6px 20px rgba(124,92,255,.35)}
+
+/* KARTLAR */
 .games-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
-.game-tile{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s;position:relative}
-.game-tile:hover{border-color:rgba(124,92,255,.5);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 30px rgba(124,92,255,.15)}
+.game-tile{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .35s,box-shadow .35s;position:relative;animation:cardStagger .5s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes cardStagger{0%{opacity:0;transform:translateY(24px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.game-tile:nth-child(1){animation-delay:.05s}.game-tile:nth-child(2){animation-delay:.1s}.game-tile:nth-child(3){animation-delay:.15s}
+.game-tile:nth-child(4){animation-delay:.2s}.game-tile:nth-child(5){animation-delay:.25s}.game-tile:nth-child(6){animation-delay:.3s}
+.game-tile:nth-child(n+7){animation-delay:.35s}
+.game-tile:hover{border-color:rgba(124,92,255,.5);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 30px rgba(124,92,255,.15);transform:translateY(-8px) scale(1.02)}
+.game-tile:active{transform:translateY(-4px) scale(.99);transition:transform .1s}
 .game-cover{height:150px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden}
 .game-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--card) 5%,transparent 60%)}
-.game-of-year{position:absolute;top:12px;right:12px;z-index:2;background:linear-gradient(115deg,#ffb020,#ff2e88);color:#07070d;font-size:.68rem;font-weight:800;padding:5px 11px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 16px rgba(255,176,32,.5);display:flex;align-items:center;gap:4px}
+.game-of-year{position:absolute;top:12px;right:12px;z-index:2;background:linear-gradient(115deg,#ffb020,#ff2e88);color:#07070d;font-size:.68rem;font-weight:800;padding:5px 11px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 16px rgba(255,176,32,.5)}
 .wishlist-mini{position:absolute;top:12px;left:12px;z-index:2;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .wishlist-mini:hover{background:rgba(255,46,136,.4);transform:scale(1.1)}
-.wishlist-mini.active{background:rgba(255,46,136,.9);border-color:#ff2e88}
+.wishlist-mini.active{background:rgba(255,46,136,.9);border-color:#ff2e88;animation:heartBeat .4s}
+@keyframes heartBeat{0%{transform:scale(1)}25%{transform:scale(1.3)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .game-info{padding:18px 20px}
 .game-info h3{font-size:1.15rem;font-weight:800;margin-bottom:6px}
 .game-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
@@ -98,8 +136,28 @@ input,button,textarea,select{font-family:inherit}
 .game-rating{margin-top:6px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
 .stars-mini{color:#ffb020;letter-spacing:1px}
 
+/* BILDIRIM PANELI */
+.notif-panel{position:fixed;top:20px;right:20px;width:360px;max-width:calc(100vw - 40px);max-height:80vh;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.7);z-index:200;display:none;overflow:hidden;animation:notifIn .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes notifIn{0%{opacity:0;transform:translateY(-10px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.notif-panel.open{display:block}
+.notif-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.notif-head h3{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.notif-mark-read{background:none;border:none;color:var(--cyan);cursor:pointer;font-size:.78rem;font-weight:600}
+.notif-list{max-height:calc(80vh - 60px);overflow-y:auto}
+.notif-item{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;gap:12px;cursor:pointer;transition:background .2s;position:relative}
+.notif-item:hover{background:rgba(124,92,255,.06)}
+.notif-item.unread{background:rgba(124,92,255,.04)}
+.notif-item.unread::before{content:'';position:absolute;left:8px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.notif-icon{font-size:1.3rem;flex-shrink:0}
+.notif-body{flex:1;min-width:0}
+.notif-body p{font-size:.86rem;color:var(--text);margin-bottom:3px;line-height:1.4}
+.notif-body .notif-time{font-size:.7rem;color:var(--muted);font-family:'Space Mono',monospace}
+.notif-empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:.88rem}
+.notif-empty-icon{font-size:2.5rem;margin-bottom:10px;opacity:.5}
+
+/* DETAY */
 .back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:.85rem;margin-bottom:24px;transition:all .2s}
-.back-btn:hover{color:var(--text);border-color:var(--neon)}
+.back-btn:hover{color:var(--text);border-color:var(--neon);transform:translateX(-3px)}
 .game-detail-hero{border-radius:24px;overflow:hidden;border:1px solid var(--line);margin-bottom:28px;background:var(--card)}
 .game-detail-cover{height:260px;display:flex;align-items:center;justify-content:center;font-size:7rem;position:relative}
 .game-detail-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--card) 10%,transparent 80%)}
@@ -107,10 +165,11 @@ input,button,textarea,select{font-family:inherit}
 .game-detail-body h1{font-size:2.4rem;font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
 .game-detail-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
 .game-detail-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line)}
-.buy-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:100px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:800;font-size:1rem;border:none;cursor:pointer;letter-spacing:.02em;box-shadow:0 10px 30px rgba(124,92,255,.4);transition:transform .2s,box-shadow .2s;text-decoration:none}
+.buy-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:100px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:800;font-size:1rem;border:none;cursor:pointer;box-shadow:0 10px 30px rgba(124,92,255,.4);transition:all .2s;text-decoration:none;position:relative;overflow:hidden}
 .buy-btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(124,92,255,.55)}
 .buy-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 .buy-btn.green{background:linear-gradient(115deg,#2bff88,#00e5ff)}
+.buy-btn.orange{background:linear-gradient(115deg,#ffb020,#ff2e88)}
 .wishlist-btn{padding:14px 22px;border-radius:100px;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
 .wishlist-btn:hover{border-color:#ff2e88;color:#ff85b3}
 .wishlist-btn.active{background:rgba(255,46,136,.15);border-color:#ff2e88;color:#ff85b3}
@@ -123,8 +182,11 @@ input,button,textarea,select{font-family:inherit}
 .info-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
 .info-value{font-size:.92rem;font-weight:600;color:var(--text)}
 .progress-bar{height:8px;border-radius:100px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:8px}
-.progress-fill{height:100%;background:linear-gradient(90deg,#ffb020,#ff2e88);border-radius:100px;transition:width .5s ease}
+.progress-fill{height:100%;background:linear-gradient(90deg,#ffb020,#ff2e88);border-radius:100px;position:relative;overflow:hidden;transition:width .5s}
+.progress-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:progressShine 2s infinite}
+@keyframes progressShine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 
+/* YORUM */
 .review-section{margin-top:36px;padding-top:32px;border-top:1px solid var(--line)}
 .review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .review-head h3{font-size:1.3rem;font-weight:800}
@@ -132,24 +194,31 @@ input,button,textarea,select{font-family:inherit}
 .review-big-num{font-size:2.4rem;font-weight:900;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-family:'Space Mono',monospace;line-height:1}
 .review-stars{color:#ffb020;font-size:1.1rem;letter-spacing:2px}
 .review-count{font-size:.8rem;color:var(--muted)}
-.review-form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:22px}
+.review-form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:22px;animation:cardStagger .5s}
 .review-form h4{font-size:1rem;font-weight:700;margin-bottom:14px}
 .star-picker{display:flex;gap:4px;margin-bottom:14px;font-size:1.8rem;cursor:pointer;user-select:none}
-.star-picker span{color:rgba(255,255,255,.15);transition:color .15s,transform .15s}
+.star-picker span{color:rgba(255,255,255,.15);transition:all .15s}
 .star-picker span.active{color:#ffb020}
+.star-picker span:hover{transform:scale(1.15)}
 .review-form textarea{width:100%;padding:12px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.9rem;resize:vertical;min-height:80px;font-family:inherit}
 .review-form textarea:focus{outline:none;border-color:var(--neon)}
 .review-form button{margin-top:12px;padding:11px 24px;border-radius:10px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:700;font-size:.88rem;border:none;cursor:pointer}
 .review-list{display:grid;gap:12px}
-.review-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.review-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;animation:cardStagger .4s backwards}
 .review-card-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.review-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden}
+.review-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden;cursor:pointer}
 .review-avatar img{width:100%;height:100%;object-fit:cover}
-.review-author{font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.review-author{font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:6px;cursor:pointer}
+.review-author:hover{text-decoration:underline}
 .review-stars-sm{color:#ffb020;font-size:.85rem;letter-spacing:1px}
 .review-date{font-size:.72rem;color:var(--muted);font-family:'Space Mono',monospace;margin-left:auto}
-.review-text{color:var(--muted);font-size:.88rem;line-height:1.6}
-.review-delete{margin-left:auto;background:none;border:none;color:#ff85b3;cursor:pointer;font-size:.85rem;padding:2px 6px}
+.review-text{color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:8px}
+.review-actions{display:flex;gap:16px;align-items:center;padding-top:8px}
+.review-action{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem;font-weight:600;padding:4px 6px;border-radius:6px;display:flex;align-items:center;gap:4px;transition:all .2s}
+.review-action:hover{background:rgba(124,92,255,.08);color:var(--text)}
+.review-action.liked{color:#ff2e88}
+.review-action.liked .heart-icon{animation:heartBeat .4s}
+.review-delete{background:none;border:none;color:#ff85b3;cursor:pointer;font-size:.85rem;padding:4px 6px;border-radius:6px}
 .review-reply{margin-top:12px;margin-left:32px;padding:12px 14px;background:rgba(124,92,255,.06);border-left:2px solid var(--neon);border-radius:8px;font-size:.85rem}
 .review-reply-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.78rem;color:var(--muted)}
 .review-reply-text{color:var(--text)}
@@ -160,51 +229,66 @@ input,button,textarea,select{font-family:inherit}
 .reply-form textarea{width:100%;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.85rem;resize:vertical;min-height:60px;font-family:inherit}
 .reply-form button{margin-top:8px;padding:8px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.8rem;font-weight:600}
 
+/* AKIS */
 .feed-container{max-width:640px}
 .post-form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:24px}
 .post-form textarea{width:100%;padding:12px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.95rem;resize:vertical;min-height:80px;font-family:inherit}
 .post-form textarea:focus{outline:none;border-color:var(--neon)}
 .post-form-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
 .post-form-char{font-size:.78rem;color:var(--muted);font-family:'Space Mono',monospace}
-.post-btn{padding:10px 24px;border-radius:100px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:700;font-size:.88rem;border:none;cursor:pointer}
+.post-btn{padding:10px 24px;border-radius:100px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;font-weight:700;font-size:.88rem;border:none;cursor:pointer;position:relative;overflow:hidden}
 .post-btn:disabled{opacity:.4;cursor:not-allowed}
-.post-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;position:relative}
+.post-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;position:relative;animation:cardStagger .5s backwards}
 .post-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.post-avatar{width:40px;height:40px;border-radius:12px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden;font-size:.95rem}
+.post-avatar{width:40px;height:40px;border-radius:12px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden;font-size:.95rem;cursor:pointer}
 .post-avatar img{width:100%;height:100%;object-fit:cover}
-.post-name{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px}
+.post-name{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:6px;cursor:pointer}
+.post-name:hover{text-decoration:underline}
 .post-username{color:var(--muted);font-size:.82rem}
 .post-menu-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;padding:2px 8px;border-radius:6px;margin-left:auto}
-.post-menu{position:absolute;top:50px;right:20px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:6px;min-width:140px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:10;display:none}
+.post-menu{position:absolute;top:50px;right:20px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:6px;min-width:160px;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:10;display:none}
 .post-menu.open{display:block}
 .post-menu button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;background:none;border:none;color:var(--text);cursor:pointer;font-size:.85rem;border-radius:6px;text-align:left}
 .post-menu button:hover{background:rgba(255,255,255,.06)}
 .post-menu button.danger{color:#ff85b3}
 .post-text{color:var(--text);font-size:.95rem;line-height:1.6;margin-bottom:12px;word-wrap:break-word;white-space:pre-wrap}
 .post-actions{display:flex;gap:20px;padding-top:10px;border-top:1px solid var(--line)}
-.post-action{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;font-weight:600;padding:6px 8px;border-radius:6px}
+.post-action{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;font-weight:600;padding:6px 8px;border-radius:6px;transition:all .2s}
+.post-action:hover{background:rgba(124,92,255,.08);color:var(--text)}
 .post-action.liked{color:#ff2e88}
+.post-action.liked .heart-icon{animation:heartBeat .4s}
 .post-replies{padding-top:12px;margin-top:12px;border-top:1px solid var(--line);display:none}
 .post-replies.open{display:block}
 .reply-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.reply-item:last-child{border-bottom:none}
 .reply-item .reply-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;color:#07070d;font-family:'Space Mono',monospace;flex-shrink:0;overflow:hidden}
 .reply-item .reply-avatar img{width:100%;height:100%;object-fit:cover}
 .reply-body{flex:1;min-width:0}
 .reply-header{display:flex;align-items:center;gap:8px;margin-bottom:3px;font-size:.82rem}
 .reply-name{font-weight:700;color:var(--text)}
-.reply-header .reply-date{color:var(--muted);font-size:.72rem;font-family:'Space Mono',monospace}
+.reply-date{color:var(--muted);font-size:.72rem;font-family:'Space Mono',monospace}
 .reply-content{color:var(--muted);font-size:.85rem;line-height:1.5}
 .reply-input-row{margin-top:12px;display:flex;gap:8px}
 .reply-input-row input{flex:1;padding:9px 12px;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.85rem}
 .reply-input-row input:focus{outline:none;border-color:var(--neon)}
 .reply-input-row button{padding:9px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.82rem;font-weight:600}
 
+/* DUYURULAR */
+.updates-list{display:grid;gap:14px;max-width:860px}
+.update-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;position:relative;transition:all .3s;animation:cardStagger .5s backwards}
+.update-card:hover{transform:translateX(6px) scale(1.01);box-shadow:0 10px 30px rgba(124,92,255,.15);border-color:rgba(124,92,255,.4)}
+.update-card::before{content:'';position:absolute;left:0;top:18px;bottom:18px;width:3px;background:linear-gradient(180deg,var(--neon),var(--cyan));border-radius:0 3px 3px 0}
+.update-head{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.update-card h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.update-card p{color:var(--muted);font-size:.9rem}
+
+/* GELISTIRICILER */
 .dev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
-.dev-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;transition:transform .3s,border-color .3s}
-.dev-card:hover{transform:translateY(-5px);border-color:rgba(124,92,255,.4)}
+.dev-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;transition:all .3s;animation:cardStagger .5s backwards;position:relative}
+.dev-card:hover{transform:translateY(-5px);border-color:rgba(124,92,255,.4);box-shadow:0 15px 40px rgba(0,0,0,.4)}
 .dev-card.staff{border-color:rgba(255,176,32,.4);background:linear-gradient(180deg,rgba(255,176,32,.06),var(--card))}
 .dev-card-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.dev-card-avatar{width:60px;height:60px;border-radius:16px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem;color:#07070d;font-family:'Space Mono',monospace;overflow:hidden;flex-shrink:0}
+.dev-card-avatar{width:60px;height:60px;border-radius:16px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem;color:#07070d;font-family:'Space Mono',monospace;overflow:hidden;flex-shrink:0;cursor:pointer}
 .dev-card-avatar img{width:100%;height:100%;object-fit:cover}
 .dev-card-name{font-size:1.05rem;font-weight:800;margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .dev-card-username{font-size:.8rem;color:var(--muted)}
@@ -214,32 +298,69 @@ input,button,textarea,select{font-family:inherit}
 .dev-stat{text-align:center}
 .dev-stat-num{font-family:'Space Mono',monospace;font-weight:800;font-size:1.15rem;display:block;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .dev-stat-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.follow-btn{width:100%;margin-top:14px;padding:10px;border-radius:10px;background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;border:none;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s}
+.follow-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(124,92,255,.4)}
+.follow-btn.following{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.follow-btn.following:hover{border-color:#ff2e88;color:#ff85b3}
 
+/* PROFIL */
 .profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:24px}
-.profile-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 24px;text-align:center}
-.profile-avatar-big{width:100px;height:100px;border-radius:24px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:900;color:#07070d;font-family:'Space Mono',monospace;margin:0 auto 18px;box-shadow:0 10px 40px rgba(124,92,255,.4);overflow:hidden}
+.profile-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 24px;text-align:center;position:relative;overflow:hidden}
+.profile-cover{position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(115deg,var(--neon),var(--cyan));opacity:.3}
+.profile-card > *{position:relative;z-index:1}
+.profile-avatar-big{width:100px;height:100px;border-radius:24px;background:linear-gradient(115deg,var(--neon),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:900;color:#07070d;font-family:'Space Mono',monospace;margin:20px auto 18px;box-shadow:0 10px 40px rgba(124,92,255,.4);overflow:hidden;border:3px solid var(--bg)}
 .profile-avatar-big img{width:100%;height:100%;object-fit:cover}
 .profile-card h2{font-size:1.4rem;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
-.profile-role{font-size:.85rem;color:var(--cyan);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:20px}
-.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
-.profile-stat{text-align:center}
+.profile-role{font-size:.85rem;color:var(--cyan);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px}
+.profile-bio{font-size:.86rem;color:var(--muted);margin:12px 0;line-height:1.5;padding:0 8px}
+.profile-links{display:flex;gap:8px;justify-content:center;margin:14px 0;flex-wrap:wrap}
+.profile-link{padding:6px 12px;border-radius:8px;background:rgba(124,92,255,.1);border:1px solid rgba(124,92,255,.25);color:#b9a8ff;text-decoration:none;font-size:.78rem;font-weight:600;transition:all .2s}
+.profile-link:hover{background:rgba(124,92,255,.2);transform:translateY(-2px)}
+.profile-edit-btn{margin-top:14px;padding:10px 20px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+.profile-edit-btn:hover{border-color:var(--neon);background:rgba(124,92,255,.1)}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.profile-stat{text-align:center;cursor:pointer;padding:8px 4px;border-radius:8px;transition:background .2s}
+.profile-stat:hover{background:rgba(124,92,255,.06)}
 .profile-stat-num{font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block}
 .profile-stat-label{font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .profile-panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;margin-bottom:20px}
-.profile-panel h3{font-size:1.1rem;font-weight:800;margin-bottom:16px}
+.profile-panel h3{font-size:1.1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .profile-empty{padding:30px;text-align:center;color:var(--muted);font-size:.88rem;background:rgba(255,255,255,.02);border-radius:12px;border:1px dashed var(--line)}
 
+/* BAŞARIMLAR */
+.achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.achievement{padding:16px 12px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);text-align:center;transition:all .3s;position:relative;opacity:.4}
+.achievement.unlocked{opacity:1;background:linear-gradient(180deg,rgba(124,92,255,.08),transparent);border-color:rgba(124,92,255,.35)}
+.achievement.unlocked:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(124,92,255,.2)}
+.achievement-icon{font-size:2rem;margin-bottom:6px;display:block}
+.achievement-name{font-size:.78rem;font-weight:700;margin-bottom:3px}
+.achievement-desc{font-size:.68rem;color:var(--muted);line-height:1.3}
+
+/* KÜTÜPHANE */
+.library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.library-item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
+.library-item:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.4);box-shadow:0 15px 35px rgba(0,0,0,.4)}
+.library-cover{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.library-body{padding:14px 16px}
+.library-body h4{font-size:1rem;font-weight:800;margin-bottom:4px}
+.library-body .lib-status{font-size:.72rem;color:var(--muted)}
+
+/* ADMIN */
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;margin:0 -4px;padding:0 4px 4px}
+.table-wrap::-webkit-scrollbar{height:6px}
+.table-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:100px}
+.table-wrap::-webkit-scrollbar-thumb{background:linear-gradient(90deg,var(--neon),var(--cyan));border-radius:100px}
+.admin-table{min-width:620px;width:100%;border-collapse:collapse}
 .admin-panel{background:var(--card);border:1px solid rgba(124,92,255,.3);border-radius:20px;padding:28px 30px;margin-bottom:24px;position:relative;overflow:hidden}
 .admin-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--cyan),var(--pink))}
 .admin-panel h2{font-size:1.3rem;font-weight:800;margin-bottom:6px}
 .admin-panel > p{color:var(--muted);font-size:.88rem;margin-bottom:20px}
-.admin-table{width:100%;border-collapse:collapse}
 .admin-table th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line)}
 .admin-table td{padding:14px 12px;border-bottom:1px solid var(--line);font-size:.9rem;vertical-align:middle}
 .admin-table tr:last-child td{border-bottom:none}
 .admin-actions{display:flex;gap:8px}
-.mini-btn{padding:7px 14px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);transition:all .2s}
-.mini-btn:hover{background:rgba(124,92,255,.15);border-color:var(--neon)}
+.mini-btn{padding:7px 14px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);transition:all .2s;position:relative;overflow:hidden}
+.mini-btn:hover{background:rgba(124,92,255,.15);border-color:var(--neon);transform:translateY(-1px)}
 .mini-btn.danger{color:#ff85b3;border-color:rgba(255,46,136,.3)}
 .mini-btn.gold{background:rgba(255,176,32,.12);border-color:rgba(255,176,32,.35);color:#ffcb6b}
 .mini-btn.green{background:rgba(43,255,136,.12);border-color:rgba(43,255,136,.35);color:#6bffaa}
@@ -248,125 +369,103 @@ input,button,textarea,select{font-family:inherit}
 .form-field{display:flex;flex-direction:column;gap:6px}
 .form-field.full{grid-column:1 / -1}
 .form-field label{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
-.form-field input,.form-field textarea,.form-field select{padding:11px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.9rem;transition:border-color .2s}
-.form-field input:focus,.form-field textarea:focus,.form-field select:focus{outline:none;border-color:var(--neon)}
+.form-field input,.form-field textarea,.form-field select{padding:11px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.9rem;transition:all .2s}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px rgba(124,92,255,.1)}
 .form-field textarea{resize:vertical;min-height:80px;font-family:inherit}
 
+/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
 .modal-bg.active{display:flex}
-.modal{background:var(--card);border:1px solid var(--line);border-radius:22px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:32px;box-shadow:0 40px 100px rgba(0,0,0,.7)}
+.modal{background:var(--card);border:1px solid var(--line);border-radius:22px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:32px;box-shadow:0 40px 100px rgba(0,0,0,.7);animation:modalIn .35s}
+@keyframes modalIn{0%{opacity:0;transform:scale(.9) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 .modal h3{font-size:1.3rem;font-weight:800;margin-bottom:22px}
 .modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
 .modal-actions .btn{padding:11px 22px;border-radius:10px;font-weight:700;cursor:pointer;font-size:.9rem;border:none}
 .btn-save{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d}
 .btn-cancel{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line)!important}
+
 .empty{padding:60px 30px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
 .empty-icon{font-size:3rem;margin-bottom:14px;opacity:.5}
 .empty h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:6px}
 .mobile-menu-btn{display:none;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);cursor:pointer;align-items:center;justify-content:center;font-size:1.2rem;margin-right:10px}
+.notif-bell{position:relative}
+.notif-bell-count{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:100px;background:linear-gradient(115deg,#ff2e88,#ffb020);color:#fff;font-size:.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,46,136,.5);animation:pulse 2s infinite}
 
-/* ============================================
-   ANIMASYONLAR
-   ============================================ */
-#auth-screen{transition:opacity .5s cubic-bezier(.4,0,.2,1), transform .5s cubic-bezier(.4,0,.2,1)}
-#auth-screen.fade-out{opacity:0;transform:scale(1.05);pointer-events:none}
-#app-screen{opacity:0}
-#app-screen.active{display:flex;animation:appFadeIn .6s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes appFadeIn{0%{opacity:0;transform:scale(.98)}100%{opacity:1;transform:scale(1)}}
-
-.auth-box{animation:authBoxIn .7s cubic-bezier(.2,.8,.2,1)}
-@keyframes authBoxIn{0%{opacity:0;transform:translateY(30px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
-
-.google-btn{position:relative;overflow:hidden}
-.google-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(124,92,255,.35) 0%,transparent 70%);opacity:0;transition:opacity .4s}
-.google-btn:hover::before{opacity:1}
-.google-btn.loading{animation:btnPulse 1.5s ease-in-out infinite;pointer-events:none}
-@keyframes btnPulse{0%,100%{transform:scale(1);box-shadow:0 8px 24px rgba(255,255,255,.15)}50%{transform:scale(1.02);box-shadow:0 12px 40px rgba(124,92,255,.4)}}
-
-.view.active{animation:viewSlideIn .45s cubic-bezier(.2,.8,.2,1)}
-@keyframes viewSlideIn{0%{opacity:0;transform:translateY(18px) scale(.99)}100%{opacity:1;transform:translateY(0) scale(1)}}
-
-@keyframes cardStagger{0%{opacity:0;transform:translateY(24px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
-.game-tile,.dev-card,.post-card,.review-card,.update-card{animation:cardStagger .5s cubic-bezier(.2,.8,.2,1) backwards}
-.game-tile:nth-child(1),.dev-card:nth-child(1),.post-card:nth-child(1){animation-delay:.05s}
-.game-tile:nth-child(2),.dev-card:nth-child(2),.post-card:nth-child(2){animation-delay:.1s}
-.game-tile:nth-child(3),.dev-card:nth-child(3),.post-card:nth-child(3){animation-delay:.15s}
-.game-tile:nth-child(4),.dev-card:nth-child(4),.post-card:nth-child(4){animation-delay:.2s}
-.game-tile:nth-child(5),.dev-card:nth-child(5){animation-delay:.25s}
-.game-tile:nth-child(6),.dev-card:nth-child(6){animation-delay:.3s}
-.game-tile:nth-child(n+7),.dev-card:nth-child(n+7){animation-delay:.35s}
-
-.game-tile:hover{transform:translateY(-8px) scale(1.02)}
-.game-tile:active{transform:translateY(-4px) scale(.99);transition:transform .1s}
-
-.nav-item{position:relative;transition:all .3s cubic-bezier(.2,.8,.2,1)}
-.nav-item::before{content:'';position:absolute;left:0;top:50%;width:3px;height:0;background:linear-gradient(180deg,var(--neon),var(--cyan));border-radius:0 3px 3px 0;transform:translateY(-50%);transition:height .3s cubic-bezier(.2,.8,.2,1)}
-.nav-item.active::before{height:60%}
-.nav-item:hover{transform:translateX(3px)}
-
-.btn,.mini-btn,.buy-btn,.post-btn{position:relative;overflow:hidden}
+/* RIPPLE */
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rippleAnim .6s linear;pointer-events:none}
 @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
 
-.login-success{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:120px;height:120px;border-radius:50%;background:linear-gradient(115deg,#2bff88,#00e5ff);z-index:9999;display:flex;align-items:center;justify-content:center;box-shadow:0 0 80px rgba(43,255,136,.6);animation:successPop .8s cubic-bezier(.2,.8,.2,1) forwards}
+/* BAŞARI CHECKMARK */
+.login-success{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:120px;height:120px;border-radius:50%;background:linear-gradient(115deg,#2bff88,#00e5ff);z-index:9999;display:flex;align-items:center;justify-content:center;box-shadow:0 0 80px rgba(43,255,136,.6);animation:successPop .8s forwards}
 .login-success svg{width:60px;height:60px;stroke:#07070d;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;animation:drawCheck .5s .3s ease forwards}
 @keyframes successPop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.15);opacity:1}70%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
 @keyframes drawCheck{to{stroke-dashoffset:0}}
 
-.spinner{box-shadow:0 0 30px rgba(124,92,255,.4)}
-#loading p{animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
-
-.modal-bg.active .modal{animation:modalIn .35s cubic-bezier(.2,.8,.2,1)}
-@keyframes modalIn{0%{opacity:0;transform:scale(.9) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
-
-.update-card{transition:transform .3s,border-color .3s,box-shadow .3s}
-.update-card:hover{transform:translateX(6px) scale(1.01);box-shadow:0 10px 30px rgba(124,92,255,.15)}
-
-.user-avatar,.post-avatar,.dev-card-avatar,.profile-avatar-big{transition:box-shadow .3s}
-.user-avatar:hover{box-shadow:0 0 20px rgba(124,92,255,.6)}
-
-.filter-btn{transition:all .25s cubic-bezier(.2,.8,.2,1)}
-.filter-btn:hover{transform:translateY(-2px)}
-.filter-btn.active{box-shadow:0 6px 20px rgba(124,92,255,.35)}
-
-@keyframes heartBeat{0%{transform:scale(1)}25%{transform:scale(1.3)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-.post-action.liked{animation:heartBeat .4s}
-.wishlist-mini.active{animation:heartBeat .4s}
-
-.review-form{animation:cardStagger .5s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:.1s}
-
-.progress-fill{position:relative;overflow:hidden}
-.progress-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:progressShine 2s infinite}
-@keyframes progressShine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+/* MOBİL ALT NAV */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(13,13,24,.97);backdrop-filter:blur(20px);border-top:1px solid var(--line);z-index:90;padding:8px 4px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.5)}
+.mobile-bottom-nav-inner{display:flex;justify-content:space-around;align-items:center;max-width:520px;margin:0 auto}
+.mobile-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:12px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.65rem;font-weight:600;transition:all .25s;position:relative}
+.mobile-nav-btn .m-icon{font-size:1.3rem;line-height:1;transition:transform .25s}
+.mobile-nav-btn.active{color:var(--text)}
+.mobile-nav-btn.active .m-icon{transform:translateY(-2px)}
+.mobile-nav-btn.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:linear-gradient(90deg,var(--neon),var(--cyan));border-radius:0 0 3px 3px}
+.mobile-nav-btn .m-badge{position:absolute;top:4px;right:calc(50% - 18px);min-width:16px;height:16px;padding:0 4px;background:linear-gradient(115deg,#ff2e88,#ffb020);color:#fff;font-size:.6rem;font-weight:800;border-radius:100px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,46,136,.5)}
 
 @media(max-width:900px){.game-detail-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}}
 @media(max-width:760px){
+  body{padding-bottom:74px}
   #app-screen.active{flex-direction:column}
-  .sidebar{width:100%;height:auto;position:static;flex-direction:row;align-items:center;padding:12px 16px;border-right:none;border-bottom:1px solid var(--line)}
+  .sidebar{width:100%;height:auto;position:sticky;top:0;flex-direction:row;align-items:center;padding:12px 16px;border-right:none;border-bottom:1px solid var(--line);z-index:100}
   .sidebar-head{padding:0;border:none;flex:1}
   .sidebar-nav{display:none}
-  .sidebar-nav.mobile-open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--bg2);z-index:99;padding:20px;max-height:calc(100vh - 64px);border-bottom:1px solid var(--line);animation:slideInRight .35s cubic-bezier(.2,.8,.2,1)}
-  @keyframes slideInRight{0%{opacity:0;transform:translateX(30px)}100%{opacity:1;transform:translateX(0)}}
+  .sidebar-nav.mobile-open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--bg2);z-index:99;padding:20px;max-height:calc(100vh - 140px);overflow-y:auto;border-bottom:1px solid var(--line);animation:slideDown .3s}
+  @keyframes slideDown{0%{opacity:0;transform:translateY(-10px)}100%{opacity:1;transform:translateY(0)}}
   .sidebar-user{padding:0;border:none}
   .user-info{display:none}
-  .main{padding:26px 20px;max-height:none}
+  .main{padding:22px 16px 90px;max-height:none}
   .mobile-menu-btn{display:flex}
   .view-title{font-size:1.5rem}
   .game-detail-body h1{font-size:1.7rem}
+  .game-detail-body{padding:0 18px 24px;margin-top:-30px}
+  .game-detail-cover{height:200px;font-size:5rem}
+  .game-detail-actions{flex-direction:column;align-items:stretch}
+  .game-detail-actions .buy-btn,.game-detail-actions .wishlist-btn{width:100%;justify-content:center;text-align:center}
+  .game-detail-actions > div{text-align:center}
+  .admin-panel{padding:20px 14px;border-radius:16px}
+  .admin-panel h2{font-size:1.1rem}
+  .admin-table th,.admin-table td{padding:10px 8px;font-size:.82rem;white-space:nowrap}
+  .admin-actions{flex-direction:column;gap:5px}
+  .admin-actions .mini-btn{padding:6px 10px;font-size:.75rem;width:100%}
+  .modal{padding:24px 18px;border-radius:18px}
+  .modal h3{font-size:1.1rem}
+  .modal-actions{flex-direction:column-reverse;gap:8px}
+  .modal-actions .btn{width:100%;justify-content:center}
+  .filter-btn{padding:7px 12px;font-size:.78rem}
+  .games-row,.dev-grid{grid-template-columns:1fr;gap:14px}
+  .profile-grid{grid-template-columns:1fr}
+  .review-reply,.reply-form{margin-left:16px}
+  .post-actions{gap:14px}
+  .achievements-grid{grid-template-columns:repeat(2,1fr)}
+  .notif-panel{top:auto;bottom:80px;right:10px;left:10px;width:auto}
+  .mobile-bottom-nav{display:block}
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
-}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
-<div id="loading">
-  <div class="spinner"></div>
-  <p>Yukleniyor...</p>
+<div id="loading"><div class="spinner"></div><p>Yukleniyor...</p></div>
+
+<!-- BILDIRIM PANELI -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-head">
+    <h3>🔔 Bildirimler</h3>
+    <button class="notif-mark-read" id="markAllRead">Tumunu okundu isaretle</button>
+  </div>
+  <div class="notif-list" id="notifList"></div>
 </div>
 
+<!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-box">
     <div class="auth-logo">
@@ -387,6 +486,7 @@ input,button,textarea,select{font-family:inherit}
   </div>
 </div>
 
+<!-- APP -->
 <div id="app-screen">
   <aside class="sidebar">
     <div class="sidebar-head">
@@ -394,6 +494,7 @@ input,button,textarea,select{font-family:inherit}
         <div class="sidebar-logo-mark">N</div>
         <div class="sidebar-logo-text">NOAMA</div>
       </a>
+      <button class="theme-toggle" id="themeToggle" title="Tema">🌙</button>
     </div>
     <nav class="sidebar-nav" id="sidebarNav">
       <div class="nav-label">Magaza</div>
@@ -403,29 +504,27 @@ input,button,textarea,select{font-family:inherit}
       <button class="nav-item" data-view="developers"><span class="icon">👥</span><span>Gelistiriciler</span></button>
       <div class="nav-label">Hesabim</div>
       <button class="nav-item" data-view="profile"><span class="icon">👤</span><span>Profil</span></button>
+      <button class="nav-item" data-view="library"><span class="icon">📚</span><span>Kutuphanem</span></button>
       <button class="nav-item" data-view="wishlist"><span class="icon">❤️</span><span>Istek Listem</span><span class="badge" id="wishlistBadge" style="display:none">0</span></button>
+      <button class="nav-item" data-view="achievements"><span class="icon">🏆</span><span>Basarimlar</span></button>
       <div class="nav-label" id="devLabel" style="display:none">Gelistirici</div>
-      <button class="nav-item" data-view="admin-add" id="devAddNav" style="display:none">
-        <span class="icon">➕</span><span>Oyun Yukle</span>
-        <span class="badge dev">DEV</span>
-      </button>
+      <button class="nav-item" data-view="admin-add" id="devAddNav" style="display:none"><span class="icon">➕</span><span>Oyun Yukle</span><span class="badge dev">DEV</span></button>
       <div class="nav-label" id="adminLabel" style="display:none">Yonetim</div>
-      <button class="nav-item" data-view="admin" id="adminNav" style="display:none">
-        <span class="icon">⚙️</span><span>Admin Panel</span>
-        <span class="badge admin">ADMIN</span>
-      </button>
-      <button class="nav-item" data-view="dev-manager" id="devManagerNav" style="display:none">
-        <span class="icon">🛠️</span><span>Gelistirici Yonetimi</span>
-      </button>
+      <button class="nav-item" data-view="admin" id="adminNav" style="display:none"><span class="icon">⚙️</span><span>Admin Panel</span><span class="badge admin">ADMIN</span></button>
+      <button class="nav-item" data-view="dev-manager" id="devManagerNav" style="display:none"><span class="icon">🛠️</span><span>Gelistirici Yonetimi</span></button>
+      <button class="nav-item" data-view="reports" id="reportsNav" style="display:none"><span class="icon">🚨</span><span>Raporlar</span><span class="badge red" id="reportsCount" style="display:none">0</span></button>
     </nav>
     <div class="sidebar-user">
-      <div class="user-card">
+      <div class="user-card" id="userCard">
         <div class="user-avatar" id="userAvatar">?</div>
         <div class="user-info">
           <div class="user-name" id="userName">-</div>
           <div class="user-role" id="userRole">-</div>
         </div>
-        <button class="logout-btn" id="logoutBtn">⏻</button>
+        <button class="notif-bell" id="notifBell" style="background:none;border:none;font-size:1.2rem;cursor:pointer;position:relative;padding:4px">
+          🔔<span class="notif-bell-count" id="notifCount" style="display:none">0</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn" title="Cikis">⏻</button>
       </div>
     </div>
   </aside>
@@ -433,36 +532,46 @@ input,button,textarea,select{font-family:inherit}
   <main class="main" id="mainContent">
     <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
 
+    <!-- OYUNLAR -->
     <section class="view active" id="view-games">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Magaza</span>
         <h1 class="view-title">Oyunlar</h1>
         <p class="view-desc">Noama Games'te yayinlanan tum oyunlar.</p>
+      </div></div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Oyun, gelistirici veya etiket ara..." autocomplete="off">
+        <div class="search-suggestions" id="searchSuggestions"></div>
       </div>
-      <div class="search-bar"><input type="text" id="searchInput" placeholder="Oyun ara..."></div>
-      <div class="filter-row">
+      <div class="filter-row" id="categoryRow">
         <button class="filter-btn active" data-filter="all">Tumu</button>
         <button class="filter-btn" data-filter="released">Yayinda</button>
         <button class="filter-btn" data-filter="beta">Acik Beta</button>
         <button class="filter-btn" data-filter="dev">Gelistiriliyor</button>
         <button class="filter-btn" data-filter="free">Ucretsiz</button>
+        <button class="filter-btn" data-filter="Aksiyon">Aksiyon</button>
+        <button class="filter-btn" data-filter="Macera">Macera</button>
+        <button class="filter-btn" data-filter="Yaris">Yaris</button>
+        <button class="filter-btn" data-filter="Bulmaca">Bulmaca</button>
       </div>
       <div class="games-row" id="gamesRow"></div>
     </section>
 
+    <!-- DETAY -->
     <section class="view" id="view-game-detail">
       <button class="back-btn" id="backToGames">← Oyunlara Don</button>
       <div id="gameDetailContent"></div>
     </section>
 
+    <!-- AKIS -->
     <section class="view" id="view-feed">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Akis</span>
         <h1 class="view-title">Noama Akis</h1>
         <p class="view-desc">Gelistiricilerden son haberler.</p>
-      </div>
+      </div></div>
       <div class="feed-container">
-        <div class="post-form" id="postForm">
+        <div class="post-form">
           <textarea id="postText" placeholder="Ne dusunuyorsun?" maxlength="500"></textarea>
           <div class="post-form-footer">
             <span class="post-form-char"><span id="postCharCount">0</span>/500</span>
@@ -473,21 +582,21 @@ input,button,textarea,select{font-family:inherit}
       </div>
     </section>
 
+    <!-- DUYURULAR -->
     <section class="view" id="view-announcements">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Duyurular</span>
         <h1 class="view-title">Gelismeler ve Duyurular</h1>
-        <p class="view-desc">Noama Games'ten resmi duyurular.</p>
-      </div>
-      <div class="updates-list" id="updatesList" style="display:grid;gap:14px;max-width:860px"></div>
+      </div></div>
+      <div class="updates-list" id="updatesList"></div>
     </section>
 
+    <!-- GELISTIRICILER -->
     <section class="view" id="view-developers">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Topluluk</span>
         <h1 class="view-title">Gelistiriciler</h1>
-        <p class="view-desc">Platformda oyun yayinlayan gelistiriciler.</p>
-      </div>
+      </div></div>
       <div class="filter-row">
         <button class="filter-btn active" data-devfilter="all">Tumu</button>
         <button class="filter-btn" data-devfilter="staff">Noama Calisanlari</button>
@@ -496,21 +605,27 @@ input,button,textarea,select{font-family:inherit}
       <div class="dev-grid" id="devGrid"></div>
     </section>
 
+    <!-- PROFIL -->
     <section class="view" id="view-profile">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Hesabim</span>
         <h1 class="view-title">Profil</h1>
-      </div>
+      </div></div>
       <div class="profile-grid">
         <div>
           <div class="profile-card">
+            <div class="profile-cover"></div>
             <div class="profile-avatar-big" id="profileBigAvatar">?</div>
             <h2 id="profileName">-</h2>
             <div class="profile-role" id="profileRole">-</div>
+            <div class="profile-bio" id="profileBio"></div>
+            <div class="profile-links" id="profileLinks"></div>
+            <button class="profile-edit-btn" id="openProfileEdit">✏️ Profili Duzenle</button>
             <div id="profileTags" class="dev-tags" style="justify-content:center;margin-top:12px"></div>
             <div class="profile-stats">
               <div class="profile-stat"><span class="profile-stat-num" id="profileReviewCount">0</span><span class="profile-stat-label">Yorum</span></div>
               <div class="profile-stat"><span class="profile-stat-num" id="profileWishlistCount">0</span><span class="profile-stat-label">Istek</span></div>
+              <div class="profile-stat"><span class="profile-stat-num" id="profileFollowCount">0</span><span class="profile-stat-label">Takip</span></div>
             </div>
           </div>
         </div>
@@ -527,40 +642,54 @@ input,button,textarea,select{font-family:inherit}
       </div>
     </section>
 
+    <!-- KUTUPHANE -->
+    <section class="view" id="view-library">
+      <div class="view-head"><div>
+        <span class="view-tag">// Hesabim</span>
+        <h1 class="view-title">Kutuphanem</h1>
+        <p class="view-desc">Indirdigin ve kutuphanene ekledigin oyunlar.</p>
+      </div></div>
+      <div class="library-grid" id="libraryGrid"></div>
+    </section>
+
+    <!-- ISTEK LISTEM -->
     <section class="view" id="view-wishlist">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Hesabim</span>
         <h1 class="view-title">Istek Listem</h1>
-      </div>
+      </div></div>
       <div class="games-row" id="wishlistRow"></div>
     </section>
 
+    <!-- BASARIMLAR -->
+    <section class="view" id="view-achievements">
+      <div class="view-head"><div>
+        <span class="view-tag">// Hesabim</span>
+        <h1 class="view-title">Basarimlar</h1>
+        <p class="view-desc">Kazandigin rozetler ve basarimlar.</p>
+      </div></div>
+      <div class="achievements-grid" id="achievementsGrid"></div>
+    </section>
+
+    <!-- ADMIN -->
     <section class="view" id="view-admin">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Yonetim</span>
         <h1 class="view-title">Admin Panel</h1>
-      </div>
-
+      </div></div>
       <div class="admin-panel">
         <h2>🎮 Oyun Yonetimi</h2>
-        <table class="admin-table">
-          <thead><tr><th>Oyun</th><th>Durum</th><th>Fiyat</th><th>Yilin</th><th style="text-align:right">Islem</th></tr></thead>
-          <tbody id="adminGamesBody"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Oyun</th><th>Durum</th><th>Fiyat</th><th>Yilin</th><th style="text-align:right">Islem</th></tr></thead>
+            <tbody id="adminGamesBody"></tbody>
+          </table>
+        </div>
       </div>
-
       <div class="admin-panel">
         <h2>📢 Duyuru Yonetimi</h2>
         <div class="form-grid" style="margin-bottom:18px">
-          <div class="form-field">
-            <label>Etiket</label>
-            <select id="annTag">
-              <option value="Duyuru">Duyuru</option>
-              <option value="Karar">Karar</option>
-              <option value="Guncelleme">Guncelleme</option>
-              <option value="Onemli">Onemli</option>
-            </select>
-          </div>
+          <div class="form-field"><label>Etiket</label><select id="annTag"><option value="Duyuru">Duyuru</option><option value="Karar">Karar</option><option value="Guncelleme">Guncelleme</option><option value="Onemli">Onemli</option></select></div>
           <div class="form-field"><label>Tarih</label><input type="date" id="annDate"></div>
           <div class="form-field full"><label>Baslik</label><input type="text" id="annTitle"></div>
           <div class="form-field full"><label>Mesaj</label><textarea id="annMessage"></textarea></div>
@@ -570,65 +699,64 @@ input,button,textarea,select{font-family:inherit}
       </div>
     </section>
 
+    <!-- GELISTIRICI YONETIMI -->
     <section class="view" id="view-dev-manager">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Yonetim</span>
         <h1 class="view-title">Gelistirici Yonetimi</h1>
-      </div>
-
+      </div></div>
       <div class="admin-panel">
         <h2>➕ Yeni Gelistirici Ekle</h2>
-        <p>Google hesabinin e-postasini gir. Kullanici bir sonraki girisinde gelistirici olur.</p>
         <div class="form-grid">
-          <div class="form-field full">
-            <label>E-posta Adresi</label>
-            <input type="email" id="devEmailInput" placeholder="ornek@gmail.com">
-          </div>
-          <div class="form-field">
-            <label>Etiketler (virgulle)</label>
-            <input type="text" id="devTagsInput" placeholder="Unity, 3D Sanatci">
-          </div>
-          <div class="form-field">
-            <label>Noama Calisani mi?</label>
-            <select id="devStaffSelect">
-              <option value="no">Hayir</option>
-              <option value="yes">Evet</option>
-            </select>
-          </div>
+          <div class="form-field full"><label>E-posta</label><input type="email" id="devEmailInput" placeholder="ornek@gmail.com"></div>
+          <div class="form-field"><label>Etiketler</label><input type="text" id="devTagsInput" placeholder="Unity, 3D Sanatci"></div>
+          <div class="form-field"><label>Noama Calisani mi?</label><select id="devStaffSelect"><option value="no">Hayir</option><option value="yes">Evet</option></select></div>
         </div>
         <button class="mini-btn green" id="addDevBtn" style="margin-top:14px">+ Gelistirici Yap</button>
       </div>
-
       <div class="admin-panel">
         <h2>👥 Tum Gelistiriciler</h2>
-        <table class="admin-table">
-          <thead><tr><th>Kullanici</th><th>E-posta</th><th>Etiketler</th><th>Skor</th><th>Durum</th><th style="text-align:right">Islem</th></tr></thead>
-          <tbody id="devListBody"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Kullanici</th><th>E-posta</th><th>Etiketler</th><th>Skor</th><th>Durum</th><th style="text-align:right">Islem</th></tr></thead>
+            <tbody id="devListBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
+    <!-- RAPORLAR -->
+    <section class="view" id="view-reports">
+      <div class="view-head"><div>
+        <span class="view-tag">// Yonetim</span>
+        <h1 class="view-title">Raporlar</h1>
+        <p class="view-desc">Kullanicilarin bildirdigi icerikler.</p>
+      </div></div>
+      <div class="admin-panel">
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Tip</th><th>Icerik</th><th>Sebep</th><th>Bildiren</th><th>Tarih</th><th style="text-align:right">Islem</th></tr></thead>
+            <tbody id="reportsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- OYUN EKLE -->
     <section class="view" id="view-admin-add">
-      <div class="view-head">
+      <div class="view-head"><div>
         <span class="view-tag">// Yonetim</span>
         <h1 class="view-title">Oyun Yukle</h1>
-      </div>
+      </div></div>
       <div class="admin-panel">
         <div class="form-grid">
           <div class="form-field"><label>Oyun Adi</label><input type="text" id="newTitle"></div>
           <div class="form-field"><label>Emoji (Kapak)</label><input type="text" id="newEmoji" value="🎮" maxlength="4"></div>
-          <div class="form-field">
-            <label>Durum</label>
-            <select id="newStatus">
-              <option value="released">Yayinda</option>
-              <option value="beta">Acik Beta</option>
-              <option value="dev" selected>Gelistiriliyor</option>
-            </select>
-          </div>
-          <div class="form-field"><label>Fiyat (TL, 0 = ucretsiz)</label><input type="number" id="newPrice" value="0" min="0"></div>
-          <div class="form-field full"><label>Etiketler (virgulle)</label><input type="text" id="newTags"></div>
+          <div class="form-field"><label>Durum</label><select id="newStatus"><option value="released">Yayinda</option><option value="beta">Acik Beta</option><option value="dev" selected>Gelistiriliyor</option></select></div>
+          <div class="form-field"><label>Fiyat (TL, 0=ucretsiz)</label><input type="number" id="newPrice" value="0" min="0"></div>
+          <div class="form-field full"><label>Etiketler (virgulle)</label><input type="text" id="newTags" placeholder="Aksiyon, Macera"></div>
           <div class="form-field"><label>Cikis Yili</label><input type="text" id="newYear" value="2026"></div>
-          <div class="form-field"><label>Planlanan Cikis Tarihi</label><input type="date" id="newReleaseDate"></div>
+          <div class="form-field"><label>Planlanan Cikis</label><input type="date" id="newReleaseDate"></div>
           <div class="form-field full"><label>Gelistirme Yuzdesi (0-100)</label><input type="number" id="newProgress" value="0" min="0" max="100"></div>
           <div class="form-field full"><label>Indirme Linki (EXE)</label><input type="text" id="newDownloadUrl" placeholder="https://..."></div>
           <div class="form-field full"><label>EXE Dosya Adi</label><input type="text" id="newExeName" placeholder="OyunSetup.exe"></div>
@@ -641,26 +769,31 @@ input,button,textarea,select{font-family:inherit}
       </div>
     </section>
   </main>
+
+  <!-- MOBIL ALT NAV -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav">
+    <div class="mobile-bottom-nav-inner">
+      <button class="mobile-nav-btn active" data-mview="games"><span class="m-icon">🎮</span><span>Oyunlar</span></button>
+      <button class="mobile-nav-btn" data-mview="feed"><span class="m-icon">📰</span><span>Akis</span></button>
+      <button class="mobile-nav-btn" data-mview="announcements"><span class="m-icon">📢</span><span>Duyuru</span></button>
+      <button class="mobile-nav-btn" data-mview="profile"><span class="m-icon">👤</span><span>Profil</span></button>
+      <button class="mobile-nav-btn" id="mobileMenuBtn2"><span class="m-icon">☰</span><span>Menu</span></button>
+    </div>
+  </nav>
 </div>
 
+<!-- MODAL: Oyun Duzenle -->
 <div class="modal-bg" id="editGameModal">
   <div class="modal">
     <h3>Oyunu Duzenle</h3>
     <div class="form-grid">
       <div class="form-field full"><label>Oyun Adi</label><input type="text" id="editTitle"></div>
       <div class="form-field"><label>Emoji</label><input type="text" id="editEmoji" maxlength="4"></div>
-      <div class="form-field">
-        <label>Durum</label>
-        <select id="editStatus">
-          <option value="released">Yayinda</option>
-          <option value="beta">Acik Beta</option>
-          <option value="dev">Gelistiriliyor</option>
-        </select>
-      </div>
+      <div class="form-field"><label>Durum</label><select id="editStatus"><option value="released">Yayinda</option><option value="beta">Acik Beta</option><option value="dev">Gelistiriliyor</option></select></div>
       <div class="form-field"><label>Fiyat (TL)</label><input type="number" id="editPrice" min="0"></div>
       <div class="form-field full"><label>Etiketler</label><input type="text" id="editTags"></div>
       <div class="form-field"><label>Cikis Yili</label><input type="text" id="editYear"></div>
-      <div class="form-field"><label>Planlanan Cikis Tarihi</label><input type="date" id="editReleaseDate"></div>
+      <div class="form-field"><label>Planlanan Cikis</label><input type="date" id="editReleaseDate"></div>
       <div class="form-field"><label>Gelistirme Yuzdesi</label><input type="number" id="editProgress" min="0" max="100"></div>
       <div class="form-field full"><label>Indirme Linki (EXE)</label><input type="text" id="editDownloadUrl"></div>
       <div class="form-field full"><label>EXE Dosya Adi</label><input type="text" id="editExeName"></div>
@@ -673,16 +806,51 @@ input,button,textarea,select{font-family:inherit}
   </div>
 </div>
 
+<!-- MODAL: Profil Duzenle -->
+<div class="modal-bg" id="editProfileModal">
+  <div class="modal">
+    <h3>Profili Duzenle</h3>
+    <div class="form-grid">
+      <div class="form-field full"><label>Kullanici Adi</label><input type="text" id="editUsername"></div>
+      <div class="form-field full"><label>Bio (kendinden bahset)</label><textarea id="editBio" maxlength="200" placeholder="Merhaba, ben..."></textarea></div>
+      <div class="form-field full"><label>Website</label><input type="url" id="editWebsite" placeholder="https://..."></div>
+      <div class="form-field"><label>Twitter/X</label><input type="text" id="editTwitter" placeholder="@kullanici"></div>
+      <div class="form-field"><label>YouTube</label><input type="url" id="editYoutube" placeholder="https://youtube.com/..."></div>
+      <div class="form-field"><label>Instagram</label><input type="text" id="editInsta" placeholder="@kullanici"></div>
+      <div class="form-field"><label>Discord</label><input type="text" id="editDiscord" placeholder="kullanici#1234"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="editProfileCancel">Iptal</button>
+      <button class="btn btn-save" id="editProfileSave">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Rapor -->
+<div class="modal-bg" id="reportModal">
+  <div class="modal">
+    <h3>🚨 Rapor Et</h3>
+    <div class="form-field"><label>Sebep</label>
+      <select id="reportReason">
+        <option value="spam">Spam / Reklam</option>
+        <option value="kufur">Kufur / Hakaret</option>
+        <option value="yanlis">Yanlis / Aldatici bilgi</option>
+        <option value="telif">Telif hakki ihlali</option>
+        <option value="diger">Diger</option>
+      </select>
+    </div>
+    <div class="form-field" style="margin-top:14px"><label>Detay (opsiyonel)</label><textarea id="reportDetails"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="reportCancel">Iptal</button>
+      <button class="btn btn-save" id="reportSave">Gonder</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut,
-  setPersistence, browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-  getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAxdt8cc-ApERlahlGtPqsUE5jM3OQBTh4",
@@ -701,46 +869,53 @@ const ADMIN_EMAIL = 'cemilprooyuncu@gmail.com';
 
 let currentUser = null;
 let currentUserDoc = null;
-let games = [];
-let announcements = [];
-let reviews = [];
-let posts = [];
-let users = [];
-let wishlistIds = [];
-let currentDevFilter = 'all';
+let games = [], announcements = [], reviews = [], posts = [], users = [], wishlists = [];
+let notifications = [], reports = [], follows = [], library = [];
+let wishlistIds = [], libraryIds = [], myFollowing = [];
+let currentDevFilter = 'all', currentFilter = 'all', currentSearch = '';
 let subsStarted = false;
-
 const $ = id => document.getElementById(id);
 const unsubs = {};
 
-function isAdmin(){ return currentUser && currentUser.email === ADMIN_EMAIL; }
-function isDeveloper(){ return currentUserDoc && (currentUserDoc.role === 'developer' || isAdmin()); }
-function isStaff(){ return isAdmin() || (currentUserDoc && currentUserDoc.isStaff === true); }
-function myUsername(){ return currentUserDoc?.username || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Anonim'; }
-function myPhoto(){ return currentUser?.photoURL || ''; }
+const isAdmin = () => currentUser?.email === ADMIN_EMAIL;
+const isDeveloper = () => currentUserDoc && (currentUserDoc.role === 'developer' || isAdmin());
+const isStaff = () => isAdmin() || currentUserDoc?.isStaff === true;
+const myUsername = () => currentUserDoc?.username || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Anonim';
+const myPhoto = () => currentUser?.photoURL || '';
 
-// GOOGLE GIRIS
+// ============================================
+// TEMA
+// ============================================
+const savedTheme = localStorage.getItem('noama_theme') || 'dark';
+if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+const themeToggle = $('themeToggle');
+const updateThemeIcon = () => { themeToggle.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '☀️' : '🌙'; };
+updateThemeIcon();
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  if (isLight){ document.documentElement.removeAttribute('data-theme'); localStorage.setItem('noama_theme', 'dark'); }
+  else { document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('noama_theme', 'light'); }
+  updateThemeIcon();
+});
+
+// ============================================
+// LOGIN
+// ============================================
 $('googleSignInBtn').addEventListener('click', async () => {
   const btn = $('googleSignInBtn');
-  btn.disabled = true;
-  btn.textContent = 'Giris yapiliyor...';
-  btn.classList.add('loading');
+  btn.disabled = true; btn.textContent = 'Giris yapiliyor...'; btn.classList.add('loading');
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
-  try {
-    await signInWithPopup(auth, provider);
-  } catch (error){
-    console.error('Giris hatasi:', error);
+  try { await signInWithPopup(auth, provider); }
+  catch (error){
     const msg = $('authMsg');
     msg.textContent = 'Giris yapilamadi: ' + error.message;
     msg.classList.add('show');
-    btn.disabled = false;
-    btn.classList.remove('loading');
+    btn.disabled = false; btn.classList.remove('loading');
     btn.innerHTML = 'Google ile Giris Yap';
   }
 });
 
-// BAŞARI ANİMASYONU
 function showLoginSuccess(){
   const overlay = document.createElement('div');
   overlay.className = 'login-success';
@@ -749,64 +924,49 @@ function showLoginSuccess(){
   setTimeout(() => overlay.remove(), 1500);
 }
 
+// ============================================
 // OTURUM
+// ============================================
 onAuthStateChanged(auth, async (user) => {
   $('loading').classList.add('hide');
   if (user){
     currentUser = user;
-
-    // Başarı animasyonu
     showLoginSuccess();
     const authScr = $('auth-screen');
     authScr.classList.add('fade-out');
-    setTimeout(() => {
-      authScr.classList.remove('active');
-      authScr.classList.remove('fade-out');
-    }, 500);
+    setTimeout(() => { authScr.classList.remove('active'); authScr.classList.remove('fade-out'); }, 500);
 
     const userRef = doc(db, 'users', user.uid);
     try {
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()){
+      const snap = await getDoc(userRef);
+      if (!snap.exists()){
         await setDoc(userRef, {
-          email: user.email,
-          username: user.displayName || user.email.split('@')[0],
-          photoURL: user.photoURL || '',
-          role: user.email === ADMIN_EMAIL ? 'admin' : 'user',
-          isStaff: user.email === ADMIN_EMAIL,
-          isVerified: user.email === ADMIN_EMAIL,
-          tags: [],
+          email: user.email, username: user.displayName || user.email.split('@')[0],
+          photoURL: user.photoURL || '', role: user.email === ADMIN_EMAIL ? 'admin' : 'user',
+          isStaff: user.email === ADMIN_EMAIL, isVerified: user.email === ADMIN_EMAIL,
+          tags: [], bio: '', website: '', twitter: '', youtube: '', insta: '', discord: '',
           createdAt: new Date().toISOString()
         });
-      } else {
-        if (user.email === ADMIN_EMAIL && userSnap.data().role !== 'admin'){
-          await updateDoc(userRef, { role: 'admin', isStaff: true, isVerified: true });
-        }
+      } else if (user.email === ADMIN_EMAIL && snap.data().role !== 'admin'){
+        await updateDoc(userRef, { role: 'admin', isStaff: true, isVerified: true });
       }
       if (unsubs.user) unsubs.user();
-      unsubs.user = onSnapshot(userRef, (snap) => {
-        currentUserDoc = snap.exists() ? { uid: snap.id, ...snap.data() } : null;
+      unsubs.user = onSnapshot(userRef, (s) => {
+        currentUserDoc = s.exists() ? { uid: s.id, ...s.data() } : null;
         updateUserUI();
       });
-    } catch(e){
-      console.error('User doc hatasi:', e);
-    }
+    } catch(e){ console.error(e); }
 
     $('app-screen').classList.add('active');
-
     if (!subsStarted){
       subsStarted = true;
-      subscribeGames();
-      subscribeAnnouncements();
-      subscribeReviews();
-      subscribePosts();
-      subscribeUsers();
-      subscribeWishlist();
+      subscribeGames(); subscribeAnnouncements(); subscribeReviews(); subscribePosts();
+      subscribeUsers(); subscribeWishlist(); subscribeNotifications(); subscribeLibrary();
+      subscribeFollows(); subscribeReports();
     }
   } else {
-    currentUser = null;
-    currentUserDoc = null;
-    Object.values(unsubs).forEach(fn => { if (fn) fn(); });
+    currentUser = null; currentUserDoc = null;
+    Object.values(unsubs).forEach(fn => fn && fn());
     subsStarted = false;
     $('auth-screen').classList.remove('fade-out');
     $('auth-screen').classList.add('active');
@@ -814,46 +974,42 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-setPersistence(auth, browserLocalPersistence).catch(err => console.warn('Persistence:', err));
-
+setPersistence(auth, browserLocalPersistence).catch(e => console.warn(e));
 $('logoutBtn').addEventListener('click', async () => {
   if (confirm('Cikis yapmak istediginize emin misiniz?')) await signOut(auth);
 });
 
 function updateUserUI(){
   if (!currentUser) return;
-  const avatarEl = $('userAvatar');
-  avatarEl.innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
+  $('userAvatar').innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
   $('userName').textContent = myUsername();
   const role = isAdmin() ? 'Yonetici' : isDeveloper() ? (isStaff() ? 'Noama Calisani' : 'Gelistirici') : 'Oyuncu';
   $('userRole').textContent = role;
-
   $('devAddNav').style.display = isDeveloper() ? 'flex' : 'none';
   $('devLabel').style.display = isDeveloper() ? 'block' : 'none';
   $('adminNav').style.display = isAdmin() ? 'flex' : 'none';
   $('adminLabel').style.display = isAdmin() ? 'block' : 'none';
   $('devManagerNav').style.display = isAdmin() ? 'flex' : 'none';
+  $('reportsNav').style.display = isAdmin() ? 'flex' : 'none';
 }
 
+// ============================================
+// SUBSCRIBERS
+// ============================================
 function subscribeGames(){
   if (unsubs.games) unsubs.games();
   unsubs.games = onSnapshot(collection(db, 'games'), async (snap) => {
-    games = [];
-    snap.forEach(d => games.push({ id: d.id, ...d.data() }));
-    if (games.length === 0 && isAdmin()){
-      await seedDefaults();
-      return;
-    }
-    renderGames();
-    if ($('view-admin').classList.contains('active')) renderAdmin();
-    if ($('view-game-detail').classList.contains('active')){
+    games = []; snap.forEach(d => games.push({ id: d.id, ...d.data() }));
+    if (games.length === 0 && isAdmin()){ await seedDefaults(); return; }
+    renderGames(); renderLibrary(); renderAchievements();
+    if ($('view-admin')?.classList.contains('active')) renderAdmin();
+    if ($('view-game-detail')?.classList.contains('active')){
       const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
       if (id) openGameDetail(id);
     }
-    if ($('view-profile').classList.contains('active')) renderProfile();
-  }, (err) => console.error('Games snapshot:', err));
+    if ($('view-profile')?.classList.contains('active')) renderProfile();
+  });
 }
-
 async function seedDefaults(){
   const dg = [
     { title:'Bikerman', emoji:'🚴', coverFrom:'#00e5ff', coverTo:'#0a3d5c', tags:['Bisiklet','Macera','Platform'], status:'beta', description:'Bisikletinle zorlu parkurlarda dengeni koru.', longDesc:'Bikerman, reflekslerine guvenen oyuncular icin tasarlanmis bir platform oyunudur.', price:0, releaseYear:'2026', releaseDate:'2026-12-15', developer:'Noama Games', downloadUrl:'', exeName:'BikermanSetup.exe', devProgress:75, gameOfYear:false, ownerId:'noama', ownerName:'Noama Games' },
@@ -866,112 +1022,221 @@ async function seedDefaults(){
   ];
   for (const a of da) await addDoc(collection(db, 'announcements'), a);
 }
-
 function subscribeAnnouncements(){
   if (unsubs.ann) unsubs.ann();
   unsubs.ann = onSnapshot(collection(db, 'announcements'), (snap) => {
-    announcements = [];
-    snap.forEach(d => announcements.push({ id: d.id, ...d.data() }));
+    announcements = []; snap.forEach(d => announcements.push({ id: d.id, ...d.data() }));
     renderAnnouncements();
-    if ($('view-admin').classList.contains('active')) renderAdmin();
-  }, (err) => console.error('Ann snapshot:', err));
+    if ($('view-admin')?.classList.contains('active')) renderAdmin();
+  });
 }
-
 function subscribeReviews(){
   if (unsubs.reviews) unsubs.reviews();
   unsubs.reviews = onSnapshot(collection(db, 'reviews'), (snap) => {
-    reviews = [];
-    snap.forEach(d => reviews.push({ id: d.id, ...d.data() }));
-    renderGames();
-    if ($('view-game-detail').classList.contains('active')){
+    reviews = []; snap.forEach(d => reviews.push({ id: d.id, ...d.data() }));
+    renderGames(); renderAchievements();
+    if ($('view-game-detail')?.classList.contains('active')){
       const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
       if (id) openGameDetail(id);
     }
-    if ($('view-profile').classList.contains('active')) renderProfile();
-  }, (err) => console.error('Reviews snapshot:', err));
+    if ($('view-profile')?.classList.contains('active')) renderProfile();
+  });
 }
-
 function subscribePosts(){
   if (unsubs.posts) unsubs.posts();
   unsubs.posts = onSnapshot(collection(db, 'posts'), (snap) => {
-    posts = [];
-    snap.forEach(d => posts.push({ id: d.id, ...d.data() }));
+    posts = []; snap.forEach(d => posts.push({ id: d.id, ...d.data() }));
     posts.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
     renderPosts();
-  }, (err) => console.error('Posts snapshot:', err));
+  });
 }
-
 function subscribeUsers(){
   if (unsubs.users) unsubs.users();
   unsubs.users = onSnapshot(collection(db, 'users'), (snap) => {
-    users = [];
-    snap.forEach(d => users.push({ uid: d.id, ...d.data() }));
-    if ($('view-developers').classList.contains('active')) renderDevelopers();
-    if ($('view-dev-manager').classList.contains('active')) renderDevManager();
-    if ($('view-profile').classList.contains('active')) renderProfile();
-  }, (err) => console.error('Users snapshot:', err));
+    users = []; snap.forEach(d => users.push({ uid: d.id, ...d.data() }));
+    renderDevelopers();
+    if ($('view-dev-manager')?.classList.contains('active')) renderDevManager();
+    if ($('view-profile')?.classList.contains('active')) renderProfile();
+    renderPosts();
+  });
 }
-
 function subscribeWishlist(){
   if (!currentUser) return;
   if (unsubs.wish) unsubs.wish();
   unsubs.wish = onSnapshot(collection(db, 'wishlists'), (snap) => {
-    wishlistIds = [];
-    snap.forEach(d => {
-      const data = d.data();
-      if (data.userId === currentUser.uid) wishlistIds.push(data.gameId);
-    });
+    wishlists = []; snap.forEach(d => wishlists.push({ id: d.id, ...d.data() }));
+    wishlistIds = wishlists.filter(w => w.userId === currentUser.uid).map(w => w.gameId);
     const badge = $('wishlistBadge');
     if (wishlistIds.length > 0){ badge.style.display = 'inline-block'; badge.textContent = wishlistIds.length; }
     else badge.style.display = 'none';
-    if ($('view-wishlist').classList.contains('active')) renderWishlist();
-  }, (err) => console.error('Wishlist snapshot:', err));
+    if ($('view-wishlist')?.classList.contains('active')) renderWishlist();
+  });
+}
+function subscribeLibrary(){
+  if (!currentUser) return;
+  if (unsubs.lib) unsubs.lib();
+  unsubs.lib = onSnapshot(collection(db, 'library'), (snap) => {
+    library = []; snap.forEach(d => library.push({ id: d.id, ...d.data() }));
+    libraryIds = library.filter(l => l.userId === currentUser.uid).map(l => l.gameId);
+    renderLibrary();
+    renderAchievements();
+  });
+}
+function subscribeFollows(){
+  if (unsubs.follows) unsubs.follows();
+  unsubs.follows = onSnapshot(collection(db, 'follows'), (snap) => {
+    follows = []; snap.forEach(d => follows.push({ id: d.id, ...d.data() }));
+    if (currentUser) myFollowing = follows.filter(f => f.followerId === currentUser.uid).map(f => f.followingId);
+    renderDevelopers();
+    if ($('view-profile')?.classList.contains('active')) renderProfile();
+  });
+}
+function subscribeNotifications(){
+  if (!currentUser) return;
+  if (unsubs.notifs) unsubs.notifs();
+  unsubs.notifs = onSnapshot(collection(db, 'notifications'), (snap) => {
+    notifications = []; snap.forEach(d => notifications.push({ id: d.id, ...d.data() }));
+    notifications = notifications.filter(n => n.userId === currentUser.uid).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    renderNotifications();
+  });
+}
+function subscribeReports(){
+  if (!isAdmin()) return;
+  if (unsubs.reports) unsubs.reports();
+  unsubs.reports = onSnapshot(collection(db, 'reports'), (snap) => {
+    reports = []; snap.forEach(d => reports.push({ id: d.id, ...d.data() }));
+    const badge = $('reportsCount');
+    if (reports.length > 0){ badge.style.display = 'inline-block'; badge.textContent = reports.length; }
+    else badge.style.display = 'none';
+    if ($('view-reports')?.classList.contains('active')) renderReports();
+  });
 }
 
+// ============================================
+// BILDIRIM OLUŞTUR
+// ============================================
+async function createNotification(userId, type, message, link = null){
+  if (!userId || userId === currentUser?.uid) return;
+  try {
+    await addDoc(collection(db, 'notifications'), {
+      userId, type, message, link,
+      read: false,
+      createdAt: new Date().toISOString()
+    });
+  } catch(e){ console.warn(e); }
+}
+
+function renderNotifications(){
+  const list = $('notifList');
+  const count = $('notifCount');
+  const unread = notifications.filter(n => !n.read).length;
+  if (unread > 0){ count.style.display = 'flex'; count.textContent = unread > 9 ? '9+' : unread; }
+  else count.style.display = 'none';
+  if (!notifications.length){
+    list.innerHTML = '<div class="notif-empty"><div class="notif-empty-icon">🔔</div><p>Henuz bildirim yok</p></div>';
+    return;
+  }
+  const icons = { like: '❤️', reply: '💬', follow: '👥', comment: '💬', review: '⭐', system: '📢' };
+  list.innerHTML = notifications.slice(0, 30).map(n => `
+    <div class="notif-item ${n.read ? '' : 'unread'}" data-notif-id="${n.id}" ${n.link ? `data-link="${n.link}"` : ''}>
+      <div class="notif-icon">${icons[n.type] || '🔔'}</div>
+      <div class="notif-body">
+        <p>${escapeHtml(n.message)}</p>
+        <span class="notif-time">${timeAgo(n.createdAt)}</span>
+      </div>
+    </div>
+  `).join('');
+  list.querySelectorAll('[data-notif-id]').forEach(el => {
+    el.addEventListener('click', async () => {
+      const id = el.dataset.notifId;
+      await updateDoc(doc(db, 'notifications', id), { read: true });
+      $('notifPanel').classList.remove('open');
+      if (el.dataset.link) handleNotificationLink(el.dataset.link);
+    });
+  });
+}
+
+function handleNotificationLink(link){
+  if (link.startsWith('game:')) openGameDetail(link.slice(5));
+  else if (link === 'profile') { showView('profile'); renderProfile(); }
+  else if (link === 'feed') showView('feed');
+}
+
+$('notifBell').addEventListener('click', (e) => {
+  e.stopPropagation();
+  $('notifPanel').classList.toggle('open');
+});
+$('markAllRead').addEventListener('click', async () => {
+  for (const n of notifications.filter(x => !x.read)){
+    await updateDoc(doc(db, 'notifications', n.id), { read: true });
+  }
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#notifPanel') && !e.target.closest('#notifBell')) $('notifPanel').classList.remove('open');
+});
+
+// ============================================
 // NAVIGASYON
+// ============================================
 document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     showView(btn.dataset.view);
     $('sidebarNav').classList.remove('mobile-open');
-    if (btn.dataset.view === 'profile') renderProfile();
-    if (btn.dataset.view === 'wishlist') renderWishlist();
-    if (btn.dataset.view === 'admin') renderAdmin();
-    if (btn.dataset.view === 'developers') renderDevelopers();
-    if (btn.dataset.view === 'dev-manager') renderDevManager();
+    const v = btn.dataset.view;
+    if (v === 'profile') renderProfile();
+    if (v === 'wishlist') renderWishlist();
+    if (v === 'library') renderLibrary();
+    if (v === 'achievements') renderAchievements();
+    if (v === 'admin') renderAdmin();
+    if (v === 'developers') renderDevelopers();
+    if (v === 'dev-manager') renderDevManager();
+    if (v === 'reports') renderReports();
   });
 });
-
 function showView(name){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  $('view-' + name).classList.add('active');
+  $('view-' + name)?.classList.add('active');
   $('mainContent').scrollTop = 0;
+  document.querySelectorAll('.mobile-nav-btn[data-mview]').forEach(b => b.classList.toggle('active', b.dataset.mview === name));
 }
-
 $('backToGames').addEventListener('click', () => {
   showView('games');
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.querySelector('.nav-item[data-view="games"]').classList.add('active');
 });
-
-$('mobileMenuBtn').addEventListener('click', () => {
-  $('sidebarNav').classList.toggle('mobile-open');
+$('mobileMenuBtn').addEventListener('click', () => $('sidebarNav').classList.toggle('mobile-open'));
+$('mobileMenuBtn2').addEventListener('click', () => $('sidebarNav').classList.toggle('mobile-open'));
+document.querySelectorAll('.mobile-nav-btn[data-mview]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const v = btn.dataset.mview;
+    showView(v);
+    document.querySelectorAll('.nav-item[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+    if (v === 'profile') renderProfile();
+  });
+});
+$('userCard').addEventListener('click', (e) => {
+  if (e.target.closest('#logoutBtn') || e.target.closest('#notifBell')) return;
+  showView('profile'); renderProfile();
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.querySelector('.nav-item[data-view="profile"]')?.classList.add('active');
 });
 
-function statusText(s){ return s === 'beta' ? 'Acik Beta' : s === 'dev' ? 'Gelistiriliyor' : 'Yayinda'; }
-function priceText(g){
-  if (g.price > 0) return g.price + ' TL';
-  if (g.status === 'dev') return 'Yakinda';
-  return 'Ucretsiz';
-}
-function avgRating(gameId){
-  const rs = reviews.filter(r => r.gameId === gameId);
-  if (!rs.length) return 0;
-  return rs.reduce((s, r) => s + r.rating, 0) / rs.length;
-}
-function starString(n){ const f = Math.round(n); return '★'.repeat(f) + '☆'.repeat(5 - f); }
-function isInWishlist(id){ return wishlistIds.includes(id); }
+// ============================================
+// YARDIMCILAR
+// ============================================
+const statusText = s => s === 'beta' ? 'Acik Beta' : s === 'dev' ? 'Gelistiriliyor' : 'Yayinda';
+const priceText = g => g.price > 0 ? g.price + ' TL' : (g.status === 'dev' ? 'Yakinda' : 'Ucretsiz');
+function avgRating(id){ const rs = reviews.filter(r => r.gameId === id); return rs.length ? rs.reduce((s, r) => s + r.rating, 0) / rs.length : 0; }
+const starString = n => { const f = Math.round(n); return '★'.repeat(f) + '☆'.repeat(5 - f); };
+const isInWishlist = id => wishlistIds.includes(id);
+const isInLibrary = id => libraryIds.includes(id);
+const userByUid = uid => users.find(u => u.uid === uid);
+const isFollowing = uid => myFollowing.includes(uid);
+function escapeHtml(t){ return (t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function timeAgo(iso){
   if (!iso) return '';
   const diff = (Date.now() - new Date(iso).getTime()) / 1000;
@@ -981,14 +1246,50 @@ function timeAgo(iso){
   if (diff < 604800) return Math.floor(diff/86400) + ' gun once';
   return new Date(iso).toLocaleDateString('tr-TR');
 }
-function userByUid(uid){ return users.find(u => u.uid === uid); }
-function escapeHtml(t){
-  return (t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+// ============================================
+// ARAMA
+// ============================================
+$('searchInput').addEventListener('input', (e) => {
+  currentSearch = e.target.value;
+  renderGames();
+  showSuggestions(currentSearch);
+});
+$('searchInput').addEventListener('focus', () => { if (currentSearch) showSuggestions(currentSearch); });
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.search-bar')) $('searchSuggestions').classList.remove('show');
+});
+function showSuggestions(q){
+  const box = $('searchSuggestions');
+  if (!q || q.length < 2){ box.classList.remove('show'); return; }
+  const lower = q.toLowerCase();
+  const matchedGames = games.filter(g => g.title.toLowerCase().includes(lower) || (g.tags || []).some(t => t.toLowerCase().includes(lower))).slice(0, 4);
+  const matchedDevs = users.filter(u => (u.username || '').toLowerCase().includes(lower) && (u.role === 'developer' || u.role === 'admin')).slice(0, 3);
+  if (!matchedGames.length && !matchedDevs.length){ box.classList.remove('show'); return; }
+  let html = '';
+  matchedGames.forEach(g => {
+    html += `<div class="suggestion-item" data-sug-game="${g.id}"><span class="sug-icon">${g.emoji}</span><span>${g.title}</span><span class="sug-meta">${statusText(g.status)}</span></div>`;
+  });
+  matchedDevs.forEach(u => {
+    html += `<div class="suggestion-item" data-sug-user="${u.uid}"><span class="sug-icon">👤</span><span>${u.username}</span><span class="sug-meta">Gelistirici</span></div>`;
+  });
+  box.innerHTML = html;
+  box.classList.add('show');
+  box.querySelectorAll('[data-sug-game]').forEach(el => el.addEventListener('click', () => {
+    box.classList.remove('show'); $('searchInput').value = ''; currentSearch = ''; renderGames();
+    openGameDetail(el.dataset.sugGame);
+  }));
+  box.querySelectorAll('[data-sug-user]').forEach(el => el.addEventListener('click', () => {
+    box.classList.remove('show');
+    showView('developers');
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelector('.nav-item[data-view="developers"]')?.classList.add('active');
+  }));
 }
 
-let currentFilter = 'all';
-let currentSearch = '';
-$('searchInput').addEventListener('input', e => { currentSearch = e.target.value; renderGames(); });
+// ============================================
+// FİLTRELER
+// ============================================
 document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
@@ -997,13 +1298,21 @@ document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
     renderGames();
   });
 });
+document.querySelectorAll('.filter-btn[data-devfilter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-devfilter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentDevFilter = btn.dataset.devfilter;
+    renderDevelopers();
+  });
+});
 
 function getFilteredGames(){
   let list = [...games];
-  if (currentFilter === 'released') list = list.filter(g => g.status === 'released');
-  else if (currentFilter === 'beta') list = list.filter(g => g.status === 'beta');
-  else if (currentFilter === 'dev') list = list.filter(g => g.status === 'dev');
+  const statuses = ['released', 'beta', 'dev'];
+  if (statuses.includes(currentFilter)) list = list.filter(g => g.status === currentFilter);
   else if (currentFilter === 'free') list = list.filter(g => g.price === 0);
+  else if (currentFilter !== 'all') list = list.filter(g => (g.tags || []).some(t => t.toLowerCase() === currentFilter.toLowerCase()));
   if (currentSearch){
     const q = currentSearch.toLowerCase();
     list = list.filter(g => g.title.toLowerCase().includes(q) || (g.tags || []).some(t => t.toLowerCase().includes(q)));
@@ -1011,6 +1320,9 @@ function getFilteredGames(){
   return list;
 }
 
+// ============================================
+// OYUN KARTLARI
+// ============================================
 function renderGames(){
   const row = $('gamesRow');
   if (!row) return;
@@ -1023,7 +1335,6 @@ function renderGames(){
     const rating = avgRating(g.id);
     const inWish = isInWishlist(g.id);
     const owner = userByUid(g.ownerId);
-    const isStaffGame = owner?.isStaff;
     return `
       <article class="game-tile" data-game-id="${g.id}">
         <div class="game-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">
@@ -1032,11 +1343,11 @@ function renderGames(){
           ${g.emoji || '🎮'}
         </div>
         <div class="game-info">
-          <h3>${g.title}</h3>
+          <h3>${escapeHtml(g.title)}</h3>
           <div class="game-tags">
             <span class="mini-tag ${g.status}">${statusText(g.status)}</span>
-            ${isStaffGame ? '<span class="mini-tag staff">Noama</span>' : ''}
-            ${(g.tags || []).slice(0, 1).map(t => `<span class="mini-tag">${t}</span>`).join('')}
+            ${owner?.isStaff ? '<span class="mini-tag staff">Noama</span>' : ''}
+            ${(g.tags || []).slice(0, 1).map(t => `<span class="mini-tag">${escapeHtml(t)}</span>`).join('')}
           </div>
           <div class="game-price">${priceText(g)}</div>
           ${rating > 0 ? `<div class="game-rating"><span class="stars-mini">${starString(rating)}</span> ${rating.toFixed(1)}</div>` : ''}
@@ -1044,45 +1355,55 @@ function renderGames(){
       </article>
     `;
   }).join('');
-
   row.querySelectorAll('.game-tile').forEach(tile => {
     tile.addEventListener('click', e => {
       if (e.target.closest('[data-wish]')) return;
       openGameDetail(tile.dataset.gameId);
     });
   });
-  row.querySelectorAll('[data-wish]').forEach(btn => {
-    btn.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(btn.dataset.wish); });
-  });
+  row.querySelectorAll('[data-wish]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(btn.dataset.wish); }));
 }
 
 async function toggleWishlist(gameId){
   if (!currentUser) return;
-  const snap = await getDocs(collection(db, 'wishlists'));
-  let ex = null;
-  snap.forEach(d => {
-    const data = d.data();
-    if (data.userId === currentUser.uid && data.gameId === gameId) ex = d.id;
-  });
-  if (ex) await deleteDoc(doc(db, 'wishlists', ex));
-  else await addDoc(collection(db, 'wishlists'), { userId: currentUser.uid, gameId, addedAt: new Date().toISOString() });
+  const ex = wishlists.find(w => w.userId === currentUser.uid && w.gameId === gameId);
+  if (ex) await deleteDoc(doc(db, 'wishlists', ex.id));
+  else {
+    await addDoc(collection(db, 'wishlists'), { userId: currentUser.uid, gameId, addedAt: new Date().toISOString() });
+    const g = games.find(x => x.id === gameId);
+    if (g?.ownerId && g.ownerId !== currentUser.uid){
+      await createNotification(g.ownerId, 'like', `${myUsername()} "${g.title}" oyununu istek listesine ekledi`, 'game:' + gameId);
+    }
+  }
 }
 
+// ============================================
+// OYUN DETAY
+// ============================================
 function openGameDetail(id){
   const g = games.find(x => x.id === id);
   if (!g) return;
   const rating = avgRating(g.id);
-  const reviewCount = reviews.filter(r => r.gameId === id).length;
-  const inWish = isInWishlist(g.id);
   const gameReviews = reviews.filter(r => r.gameId === id).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const reviewCount = gameReviews.length;
+  const inWish = isInWishlist(g.id);
+  const inLib = isInLibrary(g.id);
   const owner = userByUid(g.ownerId);
   const canEdit = isAdmin() || (currentUser && g.ownerId === currentUser.uid);
+  const isFollowed = isFollowing(g.ownerId);
 
   let actionBtn = '';
   if (g.status === 'dev') actionBtn = `<button class="buy-btn" disabled>Yakinda Geliyor</button>`;
-  else if (g.downloadUrl) actionBtn = `<a href="${g.downloadUrl}" target="_blank" class="buy-btn green" download>⬇️ Indir${g.exeName ? ' (' + g.exeName + ')' : ''}</a>`;
+  else if (g.downloadUrl) actionBtn = `<a href="${g.downloadUrl}" target="_blank" class="buy-btn green" id="downloadBtn" download>⬇️ Indir${g.exeName ? ' (' + g.exeName + ')' : ''}</a>`;
   else if (g.price > 0) actionBtn = `<button class="buy-btn">🛒 Satin Al</button>`;
   else actionBtn = `<button class="buy-btn" disabled>Indirme Linki Yok</button>`;
+
+  let libBtn = '';
+  if (g.status !== 'dev' && g.downloadUrl){
+    libBtn = inLib
+      ? `<button class="wishlist-btn active" id="libBtn">📚 Kutuphanemde</button>`
+      : `<button class="wishlist-btn" id="libBtn">📚 Kutuphaneme Ekle</button>`;
+  }
 
   let progressHtml = '';
   if (g.status === 'dev' && g.devProgress > 0){
@@ -1096,24 +1417,34 @@ function openGameDetail(id){
         ${g.emoji || '🎮'}
       </div>
       <div class="game-detail-body">
-        <h1>${g.title}</h1>
+        <h1>${escapeHtml(g.title)}</h1>
         <div class="game-detail-meta">
           <span class="mini-tag ${g.status}">${statusText(g.status)}</span>
           ${owner?.isStaff ? '<span class="mini-tag staff">Noama Calisani</span>' : ''}
-          ${(g.tags || []).map(t => `<span class="mini-tag">${t}</span>`).join('')}
+          ${(g.tags || []).map(t => `<span class="mini-tag">${escapeHtml(t)}</span>`).join('')}
         </div>
         <div class="game-detail-actions">
           ${actionBtn}
           <button class="wishlist-btn ${inWish ? 'active' : ''}" id="detailWishBtn">${inWish ? '❤️ Istek Listemde' : '🤍 Istek Listesine Ekle'}</button>
+          ${libBtn}
           <div><span class="game-detail-price">${priceText(g)}</span></div>
         </div>
         <div class="game-detail-grid">
           <div class="game-detail-desc">
             <h3 style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:12px;">Oyun Hakkinda</h3>
-            <p>${g.longDesc || g.description || 'Aciklama yok.'}</p>
+            <p>${escapeHtml(g.longDesc || g.description || 'Aciklama yok.')}</p>
           </div>
           <div class="game-detail-side">
-            <div class="info-row"><div class="info-label">Gelistirici</div><div class="info-value">${g.developer || (owner?.username || 'Noama Games')}</div></div>
+            ${owner ? `
+              <div class="info-row" style="display:flex;align-items:center;gap:12px;cursor:pointer" id="ownerRow">
+                <div class="review-avatar" style="width:38px;height:38px">${owner.photoURL ? `<img src="${owner.photoURL}">` : (owner.username || '?')[0].toUpperCase()}</div>
+                <div style="flex:1">
+                  <div class="info-label">Gelistirici</div>
+                  <div class="info-value">${escapeHtml(owner.username || 'Noama Games')}${owner.isStaff ? ' <span class="staff-badge">NOAMA</span>' : ''}</div>
+                </div>
+                ${currentUser && owner.uid !== currentUser.uid ? `<button class="mini-btn ${isFollowed ? '' : 'green'}" id="followOwnerBtn" style="font-size:.72rem">${isFollowed ? 'Takibi Birak' : '+ Takip'}</button>` : ''}
+              </div>
+            ` : `<div class="info-row"><div class="info-label">Gelistirici</div><div class="info-value">${escapeHtml(g.developer || 'Noama Games')}</div></div>`}
             <div class="info-row"><div class="info-label">Cikis Yili</div><div class="info-value">${g.releaseYear || '-'}</div></div>
             ${g.releaseDate ? `<div class="info-row"><div class="info-label">Planlanan Cikis</div><div class="info-value">${g.releaseDate}</div></div>` : ''}
             ${progressHtml}
@@ -1135,40 +1466,7 @@ function openGameDetail(id){
           </div>
           <div class="review-list">
             ${gameReviews.length === 0 ? '<p style="color:var(--muted);font-size:.88rem;text-align:center;padding:20px">Henuz yorum yok.</p>' :
-              gameReviews.map(r => {
-                const ru = userByUid(r.userId);
-                const isDev = ru && (ru.role === 'developer' || ru.role === 'admin');
-                const isStaffUser = ru && ru.isStaff;
-                return `
-                <div class="review-card">
-                  <div class="review-card-head">
-                    <div class="review-avatar">${r.photoURL ? `<img src="${r.photoURL}">` : (r.username || '?')[0].toUpperCase()}</div>
-                    <span class="review-author">
-                      ${r.username}
-                      ${isStaffUser ? '<span class="staff-badge">NOAMA</span>' : isDev ? '<span class="dev-badge">GELISTIRICI</span>' : ''}
-                    </span>
-                    <span class="review-stars-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
-                    <span class="review-date">${r.date}</span>
-                    ${(currentUser && (currentUser.uid === r.userId || isAdmin())) ? `<button class="review-delete" data-del-review="${r.id}">🗑️</button>` : ''}
-                  </div>
-                  <p class="review-text">${escapeHtml(r.text)}</p>
-                  ${r.reply ? `
-                    <div class="review-reply">
-                      <div class="review-reply-head">
-                        <strong>${r.reply.username}</strong>
-                        ${r.reply.isStaff ? '<span class="staff-badge">NOAMA</span>' : '<span class="dev-badge">GELISTIRICI</span>'}
-                        <span style="margin-left:auto">${r.reply.date}</span>
-                      </div>
-                      <div class="review-reply-text">${escapeHtml(r.reply.text)}</div>
-                    </div>
-                  ` : ''}
-                  ${canEdit && !r.reply ? `<button class="reply-btn" data-reply-to="${r.id}">↩ Yanitla</button>` : ''}
-                  <div class="reply-form" id="reply-form-${r.id}" style="display:none">
-                    <textarea id="reply-text-${r.id}" placeholder="Yanitini yaz..."></textarea>
-                    <button data-submit-reply="${r.id}">Gonder</button>
-                  </div>
-                </div>
-              `}).join('')}
+              gameReviews.map(r => renderReviewCard(r, g, canEdit)).join('')}
           </div>
         </div>
       </div>
@@ -1178,110 +1476,409 @@ function openGameDetail(id){
   showView('game-detail');
   $('mainContent').scrollTop = 0;
 
-  $('detailWishBtn').addEventListener('click', () => toggleWishlist(g.id));
+  // Eventler
+  $('detailWishBtn')?.addEventListener('click', () => toggleWishlist(g.id));
+  $('libBtn')?.addEventListener('click', () => toggleLibrary(g.id));
+  $('downloadBtn')?.addEventListener('click', () => { setTimeout(() => addToLibrarySilent(g.id), 500); });
+  $('followOwnerBtn')?.addEventListener('click', () => toggleFollow(g.ownerId));
+  $('ownerRow')?.addEventListener('click', (e) => {
+    if (e.target.id === 'followOwnerBtn') return;
+    // Gelecek: kullanıcı profiline git
+  });
 
   let selectedStar = 0;
   const picker = $('starPicker');
-  picker.querySelectorAll('span').forEach(star => {
+  picker?.querySelectorAll('span').forEach(star => {
     star.addEventListener('click', () => {
       selectedStar = parseInt(star.dataset.star);
       picker.querySelectorAll('span').forEach(s => s.classList.toggle('active', parseInt(s.dataset.star) <= selectedStar));
     });
   });
 
-  $('submitReviewBtn').addEventListener('click', async () => {
+  $('submitReviewBtn')?.addEventListener('click', async () => {
     const text = $('reviewText').value.trim();
-    if (!selectedStar){ alert('Lutfen puan ver.'); return; }
-    if (!text){ alert('Yorum yaz.'); return; }
+    if (!selectedStar) return alert('Lutfen puan ver.');
+    if (!text) return alert('Yorum yaz.');
     await addDoc(collection(db, 'reviews'), {
-      gameId: g.id,
-      userId: currentUser.uid,
-      username: myUsername(),
-      photoURL: myPhoto(),
-      rating: selectedStar,
-      text,
-      date: new Date().toISOString().slice(0, 10)
+      gameId: g.id, userId: currentUser.uid, username: myUsername(), photoURL: myPhoto(),
+      rating: selectedStar, text, likes: [], date: new Date().toISOString().slice(0, 10),
+      createdAt: new Date().toISOString()
     });
+    if (g.ownerId && g.ownerId !== currentUser.uid){
+      await createNotification(g.ownerId, 'review', `${myUsername()} "${g.title}" oyununa ${selectedStar} yildiz verdi`, 'game:' + g.id);
+    }
   });
 
-  document.querySelectorAll('[data-del-review]').forEach(btn => {
+  attachReviewEvents(g);
+}
+
+function renderReviewCard(r, g, canEdit){
+  const ru = userByUid(r.userId);
+  const isDev = ru && (ru.role === 'developer' || ru.role === 'admin');
+  const isStaffUser = ru && ru.isStaff;
+  const isLiked = (r.likes || []).includes(currentUser?.uid);
+  const canDelete = currentUser && (currentUser.uid === r.userId || isAdmin());
+  return `
+    <div class="review-card">
+      <div class="review-card-head">
+        <div class="review-avatar">${r.photoURL ? `<img src="${r.photoURL}">` : (r.username || '?')[0].toUpperCase()}</div>
+        <span class="review-author">${escapeHtml(r.username)}${isStaffUser ? ' <span class="staff-badge">NOAMA</span>' : isDev ? ' <span class="dev-badge">GELISTIRICI</span>' : ''}</span>
+        <span class="review-stars-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+        <span class="review-date">${r.date}</span>
+      </div>
+      <p class="review-text">${escapeHtml(r.text)}</p>
+      <div class="review-actions">
+        <button class="review-action ${isLiked ? 'liked' : ''}" data-review-like="${r.id}"><span class="heart-icon">${isLiked ? '❤️' : '🤍'}</span> ${(r.likes || []).length}</button>
+        ${canEdit && !r.reply ? `<button class="reply-btn" data-reply-to="${r.id}" style="margin:0">↩ Yanitla</button>` : ''}
+        ${canDelete ? `<button class="review-delete" data-del-review="${r.id}" style="margin-left:auto">🗑️</button>` : ''}
+        ${currentUser ? `<button class="review-action" data-report-review="${r.id}" style="margin-left:auto;font-size:.72rem">🚨</button>` : ''}
+      </div>
+      ${r.reply ? `
+        <div class="review-reply">
+          <div class="review-reply-head">
+            <strong>${escapeHtml(r.reply.username)}</strong>
+            ${r.reply.isStaff ? '<span class="staff-badge">NOAMA</span>' : '<span class="dev-badge">GELISTIRICI</span>'}
+            <span style="margin-left:auto">${r.reply.date}</span>
+          </div>
+          <div class="review-reply-text">${escapeHtml(r.reply.text)}</div>
+        </div>
+      ` : ''}
+      <div class="reply-form" id="reply-form-${r.id}" style="display:none">
+        <textarea id="reply-text-${r.id}" placeholder="Yanitini yaz..."></textarea>
+        <button data-submit-reply="${r.id}">Gonder</button>
+      </div>
+    </div>
+  `;
+}
+
+function attachReviewEvents(g){
+  const content = $('gameDetailContent');
+  content.querySelectorAll('[data-review-like]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const rid = btn.dataset.reviewLike;
+      const r = reviews.find(x => x.id === rid);
+      if (!r || !currentUser) return;
+      const likes = r.likes || [];
+      const newLikes = likes.includes(currentUser.uid) ? likes.filter(u => u !== currentUser.uid) : [...likes, currentUser.uid];
+      await updateDoc(doc(db, 'reviews', rid), { likes: newLikes });
+      if (!likes.includes(currentUser.uid) && r.userId !== currentUser.uid){
+        await createNotification(r.userId, 'like', `${myUsername()} yorumunu begendi`, 'game:' + g.id);
+      }
+    });
+  });
+  content.querySelectorAll('[data-del-review]').forEach(btn => {
     btn.addEventListener('click', async () => {
       if (!confirm('Yorumu sil?')) return;
       await deleteDoc(doc(db, 'reviews', btn.dataset.delReview));
     });
   });
-
-  document.querySelectorAll('[data-reply-to]').forEach(btn => {
+  content.querySelectorAll('[data-reply-to]').forEach(btn => {
     btn.addEventListener('click', () => {
       const rid = btn.dataset.replyTo;
-      const form = $('reply-form-' + rid);
-      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      const f = $('reply-form-' + rid);
+      if (f) f.style.display = f.style.display === 'none' ? 'block' : 'none';
     });
   });
-  document.querySelectorAll('[data-submit-reply]').forEach(btn => {
+  content.querySelectorAll('[data-submit-reply]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const rid = btn.dataset.submitReply;
-      const text = $('reply-text-' + rid).value.trim();
+      const text = $('reply-text-' + rid)?.value.trim();
       if (!text) return;
+      const target = reviews.find(x => x.id === rid);
       await updateDoc(doc(db, 'reviews', rid), {
-        reply: {
-          userId: currentUser.uid,
-          username: myUsername(),
-          text,
-          date: new Date().toISOString().slice(0, 10),
-          isStaff: isStaff(),
-          isDeveloper: isDeveloper()
-        }
+        reply: { userId: currentUser.uid, username: myUsername(), text, date: new Date().toISOString().slice(0, 10), isStaff: isStaff(), isDeveloper: isDeveloper() }
       });
+      if (target && target.userId !== currentUser.uid){
+        await createNotification(target.userId, 'reply', `${myUsername()} yorumuna cevap verdi`, 'game:' + g.id);
+      }
+    });
+  });
+  content.querySelectorAll('[data-report-review]').forEach(btn => {
+    btn.addEventListener('click', () => openReport('review', btn.dataset.reportReview));
+  });
+}
+
+// ============================================
+// KÜTÜPHANE
+// ============================================
+async function toggleLibrary(gameId){
+  if (!currentUser) return;
+  const ex = library.find(l => l.userId === currentUser.uid && l.gameId === gameId);
+  if (ex) await deleteDoc(doc(db, 'library', ex.id));
+  else await addDoc(collection(db, 'library'), { userId: currentUser.uid, gameId, addedAt: new Date().toISOString() });
+}
+async function addToLibrarySilent(gameId){
+  if (!currentUser) return;
+  const ex = library.find(l => l.userId === currentUser.uid && l.gameId === gameId);
+  if (ex) return;
+  await addDoc(collection(db, 'library'), { userId: currentUser.uid, gameId, addedAt: new Date().toISOString() });
+}
+function renderLibrary(){
+  const grid = $('libraryGrid');
+  if (!grid) return;
+  const list = games.filter(g => libraryIds.includes(g.id));
+  if (!list.length){
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📚</div><h3>Kutuphanen bos</h3><p>Oyun detayindan kutuphanene ekleyebilirsin.</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(g => `
+    <div class="library-item" data-lib-id="${g.id}">
+      <div class="library-cover" style="background:linear-gradient(135deg,${g.coverFrom},${g.coverTo})">${g.emoji || '🎮'}</div>
+      <div class="library-body">
+        <h4>${escapeHtml(g.title)}</h4>
+        <div class="lib-status">${statusText(g.status)} · ${priceText(g)}</div>
+      </div>
+    </div>
+  `).join('');
+  grid.querySelectorAll('[data-lib-id]').forEach(el => {
+    el.addEventListener('click', () => openGameDetail(el.dataset.libId));
+  });
+}
+
+// ============================================
+// TAKIP
+// ============================================
+async function toggleFollow(userId){
+  if (!currentUser || userId === currentUser.uid) return;
+  const ex = follows.find(f => f.followerId === currentUser.uid && f.followingId === userId);
+  if (ex) await deleteDoc(doc(db, 'follows', ex.id));
+  else {
+    await addDoc(collection(db, 'follows'), { followerId: currentUser.uid, followingId: userId, createdAt: new Date().toISOString() });
+    await createNotification(userId, 'follow', `${myUsername()} seni takip etmeye basladi`, 'profile');
+  }
+}
+
+// ============================================
+// GELİŞTİRİCİLER
+// ============================================
+const devScore = (u) => {
+  const ug = games.filter(g => g.ownerId === u.uid);
+  const rs = reviews.filter(r => ug.some(g => g.id === r.gameId));
+  const avg = rs.length ? rs.reduce((s, r) => s + r.rating, 0) / rs.length : 0;
+  return { gcount: ug.length, avg, score: ug.length * 10 + avg * 5 };
+};
+function renderDevelopers(){
+  const grid = $('devGrid');
+  if (!grid) return;
+  let devs = users.filter(u => u.role === 'developer' || u.role === 'admin');
+  if (currentDevFilter === 'staff') devs = devs.filter(u => u.isStaff);
+  else if (currentDevFilter === 'verified') devs = devs.filter(u => u.isVerified);
+  devs.sort((a, b) => (a.isStaff && !b.isStaff ? -1 : !a.isStaff && b.isStaff ? 1 : devScore(b).score - devScore(a).score));
+  if (!devs.length){
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">👥</div><h3>Gelistirici yok</h3></div>';
+    return;
+  }
+  grid.innerHTML = devs.map(u => {
+    const s = devScore(u);
+    const following = isFollowing(u.uid);
+    const isMe = currentUser && u.uid === currentUser.uid;
+    return `
+      <div class="dev-card ${u.isStaff ? 'staff' : ''}">
+        <div class="dev-card-head">
+          <div class="dev-card-avatar">${u.photoURL ? `<img src="${u.photoURL}">` : (u.username || '?')[0].toUpperCase()}</div>
+          <div style="flex:1;min-width:0">
+            <div class="dev-card-name">${escapeHtml(u.username)}${u.isStaff ? ' <span class="staff-badge">NOAMA</span>' : u.isVerified ? ' <span class="dev-badge">ONAYLI</span>' : ''}</div>
+            <div class="dev-card-username">@${(u.username || '').toLowerCase().replace(/\s/g, '')}</div>
+          </div>
+        </div>
+        ${u.bio ? `<p style="font-size:.82rem;color:var(--muted);margin-bottom:8px">${escapeHtml(u.bio)}</p>` : ''}
+        ${u.tags?.length ? `<div class="dev-tags">${u.tags.map(t => `<span class="dev-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+        <div class="dev-stats">
+          <div class="dev-stat"><span class="dev-stat-num">${s.gcount}</span><span class="dev-stat-label">Oyun</span></div>
+          <div class="dev-stat"><span class="dev-stat-num">${s.avg.toFixed(1)}</span><span class="dev-stat-label">Puan</span></div>
+          <div class="dev-stat"><span class="dev-stat-num">${s.score.toFixed(0)}</span><span class="dev-stat-label">Skor</span></div>
+        </div>
+        ${!isMe && currentUser ? `<button class="follow-btn ${following ? 'following' : ''}" data-follow="${u.uid}">${following ? 'Takibi Birak' : '+ Takip Et'}</button>` : ''}
+      </div>
+    `;
+  }).join('');
+  grid.querySelectorAll('[data-follow]').forEach(btn => btn.addEventListener('click', () => toggleFollow(btn.dataset.follow)));
+}
+
+// ============================================
+// PROFİL
+// ============================================
+function renderProfile(){
+  if (!currentUser || !currentUserDoc) return;
+  $('profileBigAvatar').innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
+  $('profileName').innerHTML = escapeHtml(myUsername()) + (isStaff() ? ' <span class="staff-badge">NOAMA</span>' : isDeveloper() ? ' <span class="dev-badge">GELISTIRICI</span>' : '');
+  $('profileRole').textContent = isAdmin() ? 'Yonetici' : isDeveloper() ? 'Gelistirici' : 'Oyuncu';
+  $('profileBio').textContent = currentUserDoc.bio || '';
+  const links = [];
+  if (currentUserDoc.website) links.push(`<a class="profile-link" href="${currentUserDoc.website}" target="_blank">🌐 Website</a>`);
+  if (currentUserDoc.twitter) links.push(`<a class="profile-link" href="https://x.com/${currentUserDoc.twitter.replace('@','')}" target="_blank">𝕏 ${currentUserDoc.twitter}</a>`);
+  if (currentUserDoc.youtube) links.push(`<a class="profile-link" href="${currentUserDoc.youtube}" target="_blank">▶ YouTube</a>`);
+  if (currentUserDoc.insta) links.push(`<a class="profile-link" href="https://instagram.com/${currentUserDoc.insta.replace('@','')}" target="_blank">◉ ${currentUserDoc.insta}</a>`);
+  $('profileLinks').innerHTML = links.join('');
+  const tagsEl = $('profileTags');
+  if (currentUserDoc.tags?.length) tagsEl.innerHTML = currentUserDoc.tags.map(t => `<span class="dev-tag">${escapeHtml(t)}</span>`).join('');
+  else tagsEl.innerHTML = '';
+  const myReviews = reviews.filter(r => r.userId === currentUser.uid);
+  $('profileReviewCount').textContent = myReviews.length;
+  $('profileWishlistCount').textContent = wishlistIds.length;
+  $('profileFollowCount').textContent = myFollowing.length;
+
+  const myGamesPanel = $('myGamesPanel');
+  if (isDeveloper()){
+    const myG = games.filter(g => g.ownerId === currentUser.uid);
+    myGamesPanel.style.display = 'block';
+    $('myGamesList').innerHTML = myG.length
+      ? myG.map(g => `<div style="padding:10px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:8px"><strong>${g.emoji} ${escapeHtml(g.title)}</strong> <span style="color:var(--muted);font-size:.8rem">- ${statusText(g.status)}</span></div>`).join('')
+      : '<div class="profile-empty">Henuz oyun yuklemedin.</div>';
+  } else myGamesPanel.style.display = 'none';
+
+  $('myReviews').innerHTML = !myReviews.length ? '<div class="profile-empty">Henuz yorum yapmadin.</div>' :
+    myReviews.map(r => {
+      const g = games.find(x => x.id === r.gameId);
+      return `<div class="review-card" style="margin-bottom:10px"><div class="review-card-head"><span class="review-author">${g ? g.emoji + ' ' + escapeHtml(g.title) : 'Bilinmeyen'}</span><span class="review-stars-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span><span class="review-date">${r.date}</span></div><p class="review-text">${escapeHtml(r.text)}</p></div>`;
+    }).join('');
+}
+
+// Profil düzenleme
+$('openProfileEdit').addEventListener('click', () => {
+  if (!currentUserDoc) return;
+  $('editUsername').value = currentUserDoc.username || '';
+  $('editBio').value = currentUserDoc.bio || '';
+  $('editWebsite').value = currentUserDoc.website || '';
+  $('editTwitter').value = currentUserDoc.twitter || '';
+  $('editYoutube').value = currentUserDoc.youtube || '';
+  $('editInsta').value = currentUserDoc.insta || '';
+  $('editDiscord').value = currentUserDoc.discord || '';
+  $('editProfileModal').classList.add('active');
+});
+$('editProfileCancel').addEventListener('click', () => $('editProfileModal').classList.remove('active'));
+$('editProfileSave').addEventListener('click', async () => {
+  const username = $('editUsername').value.trim();
+  if (!username) return alert('Kullanici adi bos olamaz.');
+  await updateDoc(doc(db, 'users', currentUser.uid), {
+    username,
+    bio: $('editBio').value.trim(),
+    website: $('editWebsite').value.trim(),
+    twitter: $('editTwitter').value.trim(),
+    youtube: $('editYoutube').value.trim(),
+    insta: $('editInsta').value.trim(),
+    discord: $('editDiscord').value.trim()
+  });
+  $('editProfileModal').classList.remove('active');
+  alert('Profil guncellendi! ✅');
+});
+
+// ============================================
+// BAŞARIMLAR
+// ============================================
+function renderAchievements(){
+  const grid = $('achievementsGrid');
+  if (!grid || !currentUser) return;
+  const myReviewCount = reviews.filter(r => r.userId === currentUser.uid).length;
+  const myWishCount = wishlistIds.length;
+  const myLibCount = libraryIds.length;
+  const myPostCount = posts.filter(p => p.userId === currentUser.uid).length;
+  const myGamesCount = games.filter(g => g.ownerId === currentUser.uid).length;
+  const ach = [
+    { icon: '🎮', name: 'Baslangic', desc: 'Hesabini actın', unlocked: true },
+    { icon: '⭐', name: 'Ilk Yorum', desc: '1 yorum yaptın', unlocked: myReviewCount >= 1 },
+    { icon: '💬', name: 'Yorumcu', desc: '5 yorum yaptın', unlocked: myReviewCount >= 5 },
+    { icon: '📝', name: 'Usta Yazar', desc: '20 yorum yaptın', unlocked: myReviewCount >= 20 },
+    { icon: '❤️', name: 'Istek Ustası', desc: '5 oyunu listene ekledin', unlocked: myWishCount >= 5 },
+    { icon: '📚', name: 'Koleksiyoner', desc: '3 oyunu kütüphanene ekledin', unlocked: myLibCount >= 3 },
+    { icon: '📰', name: 'Sosyal', desc: 'Ilk paylasimini yaptın', unlocked: myPostCount >= 1 },
+    { icon: '🎯', name: 'Gelistirici', desc: 'Ilk oyununu yayinladin', unlocked: myGamesCount >= 1 },
+    { icon: '👥', name: 'Takipci', desc: '5 kisiyi takip ettin', unlocked: myFollowing.length >= 5 },
+    { icon: '🔥', name: 'Aktif Oyuncu', desc: '10 yorum + 10 istek', unlocked: myReviewCount >= 10 && myWishCount >= 10 },
+    { icon: '🏆', name: 'Efsane', desc: 'Tum ana başarımlar tamam', unlocked: myReviewCount >= 20 && myGamesCount >= 1 && myFollowing.length >= 5 },
+    { icon: '💎', name: 'Kurucu', desc: 'Noama ekibinin parcasi', unlocked: isStaff() }
+  ];
+  const unlockedCount = ach.filter(a => a.unlocked).length;
+  grid.innerHTML = ach.map(a => `
+    <div class="achievement ${a.unlocked ? 'unlocked' : ''}">
+      <span class="achievement-icon">${a.icon}</span>
+      <div class="achievement-name">${a.name}</div>
+      <div class="achievement-desc">${a.desc}</div>
+    </div>
+  `).join('') + `<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-size:.85rem">${unlockedCount}/${ach.length} başarım acildi</div>`;
+}
+
+// ============================================
+// RAPOR
+// ============================================
+let reportTarget = null;
+function openReport(type, id){
+  if (!currentUser) return alert('Giris yapmalisin.');
+  reportTarget = { type, id };
+  $('reportDetails').value = '';
+  $('reportModal').classList.add('active');
+}
+$('reportCancel').addEventListener('click', () => { $('reportModal').classList.remove('active'); reportTarget = null; });
+$('reportSave').addEventListener('click', async () => {
+  if (!reportTarget) return;
+  await addDoc(collection(db, 'reports'), {
+    type: reportTarget.type, targetId: reportTarget.id,
+    reason: $('reportReason').value, details: $('reportDetails').value.trim(),
+    reporterId: currentUser.uid, reporterName: myUsername(),
+    createdAt: new Date().toISOString()
+  });
+  $('reportModal').classList.remove('active');
+  reportTarget = null;
+  alert('Rapor gonderildi. Tesekkurler! 🚨');
+});
+
+function renderReports(){
+  if (!isAdmin()) return;
+  const tbody = $('reportsBody');
+  if (!reports.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Rapor yok</td></tr>';
+    return;
+  }
+  const reasons = { spam: 'Spam', kufur: 'Kufur', yanlis: 'Yanlis bilgi', telif: 'Telif', diger: 'Diger' };
+  tbody.innerHTML = reports.map(r => {
+    let content = '-';
+    if (r.type === 'review'){ const rev = reviews.find(x => x.id === r.targetId); content = rev ? `"${escapeHtml(rev.text.slice(0, 40))}..."` : '(silinmis)'; }
+    return `
+      <tr>
+        <td><span class="mini-tag">${r.type}</span></td>
+        <td>${content}</td>
+        <td>${reasons[r.reason] || r.reason}</td>
+        <td>${escapeHtml(r.reporterName || '-')}</td>
+        <td style="font-size:.75rem;color:var(--muted)">${timeAgo(r.createdAt)}</td>
+        <td style="text-align:right"><button class="mini-btn danger" data-del-report="${r.id}">🗑️</button></td>
+      </tr>
+    `;
+  }).join('');
+  tbody.querySelectorAll('[data-del-report]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await deleteDoc(doc(db, 'reports', btn.dataset.delReport));
     });
   });
 }
 
+// ============================================
+// POSTS (aynı kalsın, ama kullanıcı adı tıklanabilir)
+// ============================================
 $('postText').addEventListener('input', e => {
-  const len = e.target.value.length;
-  $('postCharCount').textContent = len;
-  $('postSubmitBtn').disabled = len === 0;
+  $('postCharCount').textContent = e.target.value.length;
+  $('postSubmitBtn').disabled = e.target.value.length === 0;
 });
-
 $('postSubmitBtn').addEventListener('click', async () => {
   const text = $('postText').value.trim();
   if (!text) return;
-  await addDoc(collection(db, 'posts'), {
-    userId: currentUser.uid,
-    username: myUsername(),
-    photoURL: myPhoto(),
-    text,
-    likes: [],
-    replies: [],
-    createdAt: new Date().toISOString()
-  });
-  $('postText').value = '';
-  $('postCharCount').textContent = '0';
-  $('postSubmitBtn').disabled = true;
+  await addDoc(collection(db, 'posts'), { userId: currentUser.uid, username: myUsername(), photoURL: myPhoto(), text, likes: [], replies: [], createdAt: new Date().toISOString() });
+  $('postText').value = ''; $('postCharCount').textContent = '0'; $('postSubmitBtn').disabled = true;
 });
-
 function renderPosts(){
   const list = $('postsList');
-  if (!posts.length){
-    list.innerHTML = '<div class="empty"><div class="empty-icon">📰</div><h3>Henuz paylasim yok</h3><p>Ilk paylasimi sen yap!</p></div>';
-    return;
-  }
+  if (!list) return;
+  if (!posts.length){ list.innerHTML = '<div class="empty"><div class="empty-icon">📰</div><h3>Henuz paylasim yok</h3></div>'; return; }
   list.innerHTML = posts.map(p => {
     const u = userByUid(p.userId);
     const isDev = u && (u.role === 'developer' || u.role === 'admin');
-    const isStaffUser = u && u.isStaff;
     const isLiked = (p.likes || []).includes(currentUser.uid);
     const canDelete = isAdmin() || p.userId === currentUser.uid;
-    const replies = p.replies || [];
     return `
-      <article class="post-card" data-post-id="${p.id}">
+      <article class="post-card">
         <div class="post-head">
           <div class="post-avatar">${p.photoURL ? `<img src="${p.photoURL}">` : (p.username || '?')[0].toUpperCase()}</div>
           <div style="flex:1;min-width:0">
-            <div class="post-name">
-              ${p.username}
-              ${isStaffUser ? '<span class="staff-badge">NOAMA</span>' : isDev ? '<span class="dev-badge">GELISTIRICI</span>' : ''}
-            </div>
+            <div class="post-name">${escapeHtml(p.username)}${u?.isStaff ? ' <span class="staff-badge">NOAMA</span>' : isDev ? ' <span class="dev-badge">GELISTIRICI</span>' : ''}</div>
             <div class="post-username">${timeAgo(p.createdAt)}</div>
           </div>
           <button class="post-menu-btn" data-menu-toggle="${p.id}">⋯</button>
@@ -1289,244 +1886,98 @@ function renderPosts(){
         <div class="post-menu" id="menu-${p.id}">
           ${canDelete ? `<button class="danger" data-del-post="${p.id}">🗑️ Sil</button>` : ''}
           <button data-copy-post="${p.id}">🔗 Kopyala</button>
+          ${currentUser && p.userId !== currentUser.uid ? `<button data-report-post="${p.id}">🚨 Rapor</button>` : ''}
         </div>
         <div class="post-text">${escapeHtml(p.text)}</div>
         <div class="post-actions">
-          <button class="post-action ${isLiked ? 'liked' : ''}" data-like-post="${p.id}">
-            ${isLiked ? '❤️' : '🤍'} <span>${(p.likes || []).length}</span>
-          </button>
-          <button class="post-action" data-replies-toggle="${p.id}">
-            💬 <span>${replies.length}</span>
-          </button>
+          <button class="post-action ${isLiked ? 'liked' : ''}" data-like-post="${p.id}"><span class="heart-icon">${isLiked ? '❤️' : '🤍'}</span> <span>${(p.likes || []).length}</span></button>
+          <button class="post-action" data-replies-toggle="${p.id}">💬 <span>${(p.replies || []).length}</span></button>
         </div>
         <div class="post-replies" id="replies-${p.id}">
-          ${replies.map(r => `
-            <div class="reply-item">
-              <div class="reply-avatar">${r.photoURL ? `<img src="${r.photoURL}">` : (r.username || '?')[0].toUpperCase()}</div>
-              <div class="reply-body">
-                <div class="reply-header">
-                  <span class="reply-name">${r.username}</span>
-                  <span class="reply-date">${timeAgo(r.date)}</span>
-                </div>
-                <div class="reply-content">${escapeHtml(r.text)}</div>
-              </div>
-            </div>
-          `).join('')}
-          <div class="reply-input-row">
-            <input type="text" id="reply-input-${p.id}" placeholder="Yanit yaz..." maxlength="200">
-            <button data-submit-post-reply="${p.id}">Gonder</button>
-          </div>
+          ${(p.replies || []).map(r => `<div class="reply-item"><div class="reply-avatar">${r.photoURL ? `<img src="${r.photoURL}">` : (r.username || '?')[0].toUpperCase()}</div><div class="reply-body"><div class="reply-header"><span class="reply-name">${escapeHtml(r.username)}</span><span class="reply-date">${timeAgo(r.date)}</span></div><div class="reply-content">${escapeHtml(r.text)}</div></div></div>`).join('')}
+          <div class="reply-input-row"><input type="text" id="reply-input-${p.id}" placeholder="Yanit yaz..." maxlength="200"><button data-submit-post-reply="${p.id}">Gonder</button></div>
         </div>
       </article>
     `;
   }).join('');
-
-  list.querySelectorAll('[data-menu-toggle]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.menuToggle;
-      document.querySelectorAll('.post-menu.open').forEach(m => { if (m.id !== 'menu-' + id) m.classList.remove('open'); });
-      $('menu-' + id).classList.toggle('open');
-    });
-  });
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.post-menu.open').forEach(m => m.classList.remove('open'));
-  });
-
-  list.querySelectorAll('[data-like-post]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pid = btn.dataset.likePost;
-      const p = posts.find(x => x.id === pid);
-      if (!p) return;
-      const likes = p.likes || [];
-      const newLikes = likes.includes(currentUser.uid) ? likes.filter(u => u !== currentUser.uid) : [...likes, currentUser.uid];
-      await updateDoc(doc(db, 'posts', pid), { likes: newLikes });
-    });
-  });
-
-  list.querySelectorAll('[data-replies-toggle]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      $('replies-' + btn.dataset.repliesToggle).classList.toggle('open');
-    });
-  });
-
-  list.querySelectorAll('[data-submit-post-reply]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const pid = btn.dataset.submitPostReply;
-      const input = $('reply-input-' + pid);
-      const text = input.value.trim();
-      if (!text) return;
-      const p = posts.find(x => x.id === pid);
-      const newReplies = [...(p.replies || []), {
-        userId: currentUser.uid,
-        username: myUsername(),
-        photoURL: myPhoto(),
-        text,
-        date: new Date().toISOString()
-      }];
-      await updateDoc(doc(db, 'posts', pid), { replies: newReplies });
-      input.value = '';
-    });
-  });
-
-  list.querySelectorAll('[data-del-post]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      if (!confirm('Bu paylasimi silmek istediginize emin misiniz?')) return;
-      await deleteDoc(doc(db, 'posts', btn.dataset.delPost));
-    });
-  });
-
-  list.querySelectorAll('[data-copy-post]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const p = posts.find(x => x.id === btn.dataset.copyPost);
-      navigator.clipboard.writeText(p.text);
-      alert('Metin kopyalandi!');
-    });
-  });
+  // events
+  list.querySelectorAll('[data-menu-toggle]').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.post-menu.open').forEach(m => { if (m.id !== 'menu-' + btn.dataset.menuToggle) m.classList.remove('open'); });
+    $('menu-' + btn.dataset.menuToggle).classList.toggle('open');
+  }));
+  list.querySelectorAll('[data-like-post]').forEach(btn => btn.addEventListener('click', async () => {
+    const p = posts.find(x => x.id === btn.dataset.likePost);
+    if (!p) return;
+    const likes = p.likes || [];
+    const newLikes = likes.includes(currentUser.uid) ? likes.filter(u => u !== currentUser.uid) : [...likes, currentUser.uid];
+    await updateDoc(doc(db, 'posts', p.id), { likes: newLikes });
+    if (!likes.includes(currentUser.uid) && p.userId !== currentUser.uid){
+      await createNotification(p.userId, 'like', `${myUsername()} paylasimini begendi`, 'feed');
+    }
+  }));
+  list.querySelectorAll('[data-replies-toggle]').forEach(btn => btn.addEventListener('click', () => $('replies-' + btn.dataset.repliesToggle).classList.toggle('open')));
+  list.querySelectorAll('[data-submit-post-reply]').forEach(btn => btn.addEventListener('click', async () => {
+    const pid = btn.dataset.submitPostReply;
+    const input = $('reply-input-' + pid);
+    const text = input.value.trim();
+    if (!text) return;
+    const p = posts.find(x => x.id === pid);
+    const newReplies = [...(p.replies || []), { userId: currentUser.uid, username: myUsername(), photoURL: myPhoto(), text, date: new Date().toISOString() }];
+    await updateDoc(doc(db, 'posts', pid), { replies: newReplies });
+    if (p.userId !== currentUser.uid){
+      await createNotification(p.userId, 'reply', `${myUsername()} paylasimina yanit verdi`, 'feed');
+    }
+    input.value = '';
+  }));
+  list.querySelectorAll('[data-del-post]').forEach(btn => btn.addEventListener('click', async () => {
+    if (!confirm('Bu paylasimi sil?')) return;
+    await deleteDoc(doc(db, 'posts', btn.dataset.delPost));
+  }));
+  list.querySelectorAll('[data-copy-post]').forEach(btn => btn.addEventListener('click', () => {
+    const p = posts.find(x => x.id === btn.dataset.copyPost);
+    navigator.clipboard.writeText(p.text);
+    alert('Metin kopyalandi!');
+  }));
+  list.querySelectorAll('[data-report-post]').forEach(btn => btn.addEventListener('click', () => openReport('post', btn.dataset.reportPost)));
 }
+document.addEventListener('click', () => document.querySelectorAll('.post-menu.open').forEach(m => m.classList.remove('open')));
 
+// ============================================
+// DUYURULAR
+// ============================================
 function renderAnnouncements(){
   const list = $('updatesList');
   if (!list) return;
-  if (!announcements.length){
-    list.innerHTML = '<div class="empty"><div class="empty-icon">📢</div><h3>Henuz duyuru yok</h3></div>';
-    return;
-  }
+  if (!announcements.length){ list.innerHTML = '<div class="empty"><div class="empty-icon">📢</div><h3>Henuz duyuru yok</h3></div>'; return; }
   const sorted = [...announcements].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   list.innerHTML = sorted.map(a => `
-    <article class="update-card" style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;position:relative">
-      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
-        <span class="mini-tag">${a.tag}</span>
-        <span style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)">${a.date}</span>
-      </div>
-      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:6px">${a.title}</h3>
-      <p style="color:var(--muted);font-size:.9rem">${escapeHtml(a.message)}</p>
+    <article class="update-card">
+      <div class="update-head"><span class="mini-tag">${escapeHtml(a.tag)}</span><span style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)">${a.date}</span></div>
+      <h3>${escapeHtml(a.title)}</h3>
+      <p>${escapeHtml(a.message)}</p>
     </article>
   `).join('');
 }
 
-document.querySelectorAll('.filter-btn[data-devfilter]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn[data-devfilter]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentDevFilter = btn.dataset.devfilter;
-    renderDevelopers();
-  });
-});
-
-function devScore(u){
-  const ug = games.filter(g => g.ownerId === u.uid);
-  const gcount = ug.length;
-  const rs = reviews.filter(r => ug.some(g => g.id === r.gameId));
-  const avg = rs.length ? rs.reduce((s, r) => s + r.rating, 0) / rs.length : 0;
-  return { gcount, avg, score: gcount * 10 + avg * 5 };
-}
-
-function renderDevelopers(){
-  const grid = $('devGrid');
-  let devs = users.filter(u => u.role === 'developer' || u.role === 'admin');
-  if (currentDevFilter === 'staff') devs = devs.filter(u => u.isStaff);
-  else if (currentDevFilter === 'verified') devs = devs.filter(u => u.isVerified);
-  devs.sort((a, b) => {
-    if (a.isStaff && !b.isStaff) return -1;
-    if (!a.isStaff && b.isStaff) return 1;
-    return devScore(b).score - devScore(a).score;
-  });
-
-  if (!devs.length){
-    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">👥</div><h3>Gelistirici yok</h3></div>';
-    return;
-  }
-  grid.innerHTML = devs.map(u => {
-    const s = devScore(u);
-    return `
-      <div class="dev-card ${u.isStaff ? 'staff' : ''}">
-        <div class="dev-card-head">
-          <div class="dev-card-avatar">${u.photoURL ? `<img src="${u.photoURL}">` : (u.username || '?')[0].toUpperCase()}</div>
-          <div style="flex:1;min-width:0">
-            <div class="dev-card-name">
-              ${u.username}
-              ${u.isStaff ? '<span class="staff-badge">NOAMA</span>' : u.isVerified ? '<span class="dev-badge">ONAYLI</span>' : ''}
-            </div>
-            <div class="dev-card-username">@${(u.username || '').toLowerCase().replace(/\s/g, '')}</div>
-          </div>
-        </div>
-        ${u.tags && u.tags.length ? `<div class="dev-tags">${u.tags.map(t => `<span class="dev-tag">${t}</span>`).join('')}</div>` : ''}
-        <div class="dev-stats">
-          <div class="dev-stat"><span class="dev-stat-num">${s.gcount}</span><span class="dev-stat-label">Oyun</span></div>
-          <div class="dev-stat"><span class="dev-stat-num">${s.avg.toFixed(1)}</span><span class="dev-stat-label">Puan</span></div>
-          <div class="dev-stat"><span class="dev-stat-num">${s.score.toFixed(0)}</span><span class="dev-stat-label">Skor</span></div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function renderProfile(){
-  if (!currentUser || !currentUserDoc) return;
-  const a = $('profileBigAvatar');
-  a.innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
-  $('profileName').innerHTML = myUsername() + (isStaff() ? ' <span class="staff-badge">NOAMA</span>' : isDeveloper() ? ' <span class="dev-badge">GELISTIRICI</span>' : '');
-  $('profileRole').textContent = isAdmin() ? 'Yonetici' : isDeveloper() ? 'Gelistirici' : 'Oyuncu';
-
-  const tagsEl = $('profileTags');
-  if (currentUserDoc.tags && currentUserDoc.tags.length){
-    tagsEl.innerHTML = currentUserDoc.tags.map(t => `<span class="dev-tag">${t}</span>`).join('');
-  } else tagsEl.innerHTML = '';
-
-  const myReviews = reviews.filter(r => r.userId === currentUser.uid);
-  $('profileReviewCount').textContent = myReviews.length;
-  $('profileWishlistCount').textContent = wishlistIds.length;
-
-  const myGamesPanel = $('myGamesPanel');
-  const myGamesList = $('myGamesList');
-  if (isDeveloper()){
-    const myG = games.filter(g => g.ownerId === currentUser.uid);
-    myGamesPanel.style.display = 'block';
-    myGamesList.innerHTML = myG.length
-      ? myG.map(g => `<div style="padding:10px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:8px"><strong>${g.emoji} ${g.title}</strong> <span style="color:var(--muted);font-size:.8rem">- ${statusText(g.status)}</span></div>`).join('')
-      : '<div class="profile-empty">Henuz oyun yuklemedin.</div>';
-  } else {
-    myGamesPanel.style.display = 'none';
-  }
-
-  const box = $('myReviews');
-  if (!myReviews.length){
-    box.innerHTML = '<div class="profile-empty">Henuz yorum yapmadin.</div>';
-  } else {
-    box.innerHTML = myReviews.map(r => {
-      const g = games.find(x => x.id === r.gameId);
-      return `
-        <div class="review-card" style="margin-bottom:10px">
-          <div class="review-card-head">
-            <span class="review-author">${g ? g.emoji + ' ' + g.title : 'Bilinmeyen'}</span>
-            <span class="review-stars-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
-            <span class="review-date">${r.date}</span>
-          </div>
-          <p class="review-text">${escapeHtml(r.text)}</p>
-        </div>
-      `;
-    }).join('');
-  }
-}
-
+// ============================================
+// WISHLIST
+// ============================================
 function renderWishlist(){
   const row = $('wishlistRow');
+  if (!row) return;
   const list = games.filter(g => wishlistIds.includes(g.id));
-  if (!list.length){
-    row.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">💔</div><h3>Istek listen bos</h3></div>';
-    return;
-  }
+  if (!list.length){ row.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">💔</div><h3>Istek listen bos</h3></div>'; return; }
   row.innerHTML = list.map(g => {
     const rating = avgRating(g.id);
     return `
       <article class="game-tile" data-game-id="${g.id}">
-        <div class="game-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">
+        <div class="game-cover" style="background:linear-gradient(135deg,${g.coverFrom},${g.coverTo})">
           <button class="wishlist-mini active" data-wish="${g.id}">❤️</button>
           ${g.emoji || '🎮'}
         </div>
         <div class="game-info">
-          <h3>${g.title}</h3>
+          <h3>${escapeHtml(g.title)}</h3>
           <div class="game-tags"><span class="mini-tag ${g.status}">${statusText(g.status)}</span></div>
           <div class="game-price">${priceText(g)}</div>
           ${rating > 0 ? `<div class="game-rating"><span class="stars-mini">${starString(rating)}</span> ${rating.toFixed(1)}</div>` : ''}
@@ -1535,22 +1986,20 @@ function renderWishlist(){
     `;
   }).join('');
   row.querySelectorAll('.game-tile').forEach(t => {
-    t.addEventListener('click', e => {
-      if (e.target.closest('[data-wish]')) return;
-      openGameDetail(t.dataset.gameId);
-    });
+    t.addEventListener('click', e => { if (e.target.closest('[data-wish]')) return; openGameDetail(t.dataset.gameId); });
   });
-  row.querySelectorAll('[data-wish]').forEach(b => {
-    b.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(b.dataset.wish); });
-  });
+  row.querySelectorAll('[data-wish]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(b.dataset.wish); }));
 }
 
+// ============================================
+// ADMIN
+// ============================================
 function renderAdmin(){
   if (!isAdmin()) return;
   const tbody = $('adminGamesBody');
   tbody.innerHTML = games.map(g => `
     <tr>
-      <td><strong>${g.emoji} ${g.title}</strong></td>
+      <td><strong>${g.emoji} ${escapeHtml(g.title)}</strong></td>
       <td>${statusText(g.status)}</td>
       <td>${priceText(g)}</td>
       <td><button class="mini-btn ${g.gameOfYear ? 'active' : 'gold'}" data-toggle-year="${g.id}">${g.gameOfYear ? '🏆' : 'Sec'}</button></td>
@@ -1560,57 +2009,42 @@ function renderAdmin(){
       </div></td>
     </tr>
   `).join('');
-
   tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditModal(b.dataset.edit)));
-  tbody.querySelectorAll('[data-toggle-year]').forEach(b => {
-    b.addEventListener('click', async () => {
-      const id = b.dataset.toggleYear;
-      const t = games.find(g => g.id === id);
-      const nv = !t.gameOfYear;
-      for (const g of games) if (g.gameOfYear && g.id !== id) await updateDoc(doc(db, 'games', g.id), { gameOfYear: false });
-      await updateDoc(doc(db, 'games', id), { gameOfYear: nv });
-    });
-  });
-  tbody.querySelectorAll('[data-del-game]').forEach(b => {
-    b.addEventListener('click', async () => {
-      if (!confirm('Oyunu sil?')) return;
-      await deleteDoc(doc(db, 'games', b.dataset.delGame));
-    });
-  });
-
+  tbody.querySelectorAll('[data-toggle-year]').forEach(b => b.addEventListener('click', async () => {
+    const id = b.dataset.toggleYear;
+    const nv = !games.find(g => g.id === id).gameOfYear;
+    for (const g of games) if (g.gameOfYear && g.id !== id) await updateDoc(doc(db, 'games', g.id), { gameOfYear: false });
+    await updateDoc(doc(db, 'games', id), { gameOfYear: nv });
+  }));
+  tbody.querySelectorAll('[data-del-game]').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Oyunu sil?')) return;
+    await deleteDoc(doc(db, 'games', b.dataset.delGame));
+  }));
   const annList = $('adminAnnList');
   const sorted = [...announcements].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   annList.innerHTML = sorted.map(a => `
     <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:8px">
-      <span class="mini-tag">${a.tag}</span>
-      <span style="flex:1;font-size:.88rem;font-weight:600">${a.title}</span>
+      <span class="mini-tag">${escapeHtml(a.tag)}</span>
+      <span style="flex:1;font-size:.88rem;font-weight:600">${escapeHtml(a.title)}</span>
       <span style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted)">${a.date}</span>
       <button class="mini-btn danger" data-del-ann="${a.id}">🗑️</button>
     </div>
   `).join('');
-  annList.querySelectorAll('[data-del-ann]').forEach(b => {
-    b.addEventListener('click', async () => {
-      if (!confirm('Duyuruyu sil?')) return;
-      await deleteDoc(doc(db, 'announcements', b.dataset.delAnn));
-    });
-  });
-
-  const di = $('annDate');
-  if (!di.value) di.value = new Date().toISOString().slice(0, 10);
+  annList.querySelectorAll('[data-del-ann]').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Duyuruyu sil?')) return;
+    await deleteDoc(doc(db, 'announcements', b.dataset.delAnn));
+  }));
+  if (!$('annDate').value) $('annDate').value = new Date().toISOString().slice(0, 10);
 }
-
 $('addAnnBtn').addEventListener('click', async () => {
   if (!isAdmin()) return;
-  const tag = $('annTag').value;
-  const date = $('annDate').value;
-  const title = $('annTitle').value.trim();
-  const message = $('annMessage').value.trim();
+  const tag = $('annTag').value, date = $('annDate').value, title = $('annTitle').value.trim(), message = $('annMessage').value.trim();
   if (!title || !message || !date) return alert('Doldur hepsini.');
   await addDoc(collection(db, 'announcements'), { date, tag, title, message, createdAt: new Date().toISOString() });
-  $('annTitle').value = '';
-  $('annMessage').value = '';
+  $('annTitle').value = ''; $('annMessage').value = '';
 });
 
+// Geliştirici yönetimi
 $('addDevBtn').addEventListener('click', async () => {
   if (!isAdmin()) return;
   const email = $('devEmailInput').value.trim().toLowerCase();
@@ -1618,70 +2052,47 @@ $('addDevBtn').addEventListener('click', async () => {
   const tags = $('devTagsInput').value.split(',').map(t => t.trim()).filter(Boolean);
   const isStaffVal = $('devStaffSelect').value === 'yes';
   const u = users.find(x => (x.email || '').toLowerCase() === email);
-  if (!u){
-    alert('Bu e-posta ile kayitli kullanici bulunamadi. Kullanici once siteye Google ile giris yapmali.');
-    return;
-  }
-  await updateDoc(doc(db, 'users', u.uid), {
-    role: 'developer',
-    isStaff: isStaffVal,
-    isVerified: true,
-    tags
-  });
+  if (!u){ alert('Bu e-posta ile kayitli kullanici yok.'); return; }
+  await updateDoc(doc(db, 'users', u.uid), { role: 'developer', isStaff: isStaffVal, isVerified: true, tags });
   alert('Gelistirici yapildi! ✅');
-  $('devEmailInput').value = '';
-  $('devTagsInput').value = '';
+  $('devEmailInput').value = ''; $('devTagsInput').value = '';
 });
-
 function renderDevManager(){
   if (!isAdmin()) return;
   const tbody = $('devListBody');
   const devs = users.filter(u => u.role === 'developer' || u.role === 'admin');
-  if (!devs.length){
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Henuz gelistirici yok</td></tr>';
-    return;
-  }
+  if (!devs.length){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Gelistirici yok</td></tr>'; return; }
   tbody.innerHTML = devs.map(u => {
     const s = devScore(u);
-    return `
-      <tr>
-        <td><strong>${u.username}</strong>${u.isStaff ? ' <span class="staff-badge">NOAMA</span>' : ''}</td>
-        <td style="font-size:.82rem">${u.email || '-'}</td>
-        <td><div class="dev-tags">${(u.tags || []).map(t => `<span class="dev-tag">${t}</span>`).join('') || '-'}</div></td>
-        <td>${s.score.toFixed(0)}</td>
-        <td>${u.isVerified ? '✅ Onayli' : '⏳ Onaysiz'}</td>
-        <td style="text-align:right">
-          <div class="admin-actions" style="justify-content:flex-end">
-            <button class="mini-btn ${u.isVerified ? '' : 'green'}" data-verify="${u.uid}">${u.isVerified ? 'Onayi Kaldir' : 'Onayla'}</button>
-            <button class="mini-btn ${u.isStaff ? 'active' : 'gold'}" data-staff="${u.uid}">${u.isStaff ? '🏆 Noama' : 'Noama Yap'}</button>
-            <button class="mini-btn danger" data-demote="${u.uid}">Gelistiriciligi Al</button>
-          </div>
-        </td>
-      </tr>
-    `;
+    return `<tr>
+      <td><strong>${escapeHtml(u.username)}</strong>${u.isStaff ? ' <span class="staff-badge">NOAMA</span>' : ''}</td>
+      <td style="font-size:.82rem">${u.email || '-'}</td>
+      <td><div class="dev-tags">${(u.tags || []).map(t => `<span class="dev-tag">${escapeHtml(t)}</span>`).join('') || '-'}</div></td>
+      <td>${s.score.toFixed(0)}</td>
+      <td>${u.isVerified ? '✅' : '⏳'}</td>
+      <td style="text-align:right"><div class="admin-actions" style="justify-content:flex-end">
+        <button class="mini-btn ${u.isVerified ? '' : 'green'}" data-verify="${u.uid}">${u.isVerified ? 'Onay Kaldir' : 'Onayla'}</button>
+        <button class="mini-btn ${u.isStaff ? 'active' : 'gold'}" data-staff="${u.uid}">${u.isStaff ? '🏆' : 'Noama'}</button>
+        <button class="mini-btn danger" data-demote="${u.uid}">Cikar</button>
+      </div></td>
+    </tr>`;
   }).join('');
-
-  tbody.querySelectorAll('[data-verify]').forEach(b => {
-    b.addEventListener('click', async () => {
-      const u = users.find(x => x.uid === b.dataset.verify);
-      await updateDoc(doc(db, 'users', u.uid), { isVerified: !u.isVerified });
-    });
-  });
-  tbody.querySelectorAll('[data-staff]').forEach(b => {
-    b.addEventListener('click', async () => {
-      const u = users.find(x => x.uid === b.dataset.staff);
-      await updateDoc(doc(db, 'users', u.uid), { isStaff: !u.isStaff });
-    });
-  });
-  tbody.querySelectorAll('[data-demote]').forEach(b => {
-    b.addEventListener('click', async () => {
-      if (!confirm('Gelistiricilikten cikarmak istiyor musun?')) return;
-      const u = users.find(x => x.uid === b.dataset.demote);
-      await updateDoc(doc(db, 'users', u.uid), { role: 'user', isVerified: false });
-    });
-  });
+  tbody.querySelectorAll('[data-verify]').forEach(b => b.addEventListener('click', async () => {
+    const u = users.find(x => x.uid === b.dataset.verify);
+    await updateDoc(doc(db, 'users', u.uid), { isVerified: !u.isVerified });
+  }));
+  tbody.querySelectorAll('[data-staff]').forEach(b => b.addEventListener('click', async () => {
+    const u = users.find(x => x.uid === b.dataset.staff);
+    await updateDoc(doc(db, 'users', u.uid), { isStaff: !u.isStaff });
+  }));
+  tbody.querySelectorAll('[data-demote]').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Gelistiricilikten cikar?')) return;
+    const u = users.find(x => x.uid === b.dataset.demote);
+    await updateDoc(doc(db, 'users', u.uid), { role: 'user', isVerified: false });
+  }));
 }
 
+// Oyun ekle
 $('createGameBtn').addEventListener('click', async () => {
   if (!isDeveloper()) return alert('Yetkin yok.');
   const title = $('newTitle').value.trim();
@@ -1689,10 +2100,7 @@ $('createGameBtn').addEventListener('click', async () => {
   const palette = [['#00e5ff','#0a3d5c'],['#ff2e88','#5c0a33'],['#7c5cff','#2a1a6e'],['#ffb020','#5c3a0a'],['#2bff88','#0a5c33'],['#b14aff','#3d0a5c']];
   const colors = palette[Math.floor(Math.random() * palette.length)];
   const newGame = {
-    title,
-    emoji: $('newEmoji').value.trim() || '🎮',
-    coverFrom: colors[0],
-    coverTo: colors[1],
+    title, emoji: $('newEmoji').value.trim() || '🎮', coverFrom: colors[0], coverTo: colors[1],
     tags: $('newTags').value.split(',').map(t => t.trim()).filter(Boolean),
     status: $('newStatus').value,
     description: $('newLongDesc').value.trim().slice(0, 120) || 'Yeni oyun.',
@@ -1700,79 +2108,55 @@ $('createGameBtn').addEventListener('click', async () => {
     price: parseInt($('newPrice').value, 10) || 0,
     releaseYear: $('newYear').value.trim(),
     releaseDate: $('newReleaseDate').value,
-    developer: myUsername(),
-    ownerId: currentUser.uid,
-    ownerName: myUsername(),
-    downloadUrl: $('newDownloadUrl').value.trim(),
-    exeName: $('newExeName').value.trim(),
+    developer: myUsername(), ownerId: currentUser.uid, ownerName: myUsername(),
+    downloadUrl: $('newDownloadUrl').value.trim(), exeName: $('newExeName').value.trim(),
     devProgress: parseInt($('newProgress').value, 10) || 0,
-    gameOfYear: false,
-    createdAt: new Date().toISOString()
+    gameOfYear: false, createdAt: new Date().toISOString()
   };
   await addDoc(collection(db, 'games'), newGame);
   ['newTitle','newTags','newLongDesc','newDownloadUrl','newExeName','newReleaseDate'].forEach(id => $(id).value = '');
-  $('newEmoji').value = '🎮';
-  $('newPrice').value = '0';
-  $('newProgress').value = '0';
+  $('newEmoji').value = '🎮'; $('newPrice').value = '0'; $('newProgress').value = '0';
   alert('Oyun yayinlandi! ✅');
   document.querySelector('[data-view="games"]').click();
 });
 
+// Oyun düzenle
 let editingGameId = null;
 function openEditModal(id){
   const g = games.find(x => x.id === id);
   if (!g) return;
   editingGameId = id;
-  $('editTitle').value = g.title || '';
-  $('editEmoji').value = g.emoji || '';
-  $('editStatus').value = g.status || 'dev';
-  $('editPrice').value = g.price || 0;
-  $('editTags').value = (g.tags || []).join(', ');
-  $('editYear').value = g.releaseYear || '';
-  $('editReleaseDate').value = g.releaseDate || '';
-  $('editProgress').value = g.devProgress || 0;
-  $('editDownloadUrl').value = g.downloadUrl || '';
-  $('editExeName').value = g.exeName || '';
+  $('editTitle').value = g.title || ''; $('editEmoji').value = g.emoji || '';
+  $('editStatus').value = g.status || 'dev'; $('editPrice').value = g.price || 0;
+  $('editTags').value = (g.tags || []).join(', '); $('editYear').value = g.releaseYear || '';
+  $('editReleaseDate').value = g.releaseDate || ''; $('editProgress').value = g.devProgress || 0;
+  $('editDownloadUrl').value = g.downloadUrl || ''; $('editExeName').value = g.exeName || '';
   $('editLongDesc').value = g.longDesc || g.description || '';
   $('editGameModal').classList.add('active');
 }
-
-$('editCancel').addEventListener('click', () => {
-  $('editGameModal').classList.remove('active');
-  editingGameId = null;
-});
-
+$('editCancel').addEventListener('click', () => { $('editGameModal').classList.remove('active'); editingGameId = null; });
 $('editSave').addEventListener('click', async () => {
   if (!editingGameId) return;
   const d = $('editLongDesc').value.trim();
   await updateDoc(doc(db, 'games', editingGameId), {
-    title: $('editTitle').value.trim(),
-    emoji: $('editEmoji').value.trim(),
-    status: $('editStatus').value,
-    price: parseInt($('editPrice').value, 10) || 0,
+    title: $('editTitle').value.trim(), emoji: $('editEmoji').value.trim(),
+    status: $('editStatus').value, price: parseInt($('editPrice').value, 10) || 0,
     tags: $('editTags').value.split(',').map(t => t.trim()).filter(Boolean),
-    releaseYear: $('editYear').value.trim(),
-    releaseDate: $('editReleaseDate').value,
+    releaseYear: $('editYear').value.trim(), releaseDate: $('editReleaseDate').value,
     devProgress: parseInt($('editProgress').value, 10) || 0,
-    downloadUrl: $('editDownloadUrl').value.trim(),
-    exeName: $('editExeName').value.trim(),
-    longDesc: d,
-    description: d.length > 120 ? d.slice(0, 117) + '...' : d
+    downloadUrl: $('editDownloadUrl').value.trim(), exeName: $('editExeName').value.trim(),
+    longDesc: d, description: d.length > 120 ? d.slice(0, 117) + '...' : d
   });
   $('editGameModal').classList.remove('active');
   editingGameId = null;
 });
+$('editGameModal').addEventListener('click', e => { if (e.target.id === 'editGameModal'){ e.target.classList.remove('active'); editingGameId = null; } });
 
-$('editGameModal').addEventListener('click', e => {
-  if (e.target.id === 'editGameModal'){
-    e.target.classList.remove('active');
-    editingGameId = null;
-  }
-});
-
-// RIPPLE efekti
+// ============================================
+// RIPPLE
+// ============================================
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.btn, .mini-btn, .buy-btn, .post-btn, .filter-btn');
+  const btn = e.target.closest('.btn,.mini-btn,.buy-btn,.post-btn,.filter-btn,.google-btn');
   if (!btn) return;
   const rect = btn.getBoundingClientRect();
   const size = Math.max(rect.width, rect.height);
@@ -1785,7 +2169,54 @@ document.addEventListener('click', (e) => {
   setTimeout(() => ripple.remove(), 600);
 });
 
-// GUVENLIK AGI
+// ============================================
+// PWA - Service Worker
+// ============================================
+if ('serviceWorker' in navigator && location.protocol === 'https:'){
+  const swCode = `
+    self.addEventListener('install', e => self.skipWaiting());
+    self.addEventListener('activate', e => self.clients.claim());
+    self.addEventListener('fetch', e => {
+      if (e.request.method !== 'GET') return;
+      e.respondWith(
+        caches.open('noama-v1').then(cache =>
+          fetch(e.request).then(res => {
+            if (res.status === 200 && res.type === 'basic') cache.put(e.request, res.clone());
+            return res;
+          }).catch(() => caches.match(e.request))
+        )
+      );
+    });
+  `;
+  try {
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    navigator.serviceWorker.register(URL.createObjectURL(blob), { scope: './' }).catch(e => console.log('SW:', e.message));
+  } catch(e){ console.log('SW error:', e); }
+}
+
+// ============================================
+// PWA MANIFEST
+// ============================================
+const manifest = {
+  name: 'Noama Games', short_name: 'Noama',
+  start_url: './', display: 'standalone',
+  background_color: '#07070d', theme_color: '#07070d',
+  orientation: 'portrait',
+  icons: [{
+    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300e5ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='60' font-weight='900' fill='%2307070d' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E",
+    sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable'
+  }]
+};
+const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+const manifestUrl = URL.createObjectURL(manifestBlob);
+const link = document.createElement('link');
+link.rel = 'manifest';
+link.href = manifestUrl;
+document.head.appendChild(link);
+
+// ============================================
+// GÜVENLİK AĞI
+// ============================================
 setTimeout(() => {
   if (!$('loading').classList.contains('hide') && !$('app-screen').classList.contains('active')){
     $('loading').classList.add('hide');
