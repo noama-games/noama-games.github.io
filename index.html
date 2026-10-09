@@ -78,6 +78,7 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .user-role{font-size:.7rem;color:var(--muted)}
 .logout-btn{width:36px;height:36px;border-radius:10px;background:rgba(255,46,136,.1);border:1px solid rgba(255,46,136,.25);color:#ff85b3;cursor:pointer;font-size:.95rem;transition:all .2s;flex-shrink:0}
 .logout-btn:hover{background:rgba(255,46,136,.2)}
+.notif-bell{position:relative;background:none;border:none;font-size:1.2rem;cursor:pointer;padding:4px}
 
 /* MAIN */
 .main{flex:1;min-width:0;padding:36px 44px;overflow-y:auto;max-height:100vh}
@@ -102,9 +103,9 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .suggestion-item .sug-icon{font-size:1.2rem}
 .suggestion-item .sug-meta{color:var(--muted);font-size:.75rem;margin-left:auto}
 
-/* FILTRE */
+/* FİLTRE */
 .filter-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
-.filter-btn{padding:8px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden}
+.filter-btn{padding:8px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .filter-btn:hover{color:var(--text);border-color:var(--neon);transform:translateY(-2px)}
 .filter-btn.active{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;border-color:transparent;box-shadow:0 6px 20px rgba(124,92,255,.35)}
 
@@ -112,9 +113,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .games-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
 .game-tile{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .35s,box-shadow .35s;position:relative;animation:cardStagger .5s cubic-bezier(.2,.8,.2,1) backwards}
 @keyframes cardStagger{0%{opacity:0;transform:translateY(24px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
-.game-tile:nth-child(1){animation-delay:.05s}.game-tile:nth-child(2){animation-delay:.1s}.game-tile:nth-child(3){animation-delay:.15s}
-.game-tile:nth-child(4){animation-delay:.2s}.game-tile:nth-child(5){animation-delay:.25s}.game-tile:nth-child(6){animation-delay:.3s}
-.game-tile:nth-child(n+7){animation-delay:.35s}
 .game-tile:hover{border-color:rgba(124,92,255,.5);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 30px rgba(124,92,255,.15);transform:translateY(-8px) scale(1.02)}
 .game-tile:active{transform:translateY(-4px) scale(.99);transition:transform .1s}
 .game-cover{height:150px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden}
@@ -136,12 +134,12 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .game-rating{margin-top:6px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
 .stars-mini{color:#ffb020;letter-spacing:1px}
 
-/* BILDIRIM PANELI */
-.notif-panel{position:fixed;top:20px;right:20px;width:360px;max-width:calc(100vw - 40px);max-height:80vh;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.7);z-index:200;display:none;overflow:hidden;animation:notifIn .3s cubic-bezier(.2,.8,.2,1)}
+/* BILDIRIM */
+.notif-panel{position:fixed;top:20px;right:20px;width:360px;max-width:calc(100vw - 40px);max-height:80vh;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.7);z-index:200;display:none;overflow:hidden;animation:notifIn .3s}
 @keyframes notifIn{0%{opacity:0;transform:translateY(-10px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
 .notif-panel.open{display:block}
 .notif-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.notif-head h3{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.notif-head h3{font-size:1rem;font-weight:800}
 .notif-mark-read{background:none;border:none;color:var(--cyan);cursor:pointer;font-size:.78rem;font-weight:600}
 .notif-list{max-height:calc(80vh - 60px);overflow-y:auto}
 .notif-item{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;gap:12px;cursor:pointer;transition:background .2s;position:relative}
@@ -154,6 +152,7 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .notif-body .notif-time{font-size:.7rem;color:var(--muted);font-family:'Space Mono',monospace}
 .notif-empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:.88rem}
 .notif-empty-icon{font-size:2.5rem;margin-bottom:10px;opacity:.5}
+.notif-bell-count{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:100px;background:linear-gradient(115deg,#ff2e88,#ffb020);color:#fff;font-size:.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,46,136,.5)}
 
 /* DETAY */
 .back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:.85rem;margin-bottom:24px;transition:all .2s}
@@ -169,7 +168,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .buy-btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(124,92,255,.55)}
 .buy-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 .buy-btn.green{background:linear-gradient(115deg,#2bff88,#00e5ff)}
-.buy-btn.orange{background:linear-gradient(115deg,#ffb020,#ff2e88)}
 .wishlist-btn{padding:14px 22px;border-radius:100px;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
 .wishlist-btn:hover{border-color:#ff2e88;color:#ff85b3}
 .wishlist-btn.active{background:rgba(255,46,136,.15);border-color:#ff2e88;color:#ff85b3}
@@ -303,7 +301,7 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .follow-btn.following{background:transparent;border:1px solid var(--line);color:var(--muted)}
 .follow-btn.following:hover{border-color:#ff2e88;color:#ff85b3}
 
-/* PROFIL */
+/* PROFİL */
 .profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:24px}
 .profile-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 24px;text-align:center;position:relative;overflow:hidden}
 .profile-cover{position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(115deg,var(--neon),var(--cyan));opacity:.3}
@@ -338,12 +336,47 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 
 /* KÜTÜPHANE */
 .library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.library-item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
+.library-item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .3s}
 .library-item:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.4);box-shadow:0 15px 35px rgba(0,0,0,.4)}
 .library-cover{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem}
 .library-body{padding:14px 16px}
 .library-body h4{font-size:1rem;font-weight:800;margin-bottom:4px}
 .library-body .lib-status{font-size:.72rem;color:var(--muted)}
+
+/* TURNUVA */
+.tournaments-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.tournament-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;position:relative;overflow:hidden;cursor:pointer;transition:all .3s;animation:cardStagger .5s backwards}
+.tournament-card:hover{transform:translateY(-6px);border-color:rgba(255,176,32,.5);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.tournament-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ffb020,#ff2e88)}
+.tournament-card.status-active::before{background:linear-gradient(90deg,#2bff88,#00e5ff)}
+.tournament-card.status-upcoming::before{background:linear-gradient(90deg,#7c5cff,#00e5ff)}
+.tournament-card.status-finished::before{background:linear-gradient(90deg,#8f93b3,#6b6f85)}
+.tournament-status{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:100px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.tournament-status.active{background:rgba(43,255,136,.15);color:#6bffaa;border:1px solid rgba(43,255,136,.3)}
+.tournament-status.upcoming{background:rgba(124,92,255,.15);color:#b9a8ff;border:1px solid rgba(124,92,255,.3)}
+.tournament-status.finished{background:rgba(143,147,179,.15);color:#8f93b3;border:1px solid rgba(143,147,179,.3)}
+.tournament-card h3{font-size:1.2rem;font-weight:800;margin-bottom:8px}
+.tour-desc{color:var(--muted);font-size:.88rem;margin-bottom:14px;line-height:1.5}
+.tournament-entry-count{font-size:.82rem;color:var(--cyan);font-weight:600;margin-bottom:10px}
+.tournament-dates{display:flex;gap:14px;font-size:.78rem;color:var(--muted);font-family:'Space Mono',monospace;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
+.tournament-dates span{display:flex;align-items:center;gap:5px}
+.ranking-table{width:100%;border-collapse:collapse;min-width:600px}
+.ranking-table th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line)}
+.ranking-table td{padding:14px 12px;border-bottom:1px solid var(--line);font-size:.9rem;vertical-align:middle}
+.ranking-table tr:last-child td{border-bottom:none}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:10px;font-weight:800;font-size:.85rem;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.rank-badge.gold{background:linear-gradient(115deg,#ffb020,#ffd970);color:#07070d;border-color:transparent;box-shadow:0 4px 14px rgba(255,176,32,.5)}
+.rank-badge.silver{background:linear-gradient(115deg,#c0c0c0,#e8e8e8);color:#07070d;border-color:transparent}
+.rank-badge.bronze{background:linear-gradient(115deg,#cd7f32,#e8a869);color:#07070d;border-color:transparent}
+
+/* DASHBOARD */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{padding:22px;background:var(--card);border:1px solid var(--line);border-radius:16px;text-align:center;position:relative;overflow:hidden;transition:all .3s;animation:cardStagger .4s backwards}
+.stat-card:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.4);box-shadow:0 15px 35px rgba(0,0,0,.3)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--cyan))}
+.stat-card-icon{font-size:1.8rem;margin-bottom:8px}
+.stat-card-num{font-family:'Space Mono',monospace;font-size:1.8rem;font-weight:800;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1.1}
+.stat-card-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
 
 /* ADMIN */
 .table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;margin:0 -4px;padding:0 4px 4px}
@@ -388,8 +421,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .empty-icon{font-size:3rem;margin-bottom:14px;opacity:.5}
 .empty h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:6px}
 .mobile-menu-btn{display:none;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);cursor:pointer;align-items:center;justify-content:center;font-size:1.2rem;margin-right:10px}
-.notif-bell{position:relative}
-.notif-bell-count{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:100px;background:linear-gradient(115deg,#ff2e88,#ffb020);color:#fff;font-size:.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,46,136,.5);animation:pulse 2s infinite}
 
 /* RIPPLE */
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rippleAnim .6s linear;pointer-events:none}
@@ -409,7 +440,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .mobile-nav-btn.active{color:var(--text)}
 .mobile-nav-btn.active .m-icon{transform:translateY(-2px)}
 .mobile-nav-btn.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:linear-gradient(90deg,var(--neon),var(--cyan));border-radius:0 0 3px 3px}
-.mobile-nav-btn .m-badge{position:absolute;top:4px;right:calc(50% - 18px);min-width:16px;height:16px;padding:0 4px;background:linear-gradient(115deg,#ff2e88,#ffb020);color:#fff;font-size:.6rem;font-weight:800;border-radius:100px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,46,136,.5)}
 
 @media(max-width:900px){.game-detail-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}}
 @media(max-width:760px){
@@ -448,6 +478,11 @@ input,button,textarea,select{font-family:inherit;color:inherit}
   .achievements-grid{grid-template-columns:repeat(2,1fr)}
   .notif-panel{top:auto;bottom:80px;right:10px;left:10px;width:auto}
   .mobile-bottom-nav{display:block}
+  .tournaments-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .stat-card{padding:16px 12px}
+  .stat-card-num{font-size:1.4rem}
+  .stat-card-icon{font-size:1.4rem}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
@@ -502,6 +537,9 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <button class="nav-item" data-view="feed"><span class="icon">📰</span><span>Akis</span></button>
       <button class="nav-item" data-view="announcements"><span class="icon">📢</span><span>Duyurular</span></button>
       <button class="nav-item" data-view="developers"><span class="icon">👥</span><span>Gelistiriciler</span></button>
+      <div class="nav-label">Etkinlikler</div>
+      <button class="nav-item" data-view="tournaments"><span class="icon">🏆</span><span>Turnuvalar</span></button>
+      <button class="nav-item" data-view="dev-apply" id="devApplyNav"><span class="icon">✨</span><span>Gelistirici Ol</span></button>
       <div class="nav-label">Hesabim</div>
       <button class="nav-item" data-view="profile"><span class="icon">👤</span><span>Profil</span></button>
       <button class="nav-item" data-view="library"><span class="icon">📚</span><span>Kutuphanem</span></button>
@@ -510,8 +548,10 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <div class="nav-label" id="devLabel" style="display:none">Gelistirici</div>
       <button class="nav-item" data-view="admin-add" id="devAddNav" style="display:none"><span class="icon">➕</span><span>Oyun Yukle</span><span class="badge dev">DEV</span></button>
       <div class="nav-label" id="adminLabel" style="display:none">Yonetim</div>
+      <button class="nav-item" data-view="dashboard" id="dashboardNav" style="display:none"><span class="icon">📊</span><span>Dashboard</span><span class="badge admin">ADMIN</span></button>
       <button class="nav-item" data-view="admin" id="adminNav" style="display:none"><span class="icon">⚙️</span><span>Admin Panel</span><span class="badge admin">ADMIN</span></button>
       <button class="nav-item" data-view="dev-manager" id="devManagerNav" style="display:none"><span class="icon">🛠️</span><span>Gelistirici Yonetimi</span></button>
+      <button class="nav-item" data-view="admin-applications" id="appsNav" style="display:none"><span class="icon">📨</span><span>Basvurular</span><span class="badge red" id="appsCount" style="display:none">0</span></button>
       <button class="nav-item" data-view="reports" id="reportsNav" style="display:none"><span class="icon">🚨</span><span>Raporlar</span><span class="badge red" id="reportsCount" style="display:none">0</span></button>
     </nav>
     <div class="sidebar-user">
@@ -521,7 +561,7 @@ input,button,textarea,select{font-family:inherit;color:inherit}
           <div class="user-name" id="userName">-</div>
           <div class="user-role" id="userRole">-</div>
         </div>
-        <button class="notif-bell" id="notifBell" style="background:none;border:none;font-size:1.2rem;cursor:pointer;position:relative;padding:4px">
+        <button class="notif-bell" id="notifBell">
           🔔<span class="notif-bell-count" id="notifCount" style="display:none">0</span>
         </button>
         <button class="logout-btn" id="logoutBtn" title="Cikis">⏻</button>
@@ -605,6 +645,37 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <div class="dev-grid" id="devGrid"></div>
     </section>
 
+    <!-- TURNUVA -->
+    <section class="view" id="view-tournaments">
+      <div class="view-head"><div>
+        <span class="view-tag">// Etkinlikler</span>
+        <h1 class="view-title">Turnuvalar</h1>
+        <p class="view-desc">Oyunlar yorum ve begeni ile yarisir. En cok yorum alan ve begenilen kazanir.</p>
+      </div></div>
+      <div class="filter-row">
+        <button class="filter-btn active" data-tfilter="all">Tumu</button>
+        <button class="filter-btn" data-tfilter="active">Aktif</button>
+        <button class="filter-btn" data-tfilter="upcoming">Yaklasan</button>
+        <button class="filter-btn" data-tfilter="finished">Bitmis</button>
+      </div>
+      <div class="tournaments-grid" id="tournamentsGrid"></div>
+    </section>
+
+    <section class="view" id="view-tournament-detail">
+      <button class="back-btn" id="backToTournaments">← Turnuvalara Don</button>
+      <div id="tournamentDetailContent"></div>
+    </section>
+
+    <!-- GELISTIRICI BASVURU -->
+    <section class="view" id="view-dev-apply">
+      <div class="view-head"><div>
+        <span class="view-tag">// Basvuru</span>
+        <h1 class="view-title">Gelistirici Ol</h1>
+        <p class="view-desc">Platforma oyun yukleyebilmek icin gelistirici basvurusu yap.</p>
+      </div></div>
+      <div class="admin-panel" id="devApplyPanel"></div>
+    </section>
+
     <!-- PROFIL -->
     <section class="view" id="view-profile">
       <div class="view-head"><div>
@@ -647,7 +718,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <div class="view-head"><div>
         <span class="view-tag">// Hesabim</span>
         <h1 class="view-title">Kutuphanem</h1>
-        <p class="view-desc">Indirdigin ve kutuphanene ekledigin oyunlar.</p>
       </div></div>
       <div class="library-grid" id="libraryGrid"></div>
     </section>
@@ -666,9 +736,36 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <div class="view-head"><div>
         <span class="view-tag">// Hesabim</span>
         <h1 class="view-title">Basarimlar</h1>
-        <p class="view-desc">Kazandigin rozetler ve basarimlar.</p>
       </div></div>
       <div class="achievements-grid" id="achievementsGrid"></div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="view" id="view-dashboard">
+      <div class="view-head"><div>
+        <span class="view-tag">// Yonetim</span>
+        <h1 class="view-title">Dashboard</h1>
+        <p class="view-desc">Platformun genel istatistikleri.</p>
+      </div></div>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="admin-panel">
+        <h2>👑 En Aktif Kullanicilar</h2>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>#</th><th>Kullanici</th><th>Yorum</th><th>Post</th><th>Skor</th></tr></thead>
+            <tbody id="topUsersBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="admin-panel">
+        <h2>🔥 En Populer Oyunlar</h2>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>#</th><th>Oyun</th><th>Yorum</th><th>Puan</th><th>Begeni</th></tr></thead>
+            <tbody id="topGamesBody"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
     <!-- ADMIN -->
@@ -725,12 +822,27 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       </div>
     </section>
 
+    <!-- BASVURULAR -->
+    <section class="view" id="view-admin-applications">
+      <div class="view-head"><div>
+        <span class="view-tag">// Yonetim</span>
+        <h1 class="view-title">Gelistirici Basvurulari</h1>
+      </div></div>
+      <div class="admin-panel">
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Kullanici</th><th>Deneyim</th><th>Link</th><th>Tarih</th><th style="text-align:right">Islem</th></tr></thead>
+            <tbody id="applicationsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <!-- RAPORLAR -->
     <section class="view" id="view-reports">
       <div class="view-head"><div>
         <span class="view-tag">// Yonetim</span>
         <h1 class="view-title">Raporlar</h1>
-        <p class="view-desc">Kullanicilarin bildirdigi icerikler.</p>
       </div></div>
       <div class="admin-panel">
         <div class="table-wrap">
@@ -771,11 +883,11 @@ input,button,textarea,select{font-family:inherit;color:inherit}
   </main>
 
   <!-- MOBIL ALT NAV -->
-  <nav class="mobile-bottom-nav" id="mobileBottomNav">
+  <nav class="mobile-bottom-nav">
     <div class="mobile-bottom-nav-inner">
       <button class="mobile-nav-btn active" data-mview="games"><span class="m-icon">🎮</span><span>Oyunlar</span></button>
+      <button class="mobile-nav-btn" data-mview="tournaments"><span class="m-icon">🏆</span><span>Turnuva</span></button>
       <button class="mobile-nav-btn" data-mview="feed"><span class="m-icon">📰</span><span>Akis</span></button>
-      <button class="mobile-nav-btn" data-mview="announcements"><span class="m-icon">📢</span><span>Duyuru</span></button>
       <button class="mobile-nav-btn" data-mview="profile"><span class="m-icon">👤</span><span>Profil</span></button>
       <button class="mobile-nav-btn" id="mobileMenuBtn2"><span class="m-icon">☰</span><span>Menu</span></button>
     </div>
@@ -812,12 +924,12 @@ input,button,textarea,select{font-family:inherit;color:inherit}
     <h3>Profili Duzenle</h3>
     <div class="form-grid">
       <div class="form-field full"><label>Kullanici Adi</label><input type="text" id="editUsername"></div>
-      <div class="form-field full"><label>Bio (kendinden bahset)</label><textarea id="editBio" maxlength="200" placeholder="Merhaba, ben..."></textarea></div>
-      <div class="form-field full"><label>Website</label><input type="url" id="editWebsite" placeholder="https://..."></div>
+      <div class="form-field full"><label>Bio</label><textarea id="editBio" maxlength="200"></textarea></div>
+      <div class="form-field full"><label>Website</label><input type="url" id="editWebsite"></div>
       <div class="form-field"><label>Twitter/X</label><input type="text" id="editTwitter" placeholder="@kullanici"></div>
-      <div class="form-field"><label>YouTube</label><input type="url" id="editYoutube" placeholder="https://youtube.com/..."></div>
+      <div class="form-field"><label>YouTube</label><input type="url" id="editYoutube"></div>
       <div class="form-field"><label>Instagram</label><input type="text" id="editInsta" placeholder="@kullanici"></div>
-      <div class="form-field"><label>Discord</label><input type="text" id="editDiscord" placeholder="kullanici#1234"></div>
+      <div class="form-field"><label>Discord</label><input type="text" id="editDiscord"></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-cancel" id="editProfileCancel">Iptal</button>
@@ -834,12 +946,12 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <select id="reportReason">
         <option value="spam">Spam / Reklam</option>
         <option value="kufur">Kufur / Hakaret</option>
-        <option value="yanlis">Yanlis / Aldatici bilgi</option>
-        <option value="telif">Telif hakki ihlali</option>
+        <option value="yanlis">Yanlis bilgi</option>
+        <option value="telif">Telif hakki</option>
         <option value="diger">Diger</option>
       </select>
     </div>
-    <div class="form-field" style="margin-top:14px"><label>Detay (opsiyonel)</label><textarea id="reportDetails"></textarea></div>
+    <div class="form-field" style="margin-top:14px"><label>Detay</label><textarea id="reportDetails"></textarea></div>
     <div class="modal-actions">
       <button class="btn btn-cancel" id="reportCancel">Iptal</button>
       <button class="btn btn-save" id="reportSave">Gonder</button>
@@ -847,10 +959,28 @@ input,button,textarea,select{font-family:inherit;color:inherit}
   </div>
 </div>
 
+<!-- MODAL: Turnuva Olustur -->
+<div class="modal-bg" id="createTournamentModal">
+  <div class="modal">
+    <h3>🏆 Yeni Turnuva</h3>
+    <div class="form-grid">
+      <div class="form-field full"><label>Turnuva Adi</label><input type="text" id="tourTitle" placeholder="Ornek: Bikerman Turnuvasi #1"></div>
+      <div class="form-field full"><label>Aciklama</label><textarea id="tourDescription" placeholder="Turnuva hakkinda..."></textarea></div>
+      <div class="form-field"><label>Baslangic Tarihi</label><input type="date" id="tourStartDate"></div>
+      <div class="form-field"><label>Bitis Tarihi</label><input type="date" id="tourEndDate"></div>
+      <div class="form-field full"><label>Durum</label><select id="tourStatus"><option value="upcoming">Yaklasan</option><option value="active">Aktif</option><option value="finished">Bitmis</option></select></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="tourCancel">Iptal</button>
+      <button class="btn btn-save" id="tourSave">Olustur</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAxdt8cc-ApERlahlGtPqsUE5jM3OQBTh4",
@@ -867,12 +997,13 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const ADMIN_EMAIL = 'cemilprooyuncu@gmail.com';
 
-let currentUser = null;
-let currentUserDoc = null;
+let currentUser = null, currentUserDoc = null;
 let games = [], announcements = [], reviews = [], posts = [], users = [], wishlists = [];
 let notifications = [], reports = [], follows = [], library = [];
+let tournaments = [], tournamentEntries = [], devApplications = [];
 let wishlistIds = [], libraryIds = [], myFollowing = [];
 let currentDevFilter = 'all', currentFilter = 'all', currentSearch = '';
+let currentTournamentFilter = 'all', currentDevFilterState = 'all';
 let subsStarted = false;
 const $ = id => document.getElementById(id);
 const unsubs = {};
@@ -883,9 +1014,7 @@ const isStaff = () => isAdmin() || currentUserDoc?.isStaff === true;
 const myUsername = () => currentUserDoc?.username || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Anonim';
 const myPhoto = () => currentUser?.photoURL || '';
 
-// ============================================
 // TEMA
-// ============================================
 const savedTheme = localStorage.getItem('noama_theme') || 'dark';
 if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
 const themeToggle = $('themeToggle');
@@ -898,9 +1027,18 @@ themeToggle.addEventListener('click', () => {
   updateThemeIcon();
 });
 
-// ============================================
+// GOOGLE ANALYTICS
+(function(){
+  const s = document.createElement('script'); s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-52Q9KTZNHN';
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', 'G-52Q9KTZNHN', { anonymize_ip: true });
+})();
+
 // LOGIN
-// ============================================
 $('googleSignInBtn').addEventListener('click', async () => {
   const btn = $('googleSignInBtn');
   btn.disabled = true; btn.textContent = 'Giris yapiliyor...'; btn.classList.add('loading');
@@ -924,9 +1062,7 @@ function showLoginSuccess(){
   setTimeout(() => overlay.remove(), 1500);
 }
 
-// ============================================
 // OTURUM
-// ============================================
 onAuthStateChanged(auth, async (user) => {
   $('loading').classList.add('hide');
   if (user){
@@ -962,7 +1098,8 @@ onAuthStateChanged(auth, async (user) => {
       subsStarted = true;
       subscribeGames(); subscribeAnnouncements(); subscribeReviews(); subscribePosts();
       subscribeUsers(); subscribeWishlist(); subscribeNotifications(); subscribeLibrary();
-      subscribeFollows(); subscribeReports();
+      subscribeFollows(); subscribeReports(); subscribeTournaments();
+      subscribeTournamentEntries(); subscribeDevApplications();
     }
   } else {
     currentUser = null; currentUserDoc = null;
@@ -987,27 +1124,34 @@ function updateUserUI(){
   $('userRole').textContent = role;
   $('devAddNav').style.display = isDeveloper() ? 'flex' : 'none';
   $('devLabel').style.display = isDeveloper() ? 'block' : 'none';
+  $('devApplyNav').style.display = isDeveloper() ? 'none' : 'flex';
   $('adminNav').style.display = isAdmin() ? 'flex' : 'none';
   $('adminLabel').style.display = isAdmin() ? 'block' : 'none';
   $('devManagerNav').style.display = isAdmin() ? 'flex' : 'none';
   $('reportsNav').style.display = isAdmin() ? 'flex' : 'none';
+  $('dashboardNav').style.display = isAdmin() ? 'flex' : 'none';
+  $('appsNav').style.display = isAdmin() ? 'flex' : 'none';
+  if ($('view-dev-apply').classList.contains('active')) renderDevApplyPanel();
 }
 
-// ============================================
 // SUBSCRIBERS
-// ============================================
 function subscribeGames(){
   if (unsubs.games) unsubs.games();
   unsubs.games = onSnapshot(collection(db, 'games'), async (snap) => {
     games = []; snap.forEach(d => games.push({ id: d.id, ...d.data() }));
     if (games.length === 0 && isAdmin()){ await seedDefaults(); return; }
     renderGames(); renderLibrary(); renderAchievements();
-    if ($('view-admin')?.classList.contains('active')) renderAdmin();
-    if ($('view-game-detail')?.classList.contains('active')){
+    if ($('view-admin').classList.contains('active')) renderAdmin();
+    if ($('view-game-detail').classList.contains('active')){
       const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
       if (id) openGameDetail(id);
     }
-    if ($('view-profile')?.classList.contains('active')) renderProfile();
+    if ($('view-profile').classList.contains('active')) renderProfile();
+    if ($('view-tournament-detail').classList.contains('active')){
+      const id = $('tournamentDetailContent')?.dataset.tournamentId;
+      if (id) openTournamentDetail(id);
+    }
+    if ($('view-dashboard').classList.contains('active')) renderDashboard();
   });
 }
 async function seedDefaults(){
@@ -1027,7 +1171,7 @@ function subscribeAnnouncements(){
   unsubs.ann = onSnapshot(collection(db, 'announcements'), (snap) => {
     announcements = []; snap.forEach(d => announcements.push({ id: d.id, ...d.data() }));
     renderAnnouncements();
-    if ($('view-admin')?.classList.contains('active')) renderAdmin();
+    if ($('view-admin').classList.contains('active')) renderAdmin();
   });
 }
 function subscribeReviews(){
@@ -1035,11 +1179,16 @@ function subscribeReviews(){
   unsubs.reviews = onSnapshot(collection(db, 'reviews'), (snap) => {
     reviews = []; snap.forEach(d => reviews.push({ id: d.id, ...d.data() }));
     renderGames(); renderAchievements();
-    if ($('view-game-detail')?.classList.contains('active')){
+    if ($('view-game-detail').classList.contains('active')){
       const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
       if (id) openGameDetail(id);
     }
-    if ($('view-profile')?.classList.contains('active')) renderProfile();
+    if ($('view-profile').classList.contains('active')) renderProfile();
+    if ($('view-tournament-detail').classList.contains('active')){
+      const id = $('tournamentDetailContent')?.dataset.tournamentId;
+      if (id) openTournamentDetail(id);
+    }
+    if ($('view-dashboard').classList.contains('active')) renderDashboard();
   });
 }
 function subscribePosts(){
@@ -1055,8 +1204,9 @@ function subscribeUsers(){
   unsubs.users = onSnapshot(collection(db, 'users'), (snap) => {
     users = []; snap.forEach(d => users.push({ uid: d.id, ...d.data() }));
     renderDevelopers();
-    if ($('view-dev-manager')?.classList.contains('active')) renderDevManager();
-    if ($('view-profile')?.classList.contains('active')) renderProfile();
+    if ($('view-dev-manager').classList.contains('active')) renderDevManager();
+    if ($('view-profile').classList.contains('active')) renderProfile();
+    if ($('view-dashboard').classList.contains('active')) renderDashboard();
     renderPosts();
   });
 }
@@ -1069,7 +1219,7 @@ function subscribeWishlist(){
     const badge = $('wishlistBadge');
     if (wishlistIds.length > 0){ badge.style.display = 'inline-block'; badge.textContent = wishlistIds.length; }
     else badge.style.display = 'none';
-    if ($('view-wishlist')?.classList.contains('active')) renderWishlist();
+    if ($('view-wishlist').classList.contains('active')) renderWishlist();
   });
 }
 function subscribeLibrary(){
@@ -1088,7 +1238,7 @@ function subscribeFollows(){
     follows = []; snap.forEach(d => follows.push({ id: d.id, ...d.data() }));
     if (currentUser) myFollowing = follows.filter(f => f.followerId === currentUser.uid).map(f => f.followingId);
     renderDevelopers();
-    if ($('view-profile')?.classList.contains('active')) renderProfile();
+    if ($('view-profile').classList.contains('active')) renderProfile();
   });
 }
 function subscribeNotifications(){
@@ -1106,29 +1256,57 @@ function subscribeReports(){
   unsubs.reports = onSnapshot(collection(db, 'reports'), (snap) => {
     reports = []; snap.forEach(d => reports.push({ id: d.id, ...d.data() }));
     const badge = $('reportsCount');
-    if (reports.length > 0){ badge.style.display = 'inline-block'; badge.textContent = reports.length; }
-    else badge.style.display = 'none';
-    if ($('view-reports')?.classList.contains('active')) renderReports();
+    if (badge){ if (reports.length > 0){ badge.style.display = 'inline-block'; badge.textContent = reports.length; } else badge.style.display = 'none'; }
+    if ($('view-reports').classList.contains('active')) renderReports();
+  });
+}
+function subscribeTournaments(){
+  if (unsubs.tournaments) unsubs.tournaments();
+  unsubs.tournaments = onSnapshot(collection(db, 'tournaments'), (snap) => {
+    tournaments = []; snap.forEach(d => tournaments.push({ id: d.id, ...d.data() }));
+    tournaments.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    renderTournaments();
+    if ($('view-tournament-detail').classList.contains('active')){
+      const id = $('tournamentDetailContent')?.dataset.tournamentId;
+      if (id) openTournamentDetail(id);
+    }
+  });
+}
+function subscribeTournamentEntries(){
+  if (unsubs.tEntries) unsubs.tEntries();
+  unsubs.tEntries = onSnapshot(collection(db, 'tournamentEntries'), (snap) => {
+    tournamentEntries = []; snap.forEach(d => tournamentEntries.push({ id: d.id, ...d.data() }));
+    renderTournaments();
+    if ($('view-tournament-detail').classList.contains('active')){
+      const id = $('tournamentDetailContent')?.dataset.tournamentId;
+      if (id) openTournamentDetail(id);
+    }
+  });
+}
+function subscribeDevApplications(){
+  if (unsubs.apps) unsubs.apps();
+  unsubs.apps = onSnapshot(collection(db, 'devApplications'), (snap) => {
+    devApplications = []; snap.forEach(d => devApplications.push({ id: d.id, ...d.data() }));
+    devApplications.sort((a, b) => (b.appliedAt || '').localeCompare(a.appliedAt || ''));
+    if (isAdmin()){
+      const pending = devApplications.filter(a => a.status === 'pending').length;
+      const badge = $('appsCount');
+      if (badge){ if (pending > 0){ badge.style.display = 'inline-block'; badge.textContent = pending; } else badge.style.display = 'none'; }
+    }
+    if ($('view-admin-applications').classList.contains('active')) renderApplications();
+    if ($('view-dev-apply').classList.contains('active')) renderDevApplyPanel();
+    if ($('view-dashboard').classList.contains('active')) renderDashboard();
   });
 }
 
-// ============================================
-// BILDIRIM OLUŞTUR
-// ============================================
+// BILDIRIM
 async function createNotification(userId, type, message, link = null){
   if (!userId || userId === currentUser?.uid) return;
-  try {
-    await addDoc(collection(db, 'notifications'), {
-      userId, type, message, link,
-      read: false,
-      createdAt: new Date().toISOString()
-    });
-  } catch(e){ console.warn(e); }
+  try { await addDoc(collection(db, 'notifications'), { userId, type, message, link, read: false, createdAt: new Date().toISOString() }); }
+  catch(e){ console.warn(e); }
 }
-
 function renderNotifications(){
-  const list = $('notifList');
-  const count = $('notifCount');
+  const list = $('notifList'), count = $('notifCount');
   const unread = notifications.filter(n => !n.read).length;
   if (unread > 0){ count.style.display = 'flex'; count.textContent = unread > 9 ? '9+' : unread; }
   else count.style.display = 'none';
@@ -1140,49 +1318,36 @@ function renderNotifications(){
   list.innerHTML = notifications.slice(0, 30).map(n => `
     <div class="notif-item ${n.read ? '' : 'unread'}" data-notif-id="${n.id}" ${n.link ? `data-link="${n.link}"` : ''}>
       <div class="notif-icon">${icons[n.type] || '🔔'}</div>
-      <div class="notif-body">
-        <p>${escapeHtml(n.message)}</p>
-        <span class="notif-time">${timeAgo(n.createdAt)}</span>
-      </div>
-    </div>
-  `).join('');
+      <div class="notif-body"><p>${escapeHtml(n.message)}</p><span class="notif-time">${timeAgo(n.createdAt)}</span></div>
+    </div>`).join('');
   list.querySelectorAll('[data-notif-id]').forEach(el => {
     el.addEventListener('click', async () => {
-      const id = el.dataset.notifId;
-      await updateDoc(doc(db, 'notifications', id), { read: true });
+      await updateDoc(doc(db, 'notifications', el.dataset.notifId), { read: true });
       $('notifPanel').classList.remove('open');
       if (el.dataset.link) handleNotificationLink(el.dataset.link);
     });
   });
 }
-
 function handleNotificationLink(link){
   if (link.startsWith('game:')) openGameDetail(link.slice(5));
   else if (link === 'profile') { showView('profile'); renderProfile(); }
   else if (link === 'feed') showView('feed');
 }
-
-$('notifBell').addEventListener('click', (e) => {
-  e.stopPropagation();
-  $('notifPanel').classList.toggle('open');
-});
+$('notifBell').addEventListener('click', (e) => { e.stopPropagation(); $('notifPanel').classList.toggle('open'); });
 $('markAllRead').addEventListener('click', async () => {
-  for (const n of notifications.filter(x => !x.read)){
-    await updateDoc(doc(db, 'notifications', n.id), { read: true });
-  }
+  for (const n of notifications.filter(x => !x.read)) await updateDoc(doc(db, 'notifications', n.id), { read: true });
 });
 document.addEventListener('click', (e) => {
   if (!e.target.closest('#notifPanel') && !e.target.closest('#notifBell')) $('notifPanel').classList.remove('open');
 });
 
-// ============================================
 // NAVIGASYON
-// ============================================
 document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     showView(btn.dataset.view);
+    history.pushState({ view: btn.dataset.view }, '', '#' + btn.dataset.view);
     $('sidebarNav').classList.remove('mobile-open');
     const v = btn.dataset.view;
     if (v === 'profile') renderProfile();
@@ -1193,6 +1358,10 @@ document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
     if (v === 'developers') renderDevelopers();
     if (v === 'dev-manager') renderDevManager();
     if (v === 'reports') renderReports();
+    if (v === 'tournaments') renderTournaments();
+    if (v === 'dev-apply') renderDevApplyPanel();
+    if (v === 'admin-applications') renderApplications();
+    if (v === 'dashboard') renderDashboard();
   });
 });
 function showView(name){
@@ -1203,8 +1372,15 @@ function showView(name){
 }
 $('backToGames').addEventListener('click', () => {
   showView('games');
+  history.pushState({ view: 'games' }, '', '#games');
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.querySelector('.nav-item[data-view="games"]').classList.add('active');
+  document.querySelector('.nav-item[data-view="games"]')?.classList.add('active');
+});
+$('backToTournaments')?.addEventListener('click', () => {
+  showView('tournaments');
+  history.pushState({ view: 'tournaments' }, '', '#tournaments');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.querySelector('.nav-item[data-view="tournaments"]')?.classList.add('active');
 });
 $('mobileMenuBtn').addEventListener('click', () => $('sidebarNav').classList.toggle('mobile-open'));
 $('mobileMenuBtn2').addEventListener('click', () => $('sidebarNav').classList.toggle('mobile-open'));
@@ -1214,20 +1390,33 @@ document.querySelectorAll('.mobile-nav-btn[data-mview]').forEach(btn => {
     btn.classList.add('active');
     const v = btn.dataset.mview;
     showView(v);
+    history.pushState({ view: v }, '', '#' + v);
     document.querySelectorAll('.nav-item[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === v));
     if (v === 'profile') renderProfile();
+    if (v === 'tournaments') renderTournaments();
   });
 });
 $('userCard').addEventListener('click', (e) => {
   if (e.target.closest('#logoutBtn') || e.target.closest('#notifBell')) return;
   showView('profile'); renderProfile();
+  history.pushState({ view: 'profile' }, '', '#profile');
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.querySelector('.nav-item[data-view="profile"]')?.classList.add('active');
 });
 
-// ============================================
+// GERİ TUŞU
+if (!history.state || !history.state.view) history.replaceState({ view: 'games' }, '', '#games');
+window.addEventListener('popstate', (e) => {
+  if (e.state && e.state.view){
+    showView(e.state.view);
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === e.state.view));
+  } else {
+    history.pushState({ view: 'games' }, '', '#games');
+    if (confirm('Noama Games sitesinden cikmak istediginize emin misiniz?')) history.go(-2);
+  }
+});
+
 // YARDIMCILAR
-// ============================================
 const statusText = s => s === 'beta' ? 'Acik Beta' : s === 'dev' ? 'Gelistiriliyor' : 'Yayinda';
 const priceText = g => g.price > 0 ? g.price + ' TL' : (g.status === 'dev' ? 'Yakinda' : 'Ucretsiz');
 function avgRating(id){ const rs = reviews.filter(r => r.gameId === id); return rs.length ? rs.reduce((s, r) => s + r.rating, 0) / rs.length : 0; }
@@ -1247,32 +1436,20 @@ function timeAgo(iso){
   return new Date(iso).toLocaleDateString('tr-TR');
 }
 
-// ============================================
 // ARAMA
-// ============================================
-$('searchInput').addEventListener('input', (e) => {
-  currentSearch = e.target.value;
-  renderGames();
-  showSuggestions(currentSearch);
-});
+$('searchInput').addEventListener('input', (e) => { currentSearch = e.target.value; renderGames(); showSuggestions(currentSearch); });
 $('searchInput').addEventListener('focus', () => { if (currentSearch) showSuggestions(currentSearch); });
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.search-bar')) $('searchSuggestions').classList.remove('show');
-});
+document.addEventListener('click', (e) => { if (!e.target.closest('.search-bar')) $('searchSuggestions').classList.remove('show'); });
 function showSuggestions(q){
   const box = $('searchSuggestions');
   if (!q || q.length < 2){ box.classList.remove('show'); return; }
   const lower = q.toLowerCase();
-  const matchedGames = games.filter(g => g.title.toLowerCase().includes(lower) || (g.tags || []).some(t => t.toLowerCase().includes(lower))).slice(0, 4);
-  const matchedDevs = users.filter(u => (u.username || '').toLowerCase().includes(lower) && (u.role === 'developer' || u.role === 'admin')).slice(0, 3);
-  if (!matchedGames.length && !matchedDevs.length){ box.classList.remove('show'); return; }
+  const mg = games.filter(g => g.title.toLowerCase().includes(lower) || (g.tags || []).some(t => t.toLowerCase().includes(lower))).slice(0, 4);
+  const md = users.filter(u => (u.username || '').toLowerCase().includes(lower) && (u.role === 'developer' || u.role === 'admin')).slice(0, 3);
+  if (!mg.length && !md.length){ box.classList.remove('show'); return; }
   let html = '';
-  matchedGames.forEach(g => {
-    html += `<div class="suggestion-item" data-sug-game="${g.id}"><span class="sug-icon">${g.emoji}</span><span>${g.title}</span><span class="sug-meta">${statusText(g.status)}</span></div>`;
-  });
-  matchedDevs.forEach(u => {
-    html += `<div class="suggestion-item" data-sug-user="${u.uid}"><span class="sug-icon">👤</span><span>${u.username}</span><span class="sug-meta">Gelistirici</span></div>`;
-  });
+  mg.forEach(g => { html += `<div class="suggestion-item" data-sug-game="${g.id}"><span class="sug-icon">${g.emoji}</span><span>${escapeHtml(g.title)}</span><span class="sug-meta">${statusText(g.status)}</span></div>`; });
+  md.forEach(u => { html += `<div class="suggestion-item" data-sug-user="${u.uid}"><span class="sug-icon">👤</span><span>${escapeHtml(u.username)}</span><span class="sug-meta">Gelistirici</span></div>`; });
   box.innerHTML = html;
   box.classList.add('show');
   box.querySelectorAll('[data-sug-game]').forEach(el => el.addEventListener('click', () => {
@@ -1287,9 +1464,7 @@ function showSuggestions(q){
   }));
 }
 
-// ============================================
 // FİLTRELER
-// ============================================
 document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
@@ -1306,11 +1481,19 @@ document.querySelectorAll('.filter-btn[data-devfilter]').forEach(btn => {
     renderDevelopers();
   });
 });
+document.querySelectorAll('.filter-btn[data-tfilter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-tfilter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTournamentFilter = btn.dataset.tfilter;
+    renderTournaments();
+  });
+});
 
 function getFilteredGames(){
   let list = [...games];
-  const statuses = ['released', 'beta', 'dev'];
-  if (statuses.includes(currentFilter)) list = list.filter(g => g.status === currentFilter);
+  const sts = ['released', 'beta', 'dev'];
+  if (sts.includes(currentFilter)) list = list.filter(g => g.status === currentFilter);
   else if (currentFilter === 'free') list = list.filter(g => g.price === 0);
   else if (currentFilter !== 'all') list = list.filter(g => (g.tags || []).some(t => t.toLowerCase() === currentFilter.toLowerCase()));
   if (currentSearch){
@@ -1320,9 +1503,7 @@ function getFilteredGames(){
   return list;
 }
 
-// ============================================
 // OYUN KARTLARI
-// ============================================
 function renderGames(){
   const row = $('gamesRow');
   if (!row) return;
@@ -1377,9 +1558,7 @@ async function toggleWishlist(gameId){
   }
 }
 
-// ============================================
 // OYUN DETAY
-// ============================================
 function openGameDetail(id){
   const g = games.find(x => x.id === id);
   if (!g) return;
@@ -1400,9 +1579,7 @@ function openGameDetail(id){
 
   let libBtn = '';
   if (g.status !== 'dev' && g.downloadUrl){
-    libBtn = inLib
-      ? `<button class="wishlist-btn active" id="libBtn">📚 Kutuphanemde</button>`
-      : `<button class="wishlist-btn" id="libBtn">📚 Kutuphaneme Ekle</button>`;
+    libBtn = inLib ? `<button class="wishlist-btn active" id="libBtn">📚 Kutuphanemde</button>` : `<button class="wishlist-btn" id="libBtn">📚 Kutuphaneme Ekle</button>`;
   }
 
   let progressHtml = '';
@@ -1436,7 +1613,7 @@ function openGameDetail(id){
           </div>
           <div class="game-detail-side">
             ${owner ? `
-              <div class="info-row" style="display:flex;align-items:center;gap:12px;cursor:pointer" id="ownerRow">
+              <div class="info-row" style="display:flex;align-items:center;gap:12px">
                 <div class="review-avatar" style="width:38px;height:38px">${owner.photoURL ? `<img src="${owner.photoURL}">` : (owner.username || '?')[0].toUpperCase()}</div>
                 <div style="flex:1">
                   <div class="info-label">Gelistirici</div>
@@ -1476,15 +1653,10 @@ function openGameDetail(id){
   showView('game-detail');
   $('mainContent').scrollTop = 0;
 
-  // Eventler
   $('detailWishBtn')?.addEventListener('click', () => toggleWishlist(g.id));
   $('libBtn')?.addEventListener('click', () => toggleLibrary(g.id));
   $('downloadBtn')?.addEventListener('click', () => { setTimeout(() => addToLibrarySilent(g.id), 500); });
   $('followOwnerBtn')?.addEventListener('click', () => toggleFollow(g.ownerId));
-  $('ownerRow')?.addEventListener('click', (e) => {
-    if (e.target.id === 'followOwnerBtn') return;
-    // Gelecek: kullanıcı profiline git
-  });
 
   let selectedStar = 0;
   const picker = $('starPicker');
@@ -1555,12 +1727,11 @@ function attachReviewEvents(g){
   const content = $('gameDetailContent');
   content.querySelectorAll('[data-review-like]').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const rid = btn.dataset.reviewLike;
-      const r = reviews.find(x => x.id === rid);
+      const r = reviews.find(x => x.id === btn.dataset.reviewLike);
       if (!r || !currentUser) return;
       const likes = r.likes || [];
       const newLikes = likes.includes(currentUser.uid) ? likes.filter(u => u !== currentUser.uid) : [...likes, currentUser.uid];
-      await updateDoc(doc(db, 'reviews', rid), { likes: newLikes });
+      await updateDoc(doc(db, 'reviews', r.id), { likes: newLikes });
       if (!likes.includes(currentUser.uid) && r.userId !== currentUser.uid){
         await createNotification(r.userId, 'like', `${myUsername()} yorumunu begendi`, 'game:' + g.id);
       }
@@ -1574,8 +1745,7 @@ function attachReviewEvents(g){
   });
   content.querySelectorAll('[data-reply-to]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const rid = btn.dataset.replyTo;
-      const f = $('reply-form-' + rid);
+      const f = $('reply-form-' + btn.dataset.replyTo);
       if (f) f.style.display = f.style.display === 'none' ? 'block' : 'none';
     });
   });
@@ -1585,9 +1755,7 @@ function attachReviewEvents(g){
       const text = $('reply-text-' + rid)?.value.trim();
       if (!text) return;
       const target = reviews.find(x => x.id === rid);
-      await updateDoc(doc(db, 'reviews', rid), {
-        reply: { userId: currentUser.uid, username: myUsername(), text, date: new Date().toISOString().slice(0, 10), isStaff: isStaff(), isDeveloper: isDeveloper() }
-      });
+      await updateDoc(doc(db, 'reviews', rid), { reply: { userId: currentUser.uid, username: myUsername(), text, date: new Date().toISOString().slice(0, 10), isStaff: isStaff(), isDeveloper: isDeveloper() } });
       if (target && target.userId !== currentUser.uid){
         await createNotification(target.userId, 'reply', `${myUsername()} yorumuna cevap verdi`, 'game:' + g.id);
       }
@@ -1598,9 +1766,7 @@ function attachReviewEvents(g){
   });
 }
 
-// ============================================
 // KÜTÜPHANE
-// ============================================
 async function toggleLibrary(gameId){
   if (!currentUser) return;
   const ex = library.find(l => l.userId === currentUser.uid && l.gameId === gameId);
@@ -1628,16 +1794,11 @@ function renderLibrary(){
         <h4>${escapeHtml(g.title)}</h4>
         <div class="lib-status">${statusText(g.status)} · ${priceText(g)}</div>
       </div>
-    </div>
-  `).join('');
-  grid.querySelectorAll('[data-lib-id]').forEach(el => {
-    el.addEventListener('click', () => openGameDetail(el.dataset.libId));
-  });
+    </div>`).join('');
+  grid.querySelectorAll('[data-lib-id]').forEach(el => el.addEventListener('click', () => openGameDetail(el.dataset.libId)));
 }
 
-// ============================================
 // TAKIP
-// ============================================
 async function toggleFollow(userId){
   if (!currentUser || userId === currentUser.uid) return;
   const ex = follows.find(f => f.followerId === currentUser.uid && f.followingId === userId);
@@ -1648,9 +1809,7 @@ async function toggleFollow(userId){
   }
 }
 
-// ============================================
 // GELİŞTİRİCİLER
-// ============================================
 const devScore = (u) => {
   const ug = games.filter(g => g.ownerId === u.uid);
   const rs = reviews.filter(r => ug.some(g => g.id === r.gameId));
@@ -1689,15 +1848,335 @@ function renderDevelopers(){
           <div class="dev-stat"><span class="dev-stat-num">${s.score.toFixed(0)}</span><span class="dev-stat-label">Skor</span></div>
         </div>
         ${!isMe && currentUser ? `<button class="follow-btn ${following ? 'following' : ''}" data-follow="${u.uid}">${following ? 'Takibi Birak' : '+ Takip Et'}</button>` : ''}
-      </div>
-    `;
+      </div>`;
   }).join('');
   grid.querySelectorAll('[data-follow]').forEach(btn => btn.addEventListener('click', () => toggleFollow(btn.dataset.follow)));
 }
 
-// ============================================
+// TURNUVA RENDER
+function renderTournaments(){
+  const grid = $('tournamentsGrid');
+  if (!grid) return;
+  let list = [...tournaments];
+  if (currentTournamentFilter !== 'all') list = list.filter(t => t.status === currentTournamentFilter);
+  if (!list.length){
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🏆</div><h3>Turnuva yok</h3><p>' + (isAdmin() ? 'Yeni turnuva olustur.' : 'Admin turnuva olusturunca burada gorunecek.') + '</p></div>';
+    return;
+  }
+  const statusLabels = { active: '🔥 AKTIF', upcoming: '⏰ YAKLASAN', finished: '✅ BITMIS' };
+  grid.innerHTML = list.map(t => {
+    const entryCount = tournamentEntries.filter(e => e.tournamentId === t.id).length;
+    return `
+      <div class="tournament-card status-${t.status}" data-tid="${t.id}">
+        <span class="tournament-status ${t.status}">${statusLabels[t.status] || t.status}</span>
+        <h3>${escapeHtml(t.title)}</h3>
+        <p class="tour-desc">${escapeHtml(t.description || '')}</p>
+        <div class="tournament-entry-count">🎮 ${entryCount} oyun katildi</div>
+        <div class="tournament-dates">
+          <span>📅 ${t.startDate || '-'}</span>
+          <span>→ ${t.endDate || '-'}</span>
+        </div>
+      </div>`;
+  }).join('');
+  grid.querySelectorAll('[data-tid]').forEach(el => el.addEventListener('click', () => openTournamentDetail(el.dataset.tid)));
+
+  // Admin butonu
+  const head = $('view-tournaments')?.querySelector('.view-head');
+  if (head && isAdmin() && !head.querySelector('#createTournamentBtn')){
+    const btn = document.createElement('button');
+    btn.id = 'createTournamentBtn';
+    btn.className = 'mini-btn gold';
+    btn.textContent = '+ Turnuva Olustur';
+    btn.addEventListener('click', () => {
+      $('tourTitle').value = ''; $('tourDescription').value = '';
+      $('tourStartDate').value = new Date().toISOString().slice(0, 10);
+      $('tourEndDate').value = '';
+      $('tourStatus').value = 'upcoming';
+      $('createTournamentModal').classList.add('active');
+    });
+    head.appendChild(btn);
+  }
+}
+
+$('tourCancel')?.addEventListener('click', () => $('createTournamentModal').classList.remove('active'));
+$('tourSave')?.addEventListener('click', async () => {
+  const title = $('tourTitle').value.trim();
+  if (!title) return alert('Turnuva adi zorunlu.');
+  await addDoc(collection(db, 'tournaments'), {
+    title,
+    description: $('tourDescription').value.trim(),
+    startDate: $('tourStartDate').value,
+    endDate: $('tourEndDate').value,
+    status: $('tourStatus').value,
+    createdAt: new Date().toISOString(),
+    createdBy: currentUser.uid
+  });
+  $('createTournamentModal').classList.remove('active');
+  alert('Turnuva olusturuldu! 🏆');
+});
+
+function tournamentRanking(tournamentId){
+  const entries = tournamentEntries.filter(e => e.tournamentId === tournamentId);
+  return entries.map(e => {
+    const g = games.find(x => x.id === e.gameId);
+    if (!g) return null;
+    const revs = reviews.filter(r => r.gameId === e.gameId);
+    const totalLikes = revs.reduce((s, r) => s + (r.likes || []).length, 0);
+    const avg = revs.length ? revs.reduce((s, r) => s + r.rating, 0) / revs.length : 0;
+    const score = revs.length * 10 + totalLikes * 3 + avg * 5;
+    return { game: g, reviewCount: revs.length, totalLikes, avg, score };
+  }).filter(Boolean).sort((a, b) => b.score - a.score);
+}
+
+function openTournamentDetail(id){
+  const t = tournaments.find(x => x.id === id);
+  if (!t) return;
+  const ranking = tournamentRanking(id);
+  const entries = tournamentEntries.filter(e => e.tournamentId === id);
+  const myGames = games.filter(g => g.ownerId === currentUser?.uid);
+  const myJoinedGames = entries.filter(e => e.ownerId === currentUser?.uid).map(e => e.gameId);
+  const canJoin = currentUser && isDeveloper() && t.status === 'active';
+  const statusLabels = { active: '🔥 Aktif', upcoming: '⏰ Yaklasan', finished: '✅ Bitmis' };
+
+  let joinSection = '';
+  if (canJoin){
+    const availableGames = myGames.filter(g => !myJoinedGames.includes(g.id));
+    if (availableGames.length){
+      joinSection = `
+        <div class="admin-panel">
+          <h2>➕ Turnuvaya Oyun Ekle</h2>
+          <p>Her oyun icin + butonuna bas. Katilan oyunlar yorum ve begeni ile yarisir.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            ${availableGames.map(g => `<button class="mini-btn green" data-join-game="${g.id}">+ ${g.emoji} ${escapeHtml(g.title)}</button>`).join('')}
+          </div>
+        </div>`;
+    } else if (myGames.length){
+      joinSection = `<div class="admin-panel"><h2>✅ Durum</h2><p>Tum oyunlarin turnuvaya katildi.</p></div>`;
+    } else {
+      joinSection = `<div class="admin-panel"><h2>ℹ️ Turnuvaya Katil</h2><p>Once bir oyun yuklemen gerekiyor. "Oyun Yukle" menusunden ekleyebilirsin.</p></div>`;
+    }
+  }
+
+  const html = `
+    <div class="admin-panel" style="border-color:rgba(255,176,32,.4)">
+      <span class="tournament-status ${t.status}">${statusLabels[t.status]}</span>
+      <h1 style="font-size:2rem;font-weight:900;margin:12px 0 8px">${escapeHtml(t.title)}</h1>
+      <p style="color:var(--muted);margin-bottom:16px;line-height:1.6">${escapeHtml(t.description || '')}</p>
+      <div class="tournament-dates" style="padding-top:16px;border-top:1px solid var(--line)">
+        <span>📅 Baslangic: ${t.startDate || '-'}</span>
+        <span>🏁 Bitis: ${t.endDate || '-'}</span>
+        <span>🎮 ${entries.length} oyun</span>
+      </div>
+    </div>
+    ${joinSection}
+    <div class="admin-panel">
+      <h2>🏆 Siralama</h2>
+      <p>Skor = (Yorum × 10) + (Begeni × 3) + (Puan × 5)</p>
+      <div class="table-wrap">
+        <table class="ranking-table">
+          <thead><tr><th>#</th><th>Oyun</th><th>Yorum</th><th>Puan</th><th>Begeni</th><th>Skor</th></tr></thead>
+          <tbody>
+            ${ranking.length === 0 ? '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">Henuz katilan oyun yok</td></tr>' :
+              ranking.map((r, i) => {
+                const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+                return `<tr style="cursor:pointer" data-rank-game="${r.game.id}">
+                  <td><span class="rank-badge ${cls}">${i+1}</span></td>
+                  <td><strong>${r.game.emoji} ${escapeHtml(r.game.title)}</strong></td>
+                  <td>${r.reviewCount}</td>
+                  <td style="color:#ffb020">${r.avg.toFixed(1)} ★</td>
+                  <td>❤️ ${r.totalLikes}</td>
+                  <td><strong style="color:var(--cyan)">${r.score.toFixed(0)}</strong></td>
+                </tr>`;
+              }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    ${isAdmin() ? `
+      <div class="admin-panel">
+        <h2>⚙️ Admin Islemleri</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="mini-btn gold" data-t-status="${t.id}">🔄 Durum Degistir</button>
+          <button class="mini-btn danger" data-t-del="${t.id}">🗑️ Sil</button>
+        </div>
+      </div>` : ''}
+  `;
+  $('tournamentDetailContent').innerHTML = html;
+  $('tournamentDetailContent').dataset.tournamentId = id;
+  showView('tournament-detail');
+  $('mainContent').scrollTop = 0;
+
+  $('tournamentDetailContent').querySelectorAll('[data-join-game]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const gameId = btn.dataset.joinGame;
+      const g = games.find(x => x.id === gameId);
+      if (!g) return;
+      if (!confirm(`"${g.title}" turnuvaya eklensin mi?`)) return;
+      await addDoc(collection(db, 'tournamentEntries'), { tournamentId: id, gameId, ownerId: currentUser.uid, joinedAt: new Date().toISOString() });
+      alert('Oyun turnuvaya eklendi! 🎉');
+    });
+  });
+  $('tournamentDetailContent').querySelectorAll('[data-rank-game]').forEach(el => el.addEventListener('click', () => openGameDetail(el.dataset.rankGame)));
+  $('tournamentDetailContent').querySelectorAll('[data-t-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Turnuvayi sil?')) return;
+      for (const e of tournamentEntries.filter(x => x.tournamentId === btn.dataset.tDel)) await deleteDoc(doc(db, 'tournamentEntries', e.id));
+      await deleteDoc(doc(db, 'tournaments', btn.dataset.tDel));
+      showView('tournaments');
+    });
+  });
+  $('tournamentDetailContent').querySelectorAll('[data-t-status]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const states = ['upcoming', 'active', 'finished'];
+      const cur = tournaments.find(x => x.id === btn.dataset.tStatus)?.status || 'upcoming';
+      const next = states[(states.indexOf(cur) + 1) % states.length];
+      await updateDoc(doc(db, 'tournaments', btn.dataset.tStatus), { status: next });
+    });
+  });
+}
+
+// BAŞVURU
+function renderDevApplyPanel(){
+  const panel = $('devApplyPanel');
+  if (!panel || !currentUser) return;
+  const myApps = devApplications.filter(a => a.userId === currentUser.uid);
+  const latest = myApps[0];
+
+  if (isDeveloper()){
+    panel.innerHTML = `<div class="empty"><div class="empty-icon">✨</div><h3>Zaten gelistiricisin!</h3><p>Oyun yuklemek icin "Oyun Yukle" menusunu kullan.</p></div>`;
+    return;
+  }
+  if (latest && latest.status === 'pending'){
+    panel.innerHTML = `<div class="empty"><div class="empty-icon">⏳</div><h3>Basvurun inceleniyor</h3><p>${timeAgo(latest.appliedAt)} gonderildi. Admin onaylayinca haber verecegiz.</p></div>`;
+    return;
+  }
+  if (latest && latest.status === 'approved'){
+    panel.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><h3>Onaylandi!</h3><p>Gelistirici oldun. Sayfayi yenile.</p></div>`;
+    return;
+  }
+  const rejectedMsg = latest && latest.status === 'rejected' ? `<div style="padding:12px 14px;border-radius:10px;background:rgba(255,46,136,.12);border:1px solid rgba(255,46,136,.3);color:#ff85b3;font-size:.85rem;margin-bottom:16px">Onceki basvurun reddedildi. Tekrar deneyebilirsin.</div>` : '';
+
+  panel.innerHTML = `
+    ${rejectedMsg}
+    <p style="color:var(--muted);font-size:.88rem;margin-bottom:16px">Asagidaki formu doldur, admin onayladiginda gelistirici olacaksin ve oyun yukleyebileceksin.</p>
+    <div class="form-grid">
+      <div class="form-field full"><label>Neden gelistirici olmak istiyorsun?</label><textarea id="appReason" placeholder="Kendinden bahset..."></textarea></div>
+      <div class="form-field full"><label>Oyun gelistirme deneyimin</label><textarea id="appExp" placeholder="Unity, Unreal, 3D modelleme, vs."></textarea></div>
+      <div class="form-field full"><label>Portfolio / Link (opsiyonel)</label><input type="url" id="appPortfolio" placeholder="https://..."></div>
+    </div>
+    <button class="mini-btn gold" id="submitDevApp" style="margin-top:16px">📨 Basvuruyu Gonder</button>
+  `;
+  $('submitDevApp').addEventListener('click', async () => {
+    const reason = $('appReason').value.trim();
+    const exp = $('appExp').value.trim();
+    if (!reason || !exp) return alert('Lutfen tum alanlari doldur.');
+    await addDoc(collection(db, 'devApplications'), {
+      userId: currentUser.uid, username: myUsername(), email: currentUser.email,
+      photoURL: myPhoto(), reason, experience: exp,
+      portfolio: $('appPortfolio').value.trim(),
+      status: 'pending', appliedAt: new Date().toISOString()
+    });
+    alert('Basvurun gonderildi! ✅');
+  });
+}
+
+function renderApplications(){
+  if (!isAdmin()) return;
+  const tbody = $('applicationsBody');
+  if (!tbody) return;
+  if (!devApplications.length){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">Basvuru yok</td></tr>';
+    return;
+  }
+  tbody.innerHTML = devApplications.map(a => `
+    <tr>
+      <td><strong>${escapeHtml(a.username)}</strong><br><span style="font-size:.75rem;color:var(--muted)">${escapeHtml(a.email || '')}</span></td>
+      <td style="max-width:220px"><div style="font-size:.82rem">${escapeHtml(a.experience || '-')}</div>${a.portfolio ? `<a href="${a.portfolio}" target="_blank" style="color:var(--cyan);font-size:.75rem">Portfolio</a>` : ''}</td>
+      <td>${a.portfolio ? '✅' : '-'}</td>
+      <td style="font-size:.75rem;color:var(--muted)">${timeAgo(a.appliedAt)}</td>
+      <td style="text-align:right">
+        ${a.status === 'pending' ? `
+          <div class="admin-actions" style="justify-content:flex-end">
+            <button class="mini-btn green" data-app-approve="${a.id}">✓ Onayla</button>
+            <button class="mini-btn danger" data-app-reject="${a.id}">✗ Reddet</button>
+          </div>
+        ` : `<span class="mini-tag ${a.status === 'approved' ? 'beta' : 'dev'}">${a.status === 'approved' ? 'Onayli' : 'Reddedildi'}</span>`}
+      </td>
+    </tr>`).join('');
+  tbody.querySelectorAll('[data-app-approve]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const app = devApplications.find(x => x.id === btn.dataset.appApprove);
+      if (!app) return;
+      await updateDoc(doc(db, 'users', app.userId), { role: 'developer', isVerified: true });
+      await updateDoc(doc(db, 'devApplications', app.id), { status: 'approved', reviewedAt: new Date().toISOString() });
+      await createNotification(app.userId, 'system', 'Gelistirici basvurun onaylandi! Artik oyun yukleyebilirsin.', 'profile');
+      alert('Onaylandi! ✅');
+    });
+  });
+  tbody.querySelectorAll('[data-app-reject]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Reddet?')) return;
+      const app = devApplications.find(x => x.id === btn.dataset.appReject);
+      await updateDoc(doc(db, 'devApplications', app.id), { status: 'rejected', reviewedAt: new Date().toISOString() });
+      await createNotification(app.userId, 'system', 'Gelistirici basvurun reddedildi.', 'profile');
+    });
+  });
+}
+
+// DASHBOARD
+function renderDashboard(){
+  if (!isAdmin()) return;
+  const stats = $('statsGrid');
+  if (!stats) return;
+  const totalReviewLikes = reviews.reduce((s, r) => s + (r.likes || []).length, 0);
+  const statsData = [
+    { icon: '👥', num: users.length, label: 'Kullanici' },
+    { icon: '🎮', num: games.length, label: 'Oyun' },
+    { icon: '⭐', num: reviews.length, label: 'Yorum' },
+    { icon: '❤️', num: totalReviewLikes, label: 'Begeni' },
+    { icon: '📰', num: posts.length, label: 'Paylasim' },
+    { icon: '🏆', num: tournaments.length, label: 'Turnuva' },
+    { icon: '💬', num: posts.reduce((s, p) => s + (p.replies || []).length, 0), label: 'Yanit' },
+    { icon: '📨', num: devApplications.filter(a => a.status === 'pending').length, label: 'Bekleyen Basvuru' }
+  ];
+  stats.innerHTML = statsData.map(s => `
+    <div class="stat-card">
+      <div class="stat-card-icon">${s.icon}</div>
+      <span class="stat-card-num">${s.num}</span>
+      <div class="stat-card-label">${s.label}</div>
+    </div>`).join('');
+
+  const userStats = users.map(u => {
+    const uR = reviews.filter(r => r.userId === u.uid).length;
+    const uP = posts.filter(p => p.userId === u.uid).length;
+    return { user: u, reviews: uR, posts: uP, score: uR * 5 + uP * 3 };
+  }).sort((a, b) => b.score - a.score).slice(0, 10);
+  $('topUsersBody').innerHTML = userStats.map((u, i) => `
+    <tr>
+      <td><span class="rank-badge ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i+1}</span></td>
+      <td><strong>${escapeHtml(u.user.username)}</strong>${u.user.isStaff ? ' <span class="staff-badge">NOAMA</span>' : ''}</td>
+      <td>${u.reviews}</td>
+      <td>${u.posts}</td>
+      <td><strong style="color:var(--cyan)">${u.score}</strong></td>
+    </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">Veri yok</td></tr>';
+
+  const gameStats = games.map(g => {
+    const revs = reviews.filter(r => r.gameId === g.id);
+    const likes = revs.reduce((s, r) => s + (r.likes || []).length, 0);
+    const avg = revs.length ? revs.reduce((s, r) => s + r.rating, 0) / revs.length : 0;
+    return { game: g, reviewCount: revs.length, likes, avg };
+  }).sort((a, b) => b.reviewCount * 10 + b.likes * 3 - (a.reviewCount * 10 + a.likes * 3)).slice(0, 10);
+  $('topGamesBody').innerHTML = gameStats.map((g, i) => `
+    <tr>
+      <td><span class="rank-badge ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">${i+1}</span></td>
+      <td><strong>${g.game.emoji} ${escapeHtml(g.game.title)}</strong></td>
+      <td>${g.reviewCount}</td>
+      <td style="color:#ffb020">${g.avg.toFixed(1)} ★</td>
+      <td>❤️ ${g.likes}</td>
+    </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">Veri yok</td></tr>';
+}
+
 // PROFİL
-// ============================================
 function renderProfile(){
   if (!currentUser || !currentUserDoc) return;
   $('profileBigAvatar').innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
@@ -1734,7 +2213,6 @@ function renderProfile(){
     }).join('');
 }
 
-// Profil düzenleme
 $('openProfileEdit').addEventListener('click', () => {
   if (!currentUserDoc) return;
   $('editUsername').value = currentUserDoc.username || '';
@@ -1751,56 +2229,47 @@ $('editProfileSave').addEventListener('click', async () => {
   const username = $('editUsername').value.trim();
   if (!username) return alert('Kullanici adi bos olamaz.');
   await updateDoc(doc(db, 'users', currentUser.uid), {
-    username,
-    bio: $('editBio').value.trim(),
-    website: $('editWebsite').value.trim(),
-    twitter: $('editTwitter').value.trim(),
-    youtube: $('editYoutube').value.trim(),
-    insta: $('editInsta').value.trim(),
-    discord: $('editDiscord').value.trim()
+    username, bio: $('editBio').value.trim(), website: $('editWebsite').value.trim(),
+    twitter: $('editTwitter').value.trim(), youtube: $('editYoutube').value.trim(),
+    insta: $('editInsta').value.trim(), discord: $('editDiscord').value.trim()
   });
   $('editProfileModal').classList.remove('active');
   alert('Profil guncellendi! ✅');
 });
 
-// ============================================
 // BAŞARIMLAR
-// ============================================
 function renderAchievements(){
   const grid = $('achievementsGrid');
   if (!grid || !currentUser) return;
-  const myReviewCount = reviews.filter(r => r.userId === currentUser.uid).length;
-  const myWishCount = wishlistIds.length;
-  const myLibCount = libraryIds.length;
-  const myPostCount = posts.filter(p => p.userId === currentUser.uid).length;
-  const myGamesCount = games.filter(g => g.ownerId === currentUser.uid).length;
+  const myRC = reviews.filter(r => r.userId === currentUser.uid).length;
+  const myWC = wishlistIds.length;
+  const myLC = libraryIds.length;
+  const myPC = posts.filter(p => p.userId === currentUser.uid).length;
+  const myGC = games.filter(g => g.ownerId === currentUser.uid).length;
   const ach = [
     { icon: '🎮', name: 'Baslangic', desc: 'Hesabini actın', unlocked: true },
-    { icon: '⭐', name: 'Ilk Yorum', desc: '1 yorum yaptın', unlocked: myReviewCount >= 1 },
-    { icon: '💬', name: 'Yorumcu', desc: '5 yorum yaptın', unlocked: myReviewCount >= 5 },
-    { icon: '📝', name: 'Usta Yazar', desc: '20 yorum yaptın', unlocked: myReviewCount >= 20 },
-    { icon: '❤️', name: 'Istek Ustası', desc: '5 oyunu listene ekledin', unlocked: myWishCount >= 5 },
-    { icon: '📚', name: 'Koleksiyoner', desc: '3 oyunu kütüphanene ekledin', unlocked: myLibCount >= 3 },
-    { icon: '📰', name: 'Sosyal', desc: 'Ilk paylasimini yaptın', unlocked: myPostCount >= 1 },
-    { icon: '🎯', name: 'Gelistirici', desc: 'Ilk oyununu yayinladin', unlocked: myGamesCount >= 1 },
+    { icon: '⭐', name: 'Ilk Yorum', desc: '1 yorum yaptın', unlocked: myRC >= 1 },
+    { icon: '💬', name: 'Yorumcu', desc: '5 yorum yaptın', unlocked: myRC >= 5 },
+    { icon: '📝', name: 'Usta Yazar', desc: '20 yorum yaptın', unlocked: myRC >= 20 },
+    { icon: '❤️', name: 'Istek Ustasi', desc: '5 oyunu listene ekledin', unlocked: myWC >= 5 },
+    { icon: '📚', name: 'Koleksiyoner', desc: '3 oyunu kütüphanene ekledin', unlocked: myLC >= 3 },
+    { icon: '📰', name: 'Sosyal', desc: 'Ilk paylasimini yaptın', unlocked: myPC >= 1 },
+    { icon: '🎯', name: 'Gelistirici', desc: 'Ilk oyununu yayinladin', unlocked: myGC >= 1 },
     { icon: '👥', name: 'Takipci', desc: '5 kisiyi takip ettin', unlocked: myFollowing.length >= 5 },
-    { icon: '🔥', name: 'Aktif Oyuncu', desc: '10 yorum + 10 istek', unlocked: myReviewCount >= 10 && myWishCount >= 10 },
-    { icon: '🏆', name: 'Efsane', desc: 'Tum ana başarımlar tamam', unlocked: myReviewCount >= 20 && myGamesCount >= 1 && myFollowing.length >= 5 },
+    { icon: '🔥', name: 'Aktif Oyuncu', desc: '10 yorum + 10 istek', unlocked: myRC >= 10 && myWC >= 10 },
+    { icon: '🏆', name: 'Efsane', desc: 'Tum ana basarimlar', unlocked: myRC >= 20 && myGC >= 1 && myFollowing.length >= 5 },
     { icon: '💎', name: 'Kurucu', desc: 'Noama ekibinin parcasi', unlocked: isStaff() }
   ];
-  const unlockedCount = ach.filter(a => a.unlocked).length;
+  const u = ach.filter(a => a.unlocked).length;
   grid.innerHTML = ach.map(a => `
     <div class="achievement ${a.unlocked ? 'unlocked' : ''}">
       <span class="achievement-icon">${a.icon}</span>
       <div class="achievement-name">${a.name}</div>
       <div class="achievement-desc">${a.desc}</div>
-    </div>
-  `).join('') + `<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-size:.85rem">${unlockedCount}/${ach.length} başarım acildi</div>`;
+    </div>`).join('') + `<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-size:.85rem">${u}/${ach.length} basarim acildi</div>`;
 }
 
-// ============================================
 // RAPOR
-// ============================================
 let reportTarget = null;
 function openReport(type, id){
   if (!currentUser) return alert('Giris yapmalisin.');
@@ -1814,46 +2283,36 @@ $('reportSave').addEventListener('click', async () => {
   await addDoc(collection(db, 'reports'), {
     type: reportTarget.type, targetId: reportTarget.id,
     reason: $('reportReason').value, details: $('reportDetails').value.trim(),
-    reporterId: currentUser.uid, reporterName: myUsername(),
-    createdAt: new Date().toISOString()
+    reporterId: currentUser.uid, reporterName: myUsername(), createdAt: new Date().toISOString()
   });
   $('reportModal').classList.remove('active');
   reportTarget = null;
-  alert('Rapor gonderildi. Tesekkurler! 🚨');
+  alert('Rapor gonderildi! 🚨');
 });
-
 function renderReports(){
   if (!isAdmin()) return;
   const tbody = $('reportsBody');
-  if (!reports.length){
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Rapor yok</td></tr>';
-    return;
-  }
+  if (!tbody) return;
+  if (!reports.length){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Rapor yok</td></tr>'; return; }
   const reasons = { spam: 'Spam', kufur: 'Kufur', yanlis: 'Yanlis bilgi', telif: 'Telif', diger: 'Diger' };
   tbody.innerHTML = reports.map(r => {
     let content = '-';
     if (r.type === 'review'){ const rev = reviews.find(x => x.id === r.targetId); content = rev ? `"${escapeHtml(rev.text.slice(0, 40))}..."` : '(silinmis)'; }
-    return `
-      <tr>
-        <td><span class="mini-tag">${r.type}</span></td>
-        <td>${content}</td>
-        <td>${reasons[r.reason] || r.reason}</td>
-        <td>${escapeHtml(r.reporterName || '-')}</td>
-        <td style="font-size:.75rem;color:var(--muted)">${timeAgo(r.createdAt)}</td>
-        <td style="text-align:right"><button class="mini-btn danger" data-del-report="${r.id}">🗑️</button></td>
-      </tr>
-    `;
+    return `<tr>
+      <td><span class="mini-tag">${r.type}</span></td>
+      <td>${content}</td>
+      <td>${reasons[r.reason] || r.reason}</td>
+      <td>${escapeHtml(r.reporterName || '-')}</td>
+      <td style="font-size:.75rem;color:var(--muted)">${timeAgo(r.createdAt)}</td>
+      <td style="text-align:right"><button class="mini-btn danger" data-del-report="${r.id}">🗑️</button></td>
+    </tr>`;
   }).join('');
-  tbody.querySelectorAll('[data-del-report]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      await deleteDoc(doc(db, 'reports', btn.dataset.delReport));
-    });
-  });
+  tbody.querySelectorAll('[data-del-report]').forEach(btn => btn.addEventListener('click', async () => {
+    await deleteDoc(doc(db, 'reports', btn.dataset.delReport));
+  }));
 }
 
-// ============================================
-// POSTS (aynı kalsın, ama kullanıcı adı tıklanabilir)
-// ============================================
+// POSTS
 $('postText').addEventListener('input', e => {
   $('postCharCount').textContent = e.target.value.length;
   $('postSubmitBtn').disabled = e.target.value.length === 0;
@@ -1897,10 +2356,8 @@ function renderPosts(){
           ${(p.replies || []).map(r => `<div class="reply-item"><div class="reply-avatar">${r.photoURL ? `<img src="${r.photoURL}">` : (r.username || '?')[0].toUpperCase()}</div><div class="reply-body"><div class="reply-header"><span class="reply-name">${escapeHtml(r.username)}</span><span class="reply-date">${timeAgo(r.date)}</span></div><div class="reply-content">${escapeHtml(r.text)}</div></div></div>`).join('')}
           <div class="reply-input-row"><input type="text" id="reply-input-${p.id}" placeholder="Yanit yaz..." maxlength="200"><button data-submit-post-reply="${p.id}">Gonder</button></div>
         </div>
-      </article>
-    `;
+      </article>`;
   }).join('');
-  // events
   list.querySelectorAll('[data-menu-toggle]').forEach(btn => btn.addEventListener('click', (e) => {
     e.stopPropagation();
     document.querySelectorAll('.post-menu.open').forEach(m => { if (m.id !== 'menu-' + btn.dataset.menuToggle) m.classList.remove('open'); });
@@ -1943,9 +2400,7 @@ function renderPosts(){
 }
 document.addEventListener('click', () => document.querySelectorAll('.post-menu.open').forEach(m => m.classList.remove('open')));
 
-// ============================================
 // DUYURULAR
-// ============================================
 function renderAnnouncements(){
   const list = $('updatesList');
   if (!list) return;
@@ -1956,13 +2411,10 @@ function renderAnnouncements(){
       <div class="update-head"><span class="mini-tag">${escapeHtml(a.tag)}</span><span style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)">${a.date}</span></div>
       <h3>${escapeHtml(a.title)}</h3>
       <p>${escapeHtml(a.message)}</p>
-    </article>
-  `).join('');
+    </article>`).join('');
 }
 
-// ============================================
 // WISHLIST
-// ============================================
 function renderWishlist(){
   const row = $('wishlistRow');
   if (!row) return;
@@ -1982,18 +2434,13 @@ function renderWishlist(){
           <div class="game-price">${priceText(g)}</div>
           ${rating > 0 ? `<div class="game-rating"><span class="stars-mini">${starString(rating)}</span> ${rating.toFixed(1)}</div>` : ''}
         </div>
-      </article>
-    `;
+      </article>`;
   }).join('');
-  row.querySelectorAll('.game-tile').forEach(t => {
-    t.addEventListener('click', e => { if (e.target.closest('[data-wish]')) return; openGameDetail(t.dataset.gameId); });
-  });
+  row.querySelectorAll('.game-tile').forEach(t => t.addEventListener('click', e => { if (e.target.closest('[data-wish]')) return; openGameDetail(t.dataset.gameId); }));
   row.querySelectorAll('[data-wish]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(b.dataset.wish); }));
 }
 
-// ============================================
 // ADMIN
-// ============================================
 function renderAdmin(){
   if (!isAdmin()) return;
   const tbody = $('adminGamesBody');
@@ -2007,8 +2454,7 @@ function renderAdmin(){
         <button class="mini-btn" data-edit="${g.id}">✏️</button>
         <button class="mini-btn danger" data-del-game="${g.id}">🗑️</button>
       </div></td>
-    </tr>
-  `).join('');
+    </tr>`).join('');
   tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditModal(b.dataset.edit)));
   tbody.querySelectorAll('[data-toggle-year]').forEach(b => b.addEventListener('click', async () => {
     const id = b.dataset.toggleYear;
@@ -2028,8 +2474,7 @@ function renderAdmin(){
       <span style="flex:1;font-size:.88rem;font-weight:600">${escapeHtml(a.title)}</span>
       <span style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted)">${a.date}</span>
       <button class="mini-btn danger" data-del-ann="${a.id}">🗑️</button>
-    </div>
-  `).join('');
+    </div>`).join('');
   annList.querySelectorAll('[data-del-ann]').forEach(b => b.addEventListener('click', async () => {
     if (!confirm('Duyuruyu sil?')) return;
     await deleteDoc(doc(db, 'announcements', b.dataset.delAnn));
@@ -2092,7 +2537,7 @@ function renderDevManager(){
   }));
 }
 
-// Oyun ekle
+// OYUN EKLE
 $('createGameBtn').addEventListener('click', async () => {
   if (!isDeveloper()) return alert('Yetkin yok.');
   const title = $('newTitle').value.trim();
@@ -2120,7 +2565,7 @@ $('createGameBtn').addEventListener('click', async () => {
   document.querySelector('[data-view="games"]').click();
 });
 
-// Oyun düzenle
+// OYUN DÜZENLE
 let editingGameId = null;
 function openEditModal(id){
   const g = games.find(x => x.id === id);
@@ -2152,9 +2597,7 @@ $('editSave').addEventListener('click', async () => {
 });
 $('editGameModal').addEventListener('click', e => { if (e.target.id === 'editGameModal'){ e.target.classList.remove('active'); editingGameId = null; } });
 
-// ============================================
 // RIPPLE
-// ============================================
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.btn,.mini-btn,.buy-btn,.post-btn,.filter-btn,.google-btn');
   if (!btn) return;
@@ -2169,54 +2612,36 @@ document.addEventListener('click', (e) => {
   setTimeout(() => ripple.remove(), 600);
 });
 
-// ============================================
-// PWA - Service Worker
-// ============================================
+// PWA
+const manifest = {
+  name: 'Noama Games', short_name: 'Noama', start_url: './', display: 'standalone',
+  background_color: '#07070d', theme_color: '#07070d', orientation: 'portrait',
+  icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300e5ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='60' font-weight='900' fill='%2307070d' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E", sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }]
+};
+const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+const link = document.createElement('link');
+link.rel = 'manifest';
+link.href = URL.createObjectURL(manifestBlob);
+document.head.appendChild(link);
+
 if ('serviceWorker' in navigator && location.protocol === 'https:'){
   const swCode = `
     self.addEventListener('install', e => self.skipWaiting());
     self.addEventListener('activate', e => self.clients.claim());
     self.addEventListener('fetch', e => {
       if (e.request.method !== 'GET') return;
-      e.respondWith(
-        caches.open('noama-v1').then(cache =>
-          fetch(e.request).then(res => {
-            if (res.status === 200 && res.type === 'basic') cache.put(e.request, res.clone());
-            return res;
-          }).catch(() => caches.match(e.request))
-        )
-      );
-    });
-  `;
+      e.respondWith(caches.open('noama-v1').then(cache =>
+        fetch(e.request).then(res => { if (res.status === 200 && res.type === 'basic') cache.put(e.request, res.clone()); return res; })
+        .catch(() => caches.match(e.request))
+      ));
+    });`;
   try {
     const blob = new Blob([swCode], { type: 'application/javascript' });
     navigator.serviceWorker.register(URL.createObjectURL(blob), { scope: './' }).catch(e => console.log('SW:', e.message));
-  } catch(e){ console.log('SW error:', e); }
+  } catch(e){}
 }
 
-// ============================================
-// PWA MANIFEST
-// ============================================
-const manifest = {
-  name: 'Noama Games', short_name: 'Noama',
-  start_url: './', display: 'standalone',
-  background_color: '#07070d', theme_color: '#07070d',
-  orientation: 'portrait',
-  icons: [{
-    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300e5ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='60' font-weight='900' fill='%2307070d' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E",
-    sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable'
-  }]
-};
-const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-const manifestUrl = URL.createObjectURL(manifestBlob);
-const link = document.createElement('link');
-link.rel = 'manifest';
-link.href = manifestUrl;
-document.head.appendChild(link);
-
-// ============================================
 // GÜVENLİK AĞI
-// ============================================
 setTimeout(() => {
   if (!$('loading').classList.contains('hide') && !$('app-screen').classList.contains('active')){
     $('loading').classList.add('hide');
