@@ -227,11 +227,8 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .reply-form textarea{width:100%;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.85rem;resize:vertical;min-height:60px;font-family:inherit}
 .reply-form button{margin-top:8px;padding:8px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.8rem;font-weight:600}
 
-/* KAPALI BETA GIRIŞI */
+/* KAPALI BETA GİRİŞİ */
 .beta-auth-card{max-width:520px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:authBoxIn .5s cubic-bezier(.2,.8,.2,1)}
-.beta-code-inputs{display:flex;gap:8px;justify-content:center;margin:20px 0}
-.beta-code-inputs input{width:48px;height:56px;text-align:center;font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;border-radius:12px;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--cyan)}
-.beta-code-inputs input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 15px rgba(124,92,255,.3)}
 
 /* AKIS */
 .feed-container{max-width:640px}
@@ -557,6 +554,7 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <div class="nav-label" id="adminLabel" style="display:none">Yonetim</div>
       <button class="nav-item" data-view="dashboard" id="dashboardNav" style="display:none"><span class="icon">📊</span><span>Dashboard</span><span class="badge admin">ADMIN</span></button>
       <button class="nav-item" data-view="admin" id="adminNav" style="display:none"><span class="icon">⚙️</span><span>Admin Panel</span><span class="badge admin">ADMIN</span></button>
+      <button class="nav-item" data-view="admin-beta-requests" id="betaReqNav" style="display:none"><span class="icon">🔑</span><span>Beta Talepleri</span><span class="badge red" id="betaReqCount" style="display:none">0</span></button>
       <button class="nav-item" data-view="dev-manager" id="devManagerNav" style="display:none"><span class="icon">🛠️</span><span>Gelistirici Yonetimi</span></button>
       <button class="nav-item" data-view="admin-applications" id="appsNav" style="display:none"><span class="icon">📨</span><span>Basvurular</span><span class="badge red" id="appsCount" style="display:none">0</span></button>
       <button class="nav-item" data-view="reports" id="reportsNav" style="display:none"><span class="icon">🚨</span><span>Raporlar</span><span class="badge red" id="reportsCount" style="display:none">0</span></button>
@@ -604,52 +602,57 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <div class="games-row" id="gamesRow"></div>
     </section>
 
-    <!-- KAPALI BETA ERİŞİM -->
+    <!-- KAPALI BETA ERİŞİM PORTALI -->
     <section class="view" id="view-beta-access">
       <div class="view-head"><div>
         <span class="view-tag">// Kapali Beta Portal</span>
         <h1 class="view-title">Beta Erisim Girisi</h1>
-        <p class="view-desc">Kapali beta testlerine katildiginiz e-posta adresinizle giris yapin ve indirme linklerinize erisin.</p>
+        <p class="view-desc">Kapali beta oyunlar icin erisim talebinde bulunun veya yoneticiden aldiginiz kod ile giris yapin.</p>
       </div></div>
       
-      <!-- STEP 1: E-POSTA GİRİŞ -->
-      <div id="betaStepEmail" class="beta-auth-card">
-        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px">E-posta ile Giris</h2>
-        <p style="color:var(--muted);font-size:.88rem;margin-bottom:20px">Kapali beta kaydinizda kullandiginiz e-posta adresinizi girin. E-postaniza 6 haneli bir erisim kodu gonderilecektir.</p>
+      <div class="filter-row" style="justify-content:center;margin-bottom:24px">
+        <button class="filter-btn active" id="tabBetaRequest">📩 Beta Talep Et</button>
+        <button class="filter-btn" id="tabBetaCode">🔑 Kodu Gir ve Oyuna Eris</button>
+      </div>
+
+      <!-- TAB 1: BETA TALEP FORMU -->
+      <div id="betaRequestBox" class="beta-auth-card">
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px">Beta Erisim Talebi</h2>
+        <p style="color:var(--muted);font-size:.88rem;margin-bottom:20px">Kapali beta katilimi yapmak istediginiz oyunu secin ve e-posta adresinizi girin.</p>
         <div class="form-field full" style="margin-bottom:16px">
-          <label>E-posta Adresi</label>
-          <input type="email" id="betaEmailInput" placeholder="ornek@gmail.com">
+          <label>Oyun Secin</label>
+          <select id="betaGameSelect"></select>
         </div>
-        <button class="buy-btn" id="sendBetaCodeBtn" style="width:100%;justify-content:center">📩 Kod Gonder</button>
+        <div class="form-field full" style="margin-bottom:16px">
+          <label>E-posta Adresiniz</label>
+          <input type="email" id="betaRequestEmail" placeholder="ornek@gmail.com">
+        </div>
+        <button class="buy-btn" id="submitBetaRequestBtn" style="width:100%;justify-content:center">📩 Talebi Yolla</button>
+        <div id="betaReqStatusMsg" class="auth-msg" style="margin-top:16px;text-align:center"></div>
       </div>
 
-      <!-- STEP 2: KOD DOĞRULAMA -->
-      <div id="betaStepCode" class="beta-auth-card" style="display:none">
-        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px">Dogrulama Kodu</h2>
-        <p style="color:var(--muted);font-size:.88rem"><strong id="betaTargetEmailText" style="color:var(--cyan)"></strong> adresine bir erisim kodu gonderildi.</p>
-        <div class="beta-code-inputs">
-          <input type="text" maxlength="1" class="b-code">
-          <input type="text" maxlength="1" class="b-code">
-          <input type="text" maxlength="1" class="b-code">
-          <input type="text" maxlength="1" class="b-code">
-          <input type="text" maxlength="1" class="b-code">
-          <input type="text" maxlength="1" class="b-code">
+      <!-- TAB 2: KOD İLE GİRİŞ & İNDİRME -->
+      <div id="betaCodeBox" class="beta-auth-card" style="display:none">
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px">Beta Kodunuzu Girin</h2>
+        <p style="color:var(--muted);font-size:.88rem;margin-bottom:20px">Admin tarafindan onaylanan erisim kodunuzu girerek indirme linkine ulasin.</p>
+        <div class="form-field full" style="margin-bottom:16px">
+          <label>E-posta Adresiniz</label>
+          <input type="email" id="betaEnterEmail" placeholder="ornek@gmail.com">
         </div>
-        <button class="buy-btn green" id="verifyBetaCodeBtn" style="width:100%;justify-content:center">🔓 Dogrula ve Giris Yap</button>
-        <button class="mini-btn" id="betaBackToEmail" style="width:100%;margin-top:10px;text-align:center">← E-posta degistir</button>
+        <div class="form-field full" style="margin-bottom:16px">
+          <label>6 Haneli Beta Kodunuz</label>
+          <input type="text" id="betaEnterCode" placeholder="ABC123" maxlength="10" style="font-family:'Space Mono',monospace;letter-spacing:2px;font-size:1.1rem;text-transform:uppercase">
+        </div>
+        <button class="buy-btn green" id="verifyBetaCodeBtn" style="width:100%;justify-content:center">🔓 Kodu Dogrula ve Oyunu Ac</button>
       </div>
 
-      <!-- STEP 3: ERİŞİM PANELİ -->
-      <div id="betaStepAccess" style="display:none">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;background:rgba(43,255,136,.1);border:1px solid rgba(43,255,136,.3);padding:14px 20px;border-radius:14px">
-          <div>
-            <span style="font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:.08em;text-transform:uppercase">Erisim Onaylandi</span>
-            <div id="verifiedBetaUserText" style="font-weight:800;font-size:1.05rem;color:var(--text)"></div>
-          </div>
-          <button class="mini-btn danger" id="betaLogoutBtn">Cikis Yap</button>
+      <!-- KOD DOĞRULANDIĞINDA AÇILAN OYUN İNDİRME ALANI -->
+      <div id="betaUnlockedArea" style="display:none;margin-top:24px">
+        <div style="background:rgba(43,255,136,.1);border:1px solid rgba(43,255,136,.3);padding:14px 20px;border-radius:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center">
+          <span style="color:var(--green);font-weight:700">✅ Beta Erisimi Onaylandi!</span>
+          <button class="mini-btn danger" id="betaResetBtn">Cikis Yap</button>
         </div>
-        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px">🎮 Kayitli Kapali Beta Oyunlariniz</h2>
-        <div id="betaGamesList" class="games-row"></div>
+        <div id="unlockedBetaGameCard"></div>
       </div>
     </section>
 
@@ -849,6 +852,24 @@ input,button,textarea,select{font-family:inherit;color:inherit}
         </div>
         <button class="mini-btn gold" id="addAnnBtn">+ Duyuru Ekle</button>
         <div id="adminAnnList" style="margin-top:20px"></div>
+      </div>
+    </section>
+
+    <!-- ADMIN BETA TALEPLERİ -->
+    <section class="view" id="view-admin-beta-requests">
+      <div class="view-head"><div>
+        <span class="view-tag">// Yonetim</span>
+        <h1 class="view-title">Kapali Beta Talepleri</h1>
+      </div></div>
+      <div class="admin-panel">
+        <h2>🔑 Gelen Beta Talepleri</h2>
+        <p>Kullanicilarin istedigi oyunlar icin kod ve indirme linki belirleyip onaylayin.</p>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>E-posta</th><th>Oyun</th><th>Erisim Kodu</th><th>Indirme Linki</th><th>Durum</th><th style="text-align:right">Islem</th></tr></thead>
+            <tbody id="adminBetaReqBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -1056,16 +1077,13 @@ const ADMIN_EMAIL = 'cemilprooyuncu@gmail.com';
 let currentUser = null, currentUserDoc = null;
 let games = [], announcements = [], reviews = [], posts = [], users = [], wishlists = [];
 let notifications = [], reports = [], follows = [], library = [];
-let tournaments = [], tournamentEntries = [], devApplications = [];
+let tournaments = [], tournamentEntries = [], devApplications = [], betaRequests = [];
 let wishlistIds = [], libraryIds = [], myFollowing = [];
 let currentDevFilter = 'all', currentFilter = 'all', currentSearch = '';
 let currentTournamentFilter = 'all', currentDevFilterState = 'all';
 let subsStarted = false;
 const $ = id => document.getElementById(id);
 const unsubs = {};
-
-// KAPALI BETA DEĞİŞKENLERİ
-let betaSentCode = '', betaTargetEmail = '';
 
 const isAdmin = () => currentUser?.email === ADMIN_EMAIL;
 const isDeveloper = () => currentUserDoc && (currentUserDoc.role === 'developer' || isAdmin());
@@ -1158,7 +1176,7 @@ onAuthStateChanged(auth, async (user) => {
       subscribeGames(); subscribeAnnouncements(); subscribeReviews(); subscribePosts();
       subscribeUsers(); subscribeWishlist(); subscribeNotifications(); subscribeLibrary();
       subscribeFollows(); subscribeReports(); subscribeTournaments();
-      subscribeTournamentEntries(); subscribeDevApplications();
+      subscribeTournamentEntries(); subscribeDevApplications(); subscribeBetaRequests();
     }
   } else {
     currentUser = null; currentUserDoc = null;
@@ -1190,6 +1208,7 @@ function updateUserUI(){
   $('reportsNav').style.display = isAdmin() ? 'flex' : 'none';
   $('dashboardNav').style.display = isAdmin() ? 'flex' : 'none';
   $('appsNav').style.display = isAdmin() ? 'flex' : 'none';
+  $('betaReqNav').style.display = isAdmin() ? 'flex' : 'none';
   if ($('view-dev-apply').classList.contains('active')) renderDevApplyPanel();
 }
 
@@ -1199,7 +1218,7 @@ function subscribeGames(){
   unsubs.games = onSnapshot(collection(db, 'games'), async (snap) => {
     games = []; snap.forEach(d => games.push({ id: d.id, ...d.data() }));
     if (games.length === 0 && isAdmin()){ await seedDefaults(); return; }
-    renderGames(); renderLibrary(); renderAchievements();
+    renderGames(); renderLibrary(); renderAchievements(); populateBetaGameSelect();
     if ($('view-admin').classList.contains('active')) renderAdmin();
     if ($('view-game-detail').classList.contains('active')){
       const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
@@ -1211,7 +1230,6 @@ function subscribeGames(){
       if (id) openTournamentDetail(id);
     }
     if ($('view-dashboard').classList.contains('active')) renderDashboard();
-    if ($('view-beta-access').classList.contains('active') && localStorage.getItem('noama_beta_user')) renderBetaAccessPanel();
   });
 }
 async function seedDefaults(){
@@ -1358,6 +1376,19 @@ function subscribeDevApplications(){
     if ($('view-dashboard').classList.contains('active')) renderDashboard();
   });
 }
+function subscribeBetaRequests(){
+  if (unsubs.beta) unsubs.beta();
+  unsubs.beta = onSnapshot(collection(db, 'betaRequests'), (snap) => {
+    betaRequests = []; snap.forEach(d => betaRequests.push({ id: d.id, ...d.data() }));
+    betaRequests.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    if (isAdmin()){
+      const pending = betaRequests.filter(r => r.status === 'pending').length;
+      const badge = $('betaReqCount');
+      if (badge){ if (pending > 0){ badge.style.display = 'inline-block'; badge.textContent = pending; } else badge.style.display = 'none'; }
+    }
+    if ($('view-admin-beta-requests').classList.contains('active')) renderAdminBetaRequests();
+  });
+}
 
 // BILDIRIM
 async function createNotification(userId, type, message, link = null){
@@ -1423,6 +1454,7 @@ document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
     if (v === 'admin-applications') renderApplications();
     if (v === 'dashboard') renderDashboard();
     if (v === 'beta-access') setupBetaView();
+    if (v === 'admin-beta-requests') renderAdminBetaRequests();
   });
 });
 function showView(name){
@@ -1498,111 +1530,171 @@ function timeAgo(iso){
 }
 
 // KAPALI BETA LOGIC
-function setupBetaView(){
-  const savedBetaUser = localStorage.getItem('noama_beta_user');
-  if (savedBetaUser){
-    betaTargetEmail = savedBetaUser;
-    renderBetaAccessPanel();
-  } else {
-    $('betaStepEmail').style.display = 'block';
-    $('betaStepCode').style.display = 'none';
-    $('betaStepAccess').style.display = 'none';
-  }
-}
-
-$('sendBetaCodeBtn').addEventListener('click', () => {
-  const emailInput = $('betaEmailInput').value.trim().toLowerCase();
-  if (!emailInput || !emailInput.includes('@')){
-    alert('Lutfen gecerli bir e-posta adresi girin.');
+function populateBetaGameSelect(){
+  const sel = $('betaGameSelect');
+  if (!sel) return;
+  const betaGames = games.filter(g => g.status === 'beta' || g.status === 'dev' || (g.tags || []).some(t => t.toLowerCase().includes('beta')));
+  if (!betaGames.length){
+    sel.innerHTML = '<option value="">Kapali Beta Oyunu Bulunamadi</option>';
     return;
   }
-  betaTargetEmail = emailInput;
-  betaSentCode = Math.floor(100000 + Math.random() * 900000).toString();
-  
-  $('betaTargetEmailText').textContent = betaTargetEmail;
-  $('betaStepEmail').style.display = 'none';
-  $('betaStepCode').style.display = 'block';
-  
-  const inputs = document.querySelectorAll('.b-code');
-  inputs.forEach(i => i.value = '');
-  inputs[0].focus();
-  
-  alert(`[SIMULASYON] ${betaTargetEmail} adresinize 6 haneli kod gonderildi!\n\nTest Kodunuz: ${betaSentCode}`);
+  sel.innerHTML = betaGames.map(g => `<option value="${g.id}">${g.emoji || '🎮'} ${escapeHtml(g.title)} (${statusText(g.status)})</option>`).join('');
+}
+
+function setupBetaView(){
+  populateBetaGameSelect();
+  $('tabBetaRequest').classList.add('active');
+  $('tabBetaCode').classList.remove('active');
+  $('betaRequestBox').style.display = 'block';
+  $('betaCodeBox').style.display = 'none';
+  $('betaUnlockedArea').style.display = 'none';
+}
+
+$('tabBetaRequest').addEventListener('click', () => {
+  $('tabBetaRequest').classList.add('active');
+  $('tabBetaCode').classList.remove('active');
+  $('betaRequestBox').style.display = 'block';
+  $('betaCodeBox').style.display = 'none';
+  $('betaUnlockedArea').style.display = 'none';
 });
 
-const codeInputs = document.querySelectorAll('.b-code');
-codeInputs.forEach((input, index) => {
-  input.addEventListener('input', (e) => {
-    if (e.target.value.length === 1 && index < codeInputs.length - 1) {
-      codeInputs[index + 1].focus();
-    }
+$('tabBetaCode').addEventListener('click', () => {
+  $('tabBetaCode').classList.add('active');
+  $('tabBetaRequest').classList.remove('active');
+  $('betaCodeBox').style.display = 'block';
+  $('betaRequestBox').style.display = 'none';
+  $('betaUnlockedArea').style.display = 'none';
+});
+
+$('submitBetaRequestBtn').addEventListener('click', async () => {
+  const gameId = $('betaGameSelect').value;
+  const email = $('betaRequestEmail').value.trim().toLowerCase();
+  const msg = $('betaReqStatusMsg');
+  
+  if (!gameId){ alert('Lutfen bir oyun secin.'); return; }
+  if (!email || !email.includes('@')){ alert('Gecerli bir e-posta adresi girin.'); return; }
+
+  const targetGame = games.find(g => g.id === gameId);
+  await addDoc(collection(db, 'betaRequests'), {
+    gameId,
+    gameTitle: targetGame ? targetGame.title : 'Bilinmeyen Oyun',
+    email,
+    status: 'pending',
+    code: '',
+    downloadUrl: '',
+    createdAt: new Date().toISOString()
   });
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Backspace' && !e.target.value && index > 0) {
-      codeInputs[index - 1].focus();
-    }
-  });
+
+  msg.textContent = 'Talebiniz yoneticiye ulasti. Onaylandiginda e-postaniza erisim kodu gonderilecektir.';
+  msg.className = 'auth-msg show';
+  msg.style.background = 'rgba(43,255,136,.12)';
+  msg.style.borderColor = 'rgba(43,255,136,.3)';
+  msg.style.color = '#6bffaa';
+  $('betaRequestEmail').value = '';
 });
 
 $('verifyBetaCodeBtn').addEventListener('click', () => {
-  let enteredCode = '';
-  codeInputs.forEach(input => enteredCode += input.value.trim());
-  if (enteredCode.length < 6){
-    alert('Lutfen 6 haneli kodu eksiksiz girin.');
-    return;
-  }
-  if (enteredCode === betaSentCode || enteredCode === '123456'){
-    localStorage.setItem('noama_beta_user', betaTargetEmail);
-    renderBetaAccessPanel();
-  } else {
-    alert('Hatali dogrulama kodu! Lutfen tekrar deneyin.');
-  }
-});
+  const email = $('betaEnterEmail').value.trim().toLowerCase();
+  const code = $('betaEnterCode').value.trim().toUpperCase();
 
-$('betaBackToEmail').addEventListener('click', () => {
-  $('betaStepEmail').style.display = 'block';
-  $('betaStepCode').style.display = 'none';
-});
+  if (!email || !code){ alert('E-posta ve kodu girin.'); return; }
 
-$('betaLogoutBtn').addEventListener('click', () => {
-  localStorage.removeItem('noama_beta_user');
-  betaTargetEmail = '';
-  setupBetaView();
-});
-
-function renderBetaAccessPanel(){
-  $('betaStepEmail').style.display = 'none';
-  $('betaStepCode').style.display = 'none';
-  $('betaStepAccess').style.display = 'block';
-  $('verifiedBetaUserText').textContent = betaTargetEmail;
-  
-  const container = $('betaGamesList');
-  const betaGames = games.filter(g => g.status === 'beta' || g.status === 'dev' || (g.tags || []).some(t => t.toLowerCase().includes('beta')));
-  
-  if (!betaGames.length){
-    container.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🎮</div><h3>Kapali Beta Bulunamadi</h3><p>Su an e-posta adresinize tanimli aktif kapali beta oyunu bulunmamaktadir.</p></div>';
-    return;
-  }
-  
-  container.innerHTML = betaGames.map(g => `
-    <article class="game-tile">
-      <div class="game-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">
-        ${g.emoji || '🎮'}
-      </div>
-      <div class="game-info">
-        <h3>${escapeHtml(g.title)}</h3>
-        <div class="game-tags">
-          <span class="mini-tag beta">KAPALI BETA</span>
-          <span class="mini-tag">${statusText(g.status)}</span>
+  const match = betaRequests.find(r => r.email === email && r.code === code && r.status === 'approved');
+  if (match){
+    const targetGame = games.find(g => g.id === match.gameId);
+    $('betaCodeBox').style.display = 'none';
+    $('betaUnlockedArea').style.display = 'block';
+    
+    const downloadLink = match.downloadUrl || (targetGame ? targetGame.downloadUrl : '');
+    
+    $('unlockedBetaGameCard').innerHTML = `
+      <article class="game-tile" style="max-width:520px;margin:0 auto">
+        <div class="game-cover" style="background:linear-gradient(135deg,${targetGame?.coverFrom || '#7c5cff'},${targetGame?.coverTo || '#0d0d18'})">
+          ${targetGame?.emoji || '🎮'}
         </div>
-        <p style="font-size:.82rem;color:var(--muted);margin:10px 0">${escapeHtml(g.description || 'Beta surumu yayinda.')}</p>
-        ${g.downloadUrl ? 
-          `<a href="${g.downloadUrl}" target="_blank" class="buy-btn green" style="width:100%;justify-content:center;margin-top:10px">⬇️ Beta Surumunu Indir (${escapeHtml(g.exeName || 'Setup.exe')})</a>` : 
-          `<button class="buy-btn" disabled style="width:100%;justify-content:center;margin-top:10px">⏳ Indirme Linki Hazirlaniyor</button>`
-        }
-      </div>
-    </article>
+        <div class="game-info">
+          <h3>${escapeHtml(match.gameTitle)}</h3>
+          <div class="game-tags"><span class="mini-tag beta">KAPALI BETA ERISIMI</span></div>
+          <p style="font-size:.88rem;color:var(--muted);margin:12px 0">${escapeHtml(targetGame?.description || 'Oyunun kapali beta surumu erisime acildi.')}</p>
+          ${downloadLink ? 
+            `<a href="${downloadLink}" target="_blank" class="buy-btn green" style="width:100%;justify-content:center">⬇️ Beta Surumunu Indir</a>` : 
+            `<button class="buy-btn" disabled style="width:100%;justify-content:center">Indirme Linki Hazirlaniyor</button>`
+          }
+        </div>
+      </article>
+    `;
+  } else {
+    alert('Girilen e-posta veya erisim kodu hatali veya henüz onaylanmamis!');
+  }
+});
+
+$('betaResetBtn').addEventListener('click', () => setupBetaView());
+
+// ADMIN BETA TALEPLERİ
+function renderAdminBetaRequests(){
+  if (!isAdmin()) return;
+  const tbody = $('adminBetaReqBody');
+  if (!tbody) return;
+  if (!betaRequests.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Gelen beta talebi yok</td></tr>';
+    return;
+  }
+  tbody.innerHTML = betaRequests.map(r => `
+    <tr>
+      <td><strong>${escapeHtml(r.email)}</strong></td>
+      <td>${escapeHtml(r.gameTitle)}</td>
+      <td>
+        ${r.status === 'pending' ? `<input type="text" id="req-code-${r.id}" placeholder="Kod (Orn: BETA12)" value="${Math.floor(100000 + Math.random()*900000)}" style="width:110px;padding:4px 8px;font-size:.8rem;font-family:'Space Mono',monospace">` : `<span style="font-family:'Space Mono',monospace;color:var(--cyan)">${r.code || '-'}</span>`}
+      </td>
+      <td>
+        ${r.status === 'pending' ? `<input type="text" id="req-url-${r.id}" placeholder="https://..." style="width:140px;padding:4px 8px;font-size:.8rem">` : `<span style="font-size:.78rem;color:var(--muted)">${r.downloadUrl ? 'Eklendi' : '-'}</span>`}
+      </td>
+      <td>
+        <span class="mini-tag ${r.status === 'approved' ? 'beta' : r.status === 'rejected' ? 'dev' : 'staff'}">${r.status === 'approved' ? 'Onaylandi' : r.status === 'rejected' ? 'Reddedildi' : 'Bekliyor'}</span>
+      </td>
+      <td style="text-align:right">
+        ${r.status === 'pending' ? `
+          <div class="admin-actions" style="justify-content:flex-end">
+            <button class="mini-btn green" data-approve-beta="${r.id}">✓ Onayla ve Kodu Yolla</button>
+            <button class="mini-btn danger" data-reject-beta="${r.id}">✗ Reddet</button>
+          </div>
+        ` : `<button class="mini-btn danger" data-del-beta-req="${r.id}">🗑️</button>`}
+      </td>
+    </tr>
   `).join('');
+
+  tbody.querySelectorAll('[data-approve-beta]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.approveBeta;
+      const code = $(`req-code-${id}`)?.value.trim() || 'BETA123';
+      const url = $(`req-url-${id}`)?.value.trim() || '';
+      
+      await updateDoc(doc(db, 'betaRequests', id), {
+        status: 'approved',
+        code: code.toUpperCase(),
+        downloadUrl: url,
+        approvedAt: new Date().toISOString()
+      });
+      alert('Talep onaylandi! Kullaniciya kodu: ' + code.toUpperCase());
+    });
+  });
+
+  tbody.querySelectorAll('[data-reject-beta]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.rejectBeta;
+      await updateDoc(doc(db, 'betaRequests', id), {
+        status: 'rejected',
+        rejectedAt: new Date().toISOString()
+      });
+      alert('Talep reddedildi.');
+    });
+  });
+
+  tbody.querySelectorAll('[data-del-beta-req]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await deleteDoc(doc(db, 'betaRequests', btn.dataset.delBetaReq));
+    });
+  });
 }
 
 // ARAMA
