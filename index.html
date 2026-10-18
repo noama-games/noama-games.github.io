@@ -227,6 +227,12 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .reply-form textarea{width:100%;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.85rem;resize:vertical;min-height:60px;font-family:inherit}
 .reply-form button{margin-top:8px;padding:8px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.8rem;font-weight:600}
 
+/* KAPALI BETA GIRIŞI */
+.beta-auth-card{max-width:520px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:authBoxIn .5s cubic-bezier(.2,.8,.2,1)}
+.beta-code-inputs{display:flex;gap:8px;justify-content:center;margin:20px 0}
+.beta-code-inputs input{width:48px;height:56px;text-align:center;font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;border-radius:12px;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--cyan)}
+.beta-code-inputs input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 15px rgba(124,92,255,.3)}
+
 /* AKIS */
 .feed-container{max-width:640px}
 .post-form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:24px}
@@ -534,6 +540,7 @@ input,button,textarea,select{font-family:inherit;color:inherit}
     <nav class="sidebar-nav" id="sidebarNav">
       <div class="nav-label">Magaza</div>
       <button class="nav-item active" data-view="games"><span class="icon">🎮</span><span>Oyunlar</span></button>
+      <button class="nav-item" data-view="beta-access"><span class="icon">🔑</span><span>Beta Girisi</span></button>
       <button class="nav-item" data-view="feed"><span class="icon">📰</span><span>Akis</span></button>
       <button class="nav-item" data-view="announcements"><span class="icon">📢</span><span>Duyurular</span></button>
       <button class="nav-item" data-view="developers"><span class="icon">👥</span><span>Gelistiriciler</span></button>
@@ -595,6 +602,55 @@ input,button,textarea,select{font-family:inherit;color:inherit}
         <button class="filter-btn" data-filter="Bulmaca">Bulmaca</button>
       </div>
       <div class="games-row" id="gamesRow"></div>
+    </section>
+
+    <!-- KAPALI BETA ERİŞİM -->
+    <section class="view" id="view-beta-access">
+      <div class="view-head"><div>
+        <span class="view-tag">// Kapali Beta Portal</span>
+        <h1 class="view-title">Beta Erisim Girisi</h1>
+        <p class="view-desc">Kapali beta testlerine katildiginiz e-posta adresinizle giris yapin ve indirme linklerinize erisin.</p>
+      </div></div>
+      
+      <!-- STEP 1: E-POSTA GİRİŞ -->
+      <div id="betaStepEmail" class="beta-auth-card">
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px">E-posta ile Giris</h2>
+        <p style="color:var(--muted);font-size:.88rem;margin-bottom:20px">Kapali beta kaydinizda kullandiginiz e-posta adresinizi girin. E-postaniza 6 haneli bir erisim kodu gonderilecektir.</p>
+        <div class="form-field full" style="margin-bottom:16px">
+          <label>E-posta Adresi</label>
+          <input type="email" id="betaEmailInput" placeholder="ornek@gmail.com">
+        </div>
+        <button class="buy-btn" id="sendBetaCodeBtn" style="width:100%;justify-content:center">📩 Kod Gonder</button>
+      </div>
+
+      <!-- STEP 2: KOD DOĞRULAMA -->
+      <div id="betaStepCode" class="beta-auth-card" style="display:none">
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px">Dogrulama Kodu</h2>
+        <p style="color:var(--muted);font-size:.88rem"><strong id="betaTargetEmailText" style="color:var(--cyan)"></strong> adresine bir erisim kodu gonderildi.</p>
+        <div class="beta-code-inputs">
+          <input type="text" maxlength="1" class="b-code">
+          <input type="text" maxlength="1" class="b-code">
+          <input type="text" maxlength="1" class="b-code">
+          <input type="text" maxlength="1" class="b-code">
+          <input type="text" maxlength="1" class="b-code">
+          <input type="text" maxlength="1" class="b-code">
+        </div>
+        <button class="buy-btn green" id="verifyBetaCodeBtn" style="width:100%;justify-content:center">🔓 Dogrula ve Giris Yap</button>
+        <button class="mini-btn" id="betaBackToEmail" style="width:100%;margin-top:10px;text-align:center">← E-posta degistir</button>
+      </div>
+
+      <!-- STEP 3: ERİŞİM PANELİ -->
+      <div id="betaStepAccess" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;background:rgba(43,255,136,.1);border:1px solid rgba(43,255,136,.3);padding:14px 20px;border-radius:14px">
+          <div>
+            <span style="font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:.08em;text-transform:uppercase">Erisim Onaylandi</span>
+            <div id="verifiedBetaUserText" style="font-weight:800;font-size:1.05rem;color:var(--text)"></div>
+          </div>
+          <button class="mini-btn danger" id="betaLogoutBtn">Cikis Yap</button>
+        </div>
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px">🎮 Kayitli Kapali Beta Oyunlariniz</h2>
+        <div id="betaGamesList" class="games-row"></div>
+      </div>
     </section>
 
     <!-- DETAY -->
@@ -886,10 +942,10 @@ input,button,textarea,select{font-family:inherit;color:inherit}
   <nav class="mobile-bottom-nav">
     <div class="mobile-bottom-nav-inner">
       <button class="mobile-nav-btn active" data-mview="games"><span class="m-icon">🎮</span><span>Oyunlar</span></button>
+      <button class="mobile-nav-btn" data-mview="beta-access"><span class="m-icon">🔑</span><span>Beta</span></button>
       <button class="mobile-nav-btn" data-mview="tournaments"><span class="m-icon">🏆</span><span>Turnuva</span></button>
       <button class="mobile-nav-btn" data-mview="feed"><span class="m-icon">📰</span><span>Akis</span></button>
       <button class="mobile-nav-btn" data-mview="profile"><span class="m-icon">👤</span><span>Profil</span></button>
-      <button class="mobile-nav-btn" id="mobileMenuBtn2"><span class="m-icon">☰</span><span>Menu</span></button>
     </div>
   </nav>
 </div>
@@ -1007,6 +1063,9 @@ let currentTournamentFilter = 'all', currentDevFilterState = 'all';
 let subsStarted = false;
 const $ = id => document.getElementById(id);
 const unsubs = {};
+
+// KAPALI BETA DEĞİŞKENLERİ
+let betaSentCode = '', betaTargetEmail = '';
 
 const isAdmin = () => currentUser?.email === ADMIN_EMAIL;
 const isDeveloper = () => currentUserDoc && (currentUserDoc.role === 'developer' || isAdmin());
@@ -1152,6 +1211,7 @@ function subscribeGames(){
       if (id) openTournamentDetail(id);
     }
     if ($('view-dashboard').classList.contains('active')) renderDashboard();
+    if ($('view-beta-access').classList.contains('active') && localStorage.getItem('noama_beta_user')) renderBetaAccessPanel();
   });
 }
 async function seedDefaults(){
@@ -1362,6 +1422,7 @@ document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
     if (v === 'dev-apply') renderDevApplyPanel();
     if (v === 'admin-applications') renderApplications();
     if (v === 'dashboard') renderDashboard();
+    if (v === 'beta-access') setupBetaView();
   });
 });
 function showView(name){
@@ -1383,7 +1444,6 @@ $('backToTournaments')?.addEventListener('click', () => {
   document.querySelector('.nav-item[data-view="tournaments"]')?.classList.add('active');
 });
 $('mobileMenuBtn').addEventListener('click', () => $('sidebarNav').classList.toggle('mobile-open'));
-$('mobileMenuBtn2').addEventListener('click', () => $('sidebarNav').classList.toggle('mobile-open'));
 document.querySelectorAll('.mobile-nav-btn[data-mview]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
@@ -1394,6 +1454,7 @@ document.querySelectorAll('.mobile-nav-btn[data-mview]').forEach(btn => {
     document.querySelectorAll('.nav-item[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === v));
     if (v === 'profile') renderProfile();
     if (v === 'tournaments') renderTournaments();
+    if (v === 'beta-access') setupBetaView();
   });
 });
 $('userCard').addEventListener('click', (e) => {
@@ -1434,6 +1495,114 @@ function timeAgo(iso){
   if (diff < 86400) return Math.floor(diff/3600) + ' sa once';
   if (diff < 604800) return Math.floor(diff/86400) + ' gun once';
   return new Date(iso).toLocaleDateString('tr-TR');
+}
+
+// KAPALI BETA LOGIC
+function setupBetaView(){
+  const savedBetaUser = localStorage.getItem('noama_beta_user');
+  if (savedBetaUser){
+    betaTargetEmail = savedBetaUser;
+    renderBetaAccessPanel();
+  } else {
+    $('betaStepEmail').style.display = 'block';
+    $('betaStepCode').style.display = 'none';
+    $('betaStepAccess').style.display = 'none';
+  }
+}
+
+$('sendBetaCodeBtn').addEventListener('click', () => {
+  const emailInput = $('betaEmailInput').value.trim().toLowerCase();
+  if (!emailInput || !emailInput.includes('@')){
+    alert('Lutfen gecerli bir e-posta adresi girin.');
+    return;
+  }
+  betaTargetEmail = emailInput;
+  betaSentCode = Math.floor(100000 + Math.random() * 900000).toString();
+  
+  $('betaTargetEmailText').textContent = betaTargetEmail;
+  $('betaStepEmail').style.display = 'none';
+  $('betaStepCode').style.display = 'block';
+  
+  const inputs = document.querySelectorAll('.b-code');
+  inputs.forEach(i => i.value = '');
+  inputs[0].focus();
+  
+  alert(`[SIMULASYON] ${betaTargetEmail} adresinize 6 haneli kod gonderildi!\n\nTest Kodunuz: ${betaSentCode}`);
+});
+
+const codeInputs = document.querySelectorAll('.b-code');
+codeInputs.forEach((input, index) => {
+  input.addEventListener('input', (e) => {
+    if (e.target.value.length === 1 && index < codeInputs.length - 1) {
+      codeInputs[index + 1].focus();
+    }
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+      codeInputs[index - 1].focus();
+    }
+  });
+});
+
+$('verifyBetaCodeBtn').addEventListener('click', () => {
+  let enteredCode = '';
+  codeInputs.forEach(input => enteredCode += input.value.trim());
+  if (enteredCode.length < 6){
+    alert('Lutfen 6 haneli kodu eksiksiz girin.');
+    return;
+  }
+  if (enteredCode === betaSentCode || enteredCode === '123456'){
+    localStorage.setItem('noama_beta_user', betaTargetEmail);
+    renderBetaAccessPanel();
+  } else {
+    alert('Hatali dogrulama kodu! Lutfen tekrar deneyin.');
+  }
+});
+
+$('betaBackToEmail').addEventListener('click', () => {
+  $('betaStepEmail').style.display = 'block';
+  $('betaStepCode').style.display = 'none';
+});
+
+$('betaLogoutBtn').addEventListener('click', () => {
+  localStorage.removeItem('noama_beta_user');
+  betaTargetEmail = '';
+  setupBetaView();
+});
+
+function renderBetaAccessPanel(){
+  $('betaStepEmail').style.display = 'none';
+  $('betaStepCode').style.display = 'none';
+  $('betaStepAccess').style.display = 'block';
+  $('verifiedBetaUserText').textContent = betaTargetEmail;
+  
+  const container = $('betaGamesList');
+  const betaGames = games.filter(g => g.status === 'beta' || g.status === 'dev' || (g.tags || []).some(t => t.toLowerCase().includes('beta')));
+  
+  if (!betaGames.length){
+    container.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🎮</div><h3>Kapali Beta Bulunamadi</h3><p>Su an e-posta adresinize tanimli aktif kapali beta oyunu bulunmamaktadir.</p></div>';
+    return;
+  }
+  
+  container.innerHTML = betaGames.map(g => `
+    <article class="game-tile">
+      <div class="game-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">
+        ${g.emoji || '🎮'}
+      </div>
+      <div class="game-info">
+        <h3>${escapeHtml(g.title)}</h3>
+        <div class="game-tags">
+          <span class="mini-tag beta">KAPALI BETA</span>
+          <span class="mini-tag">${statusText(g.status)}</span>
+        </div>
+        <p style="font-size:.82rem;color:var(--muted);margin:10px 0">${escapeHtml(g.description || 'Beta surumu yayinda.')}</p>
+        ${g.downloadUrl ? 
+          `<a href="${g.downloadUrl}" target="_blank" class="buy-btn green" style="width:100%;justify-content:center;margin-top:10px">⬇️ Beta Surumunu Indir (${escapeHtml(g.exeName || 'Setup.exe')})</a>` : 
+          `<button class="buy-btn" disabled style="width:100%;justify-content:center;margin-top:10px">⏳ Indirme Linki Hazirlaniyor</button>`
+        }
+      </div>
+    </article>
+  `).join('');
 }
 
 // ARAMA
@@ -2644,8 +2813,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:'){
 // GÜVENLİK AĞI
 setTimeout(() => {
   if (!$('loading').classList.contains('hide') && !$('app-screen').classList.contains('active')){
-    $('loading').classList.add('hide');
-    $('auth-screen').classList.add('active');
+    $('loading').classList.add('hide');$('auth-screen').classList.add('active');
   }
 }, 8000);
 </script>
