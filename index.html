@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -44,11 +46,46 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .google-icon{width:20px;height:20px}
 .auth-msg{padding:12px 14px;border-radius:10px;font-size:.85rem;margin-top:16px;display:none;background:rgba(255,46,136,.12);border:1px solid rgba(255,46,136,.3);color:#ff85b3}
 .auth-msg.show{display:block}
+
+/* TERMS SCREEN (KVKK) */
+#terms-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 15% 20%,rgba(124,92,255,.25),transparent 50%),radial-gradient(circle at 85% 80%,rgba(0,229,255,.2),transparent 50%),var(--bg)}
+#terms-screen.active{display:flex}
+.terms-box{width:100%;max-width:680px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 30px 80px rgba(0,0,0,.7);max-height:92vh;display:flex;flex-direction:column;animation:authBoxIn .6s cubic-bezier(.2,.8,.2,1)}
+.terms-header{display:flex;align-items:center;gap:14px;margin-bottom:8px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.terms-header .auth-logo-mark{width:40px;height:40px;font-size:1.15rem}
+.terms-header-text{flex:1}
+.terms-header-text h1{font-size:1.3rem;font-weight:900;letter-spacing:-.01em}
+.terms-header-text p{font-size:.78rem;color:var(--muted);margin-top:2px}
+.terms-body{flex:1;overflow-y:auto;padding:20px 4px 20px 0;margin:0 -4px;padding-right:8px}
+.terms-body::-webkit-scrollbar{width:6px}
+.terms-body::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:100px}
+.terms-body::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--neon),var(--cyan));border-radius:100px}
+.terms-body h2{font-size:1.05rem;font-weight:800;color:var(--text);margin:20px 0 8px;display:flex;align-items:center;gap:8px}
+.terms-body h2:first-child{margin-top:0}
+.terms-body h3{font-size:.9rem;font-weight:700;color:var(--cyan);margin:14px 0 6px}
+.terms-body p{font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:10px}
+.terms-body ul{margin:6px 0 12px 20px;color:var(--muted);font-size:.85rem;line-height:1.7}
+.terms-body li{margin-bottom:4px}
+.terms-body strong{color:var(--text);font-weight:600}
+.terms-checkboxes{padding-top:16px;border-top:1px solid var(--line);margin-bottom:16px}
+.terms-check{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;background:rgba(124,92,255,.04);border:1px solid var(--line);margin-bottom:8px;cursor:pointer;transition:all .2s}
+.terms-check:hover{background:rgba(124,92,255,.08);border-color:rgba(124,92,255,.3)}
+.terms-check input[type="checkbox"]{margin-top:3px;width:18px;height:18px;cursor:pointer;accent-color:var(--neon);flex-shrink:0}
+.terms-check span{font-size:.82rem;color:var(--text);line-height:1.5}
+.terms-check span a{color:var(--cyan);text-decoration:none;font-weight:600}
+.terms-check span a:hover{text-decoration:underline}
+.terms-actions{display:flex;gap:10px;flex-wrap:wrap}
+.terms-actions .btn{flex:1;min-width:140px;justify-content:center;padding:14px;border-radius:12px;font-weight:700;border:none;cursor:pointer;font-size:.92rem;transition:all .2s}
+.terms-accept{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;box-shadow:0 8px 24px rgba(124,92,255,.35);position:relative;overflow:hidden}
+.terms-accept:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(124,92,255,.5)}
+.terms-accept:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none}
+.terms-reject{background:transparent;color:var(--muted);border:1px solid var(--line)!important}
+.terms-reject:hover{border-color:var(--pink)!important;color:#ff85b3}
+
 #app-screen{display:none;min-height:100vh;opacity:0}
 #app-screen.active{display:flex;animation:appFadeIn .6s cubic-bezier(.2,.8,.2,1) forwards}
 @keyframes appFadeIn{0%{opacity:0;transform:scale(.98)}100%{opacity:1;transform:scale(1)}}
 
-/* SIDEBAR */
 .sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
 .sidebar-head{padding:24px 22px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
 .sidebar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
@@ -80,7 +117,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .logout-btn:hover{background:rgba(255,46,136,.2)}
 .notif-bell{position:relative;background:none;border:none;font-size:1.2rem;cursor:pointer;padding:4px}
 
-/* MAIN */
 .main{flex:1;min-width:0;padding:36px 44px;overflow-y:auto;max-height:100vh}
 .view{display:none}
 .view.active{display:block;animation:viewSlideIn .45s cubic-bezier(.2,.8,.2,1)}
@@ -91,7 +127,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .view-title{font-size:2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:8px}
 .view-desc{color:var(--muted);font-size:.95rem;font-weight:300;max-width:600px}
 
-/* ARAMA */
 .search-bar{position:relative;margin-bottom:14px}
 .search-bar input{width:100%;padding:13px 18px 13px 44px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--text);font-size:.92rem;transition:border-color .2s}
 .search-bar input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px rgba(124,92,255,.1)}
@@ -103,13 +138,21 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .suggestion-item .sug-icon{font-size:1.2rem}
 .suggestion-item .sug-meta{color:var(--muted);font-size:.75rem;margin-left:auto}
 
-/* FİLTRE */
+.recent-strip{margin-bottom:18px;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.recent-label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.recent-games{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.recent-games::-webkit-scrollbar{height:4px}
+.recent-games::-webkit-scrollbar-thumb{background:linear-gradient(90deg,var(--neon),var(--cyan));border-radius:100px}
+.recent-game{flex-shrink:0;width:100px;cursor:pointer;transition:transform .2s;text-align:center}
+.recent-game:hover{transform:translateY(-3px)}
+.recent-game .rg-cover{width:100px;height:70px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:6px}
+.recent-game .rg-title{font-size:.72rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 .filter-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
 .filter-btn{padding:8px 16px;border-radius:100px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .filter-btn:hover{color:var(--text);border-color:var(--neon);transform:translateY(-2px)}
 .filter-btn.active{background:linear-gradient(115deg,var(--neon),var(--cyan));color:#07070d;border-color:transparent;box-shadow:0 6px 20px rgba(124,92,255,.35)}
 
-/* KARTLAR */
 .games-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
 .game-tile{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .35s,box-shadow .35s;position:relative;animation:cardStagger .5s cubic-bezier(.2,.8,.2,1) backwards}
 @keyframes cardStagger{0%{opacity:0;transform:translateY(24px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -134,7 +177,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .game-rating{margin-top:6px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
 .stars-mini{color:#ffb020;letter-spacing:1px}
 
-/* BILDIRIM */
 .notif-panel{position:fixed;top:20px;right:20px;width:360px;max-width:calc(100vw - 40px);max-height:80vh;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.7);z-index:200;display:none;overflow:hidden;animation:notifIn .3s}
 @keyframes notifIn{0%{opacity:0;transform:translateY(-10px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
 .notif-panel.open{display:block}
@@ -154,7 +196,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .notif-empty-icon{font-size:2.5rem;margin-bottom:10px;opacity:.5}
 .notif-bell-count{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:100px;background:linear-gradient(115deg,#ff2e88,#ffb020);color:#fff;font-size:.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,46,136,.5)}
 
-/* DETAY */
 .back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:.85rem;margin-bottom:24px;transition:all .2s}
 .back-btn:hover{color:var(--text);border-color:var(--neon);transform:translateX(-3px)}
 .game-detail-hero{border-radius:24px;overflow:hidden;border:1px solid var(--line);margin-bottom:28px;background:var(--card)}
@@ -184,7 +225,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .progress-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:progressShine 2s infinite}
 @keyframes progressShine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 
-/* YORUM */
 .review-section{margin-top:36px;padding-top:32px;border-top:1px solid var(--line)}
 .review-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .review-head h3{font-size:1.3rem;font-weight:800}
@@ -227,7 +267,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .reply-form textarea{width:100%;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.85rem;resize:vertical;min-height:60px;font-family:inherit}
 .reply-form button{margin-top:8px;padding:8px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.8rem;font-weight:600}
 
-/* AKIS */
 .feed-container{max-width:640px}
 .post-form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:24px}
 .post-form textarea{width:100%;padding:12px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.95rem;resize:vertical;min-height:80px;font-family:inherit}
@@ -271,7 +310,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .reply-input-row input:focus{outline:none;border-color:var(--neon)}
 .reply-input-row button{padding:9px 16px;border-radius:8px;background:var(--neon);color:#fff;border:none;cursor:pointer;font-size:.82rem;font-weight:600}
 
-/* DUYURULAR */
 .updates-list{display:grid;gap:14px;max-width:860px}
 .update-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;position:relative;transition:all .3s;animation:cardStagger .5s backwards}
 .update-card:hover{transform:translateX(6px) scale(1.01);box-shadow:0 10px 30px rgba(124,92,255,.15);border-color:rgba(124,92,255,.4)}
@@ -280,7 +318,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .update-card h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
 .update-card p{color:var(--muted);font-size:.9rem}
 
-/* GELISTIRICILER */
 .dev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
 .dev-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;transition:all .3s;animation:cardStagger .5s backwards;position:relative}
 .dev-card:hover{transform:translateY(-5px);border-color:rgba(124,92,255,.4);box-shadow:0 15px 40px rgba(0,0,0,.4)}
@@ -301,7 +338,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .follow-btn.following{background:transparent;border:1px solid var(--line);color:var(--muted)}
 .follow-btn.following:hover{border-color:#ff2e88;color:#ff85b3}
 
-/* PROFİL */
 .profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:24px}
 .profile-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 24px;text-align:center;position:relative;overflow:hidden}
 .profile-cover{position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(115deg,var(--neon),var(--cyan));opacity:.3}
@@ -324,26 +360,25 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .profile-panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;margin-bottom:20px}
 .profile-panel h3{font-size:1.1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .profile-empty{padding:30px;text-align:center;color:var(--muted);font-size:.88rem;background:rgba(255,255,255,.02);border-radius:12px;border:1px dashed var(--line)}
+.terms-info-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;background:rgba(43,255,136,.12);border:1px solid rgba(43,255,136,.3);color:#6bffaa;font-size:.72rem;font-weight:700;margin-top:12px}
 
-/* BAŞARIMLAR */
 .achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.achievement{padding:16px 12px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);text-align:center;transition:all .3s;position:relative;opacity:.4}
+.achievement{padding:16px 12px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid var(--line);text-align:center;transition:all .3s;opacity:.4}
 .achievement.unlocked{opacity:1;background:linear-gradient(180deg,rgba(124,92,255,.08),transparent);border-color:rgba(124,92,255,.35)}
 .achievement.unlocked:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(124,92,255,.2)}
 .achievement-icon{font-size:2rem;margin-bottom:6px;display:block}
 .achievement-name{font-size:.78rem;font-weight:700;margin-bottom:3px}
 .achievement-desc{font-size:.68rem;color:var(--muted);line-height:1.3}
 
-/* KÜTÜPHANE */
 .library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
 .library-item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .3s}
 .library-item:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.4);box-shadow:0 15px 35px rgba(0,0,0,.4)}
 .library-cover{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem}
 .library-body{padding:14px 16px}
 .library-body h4{font-size:1rem;font-weight:800;margin-bottom:4px}
-.library-body .lib-status{font-size:.72rem;color:var(--muted)}
+.lib-status{font-size:.72rem;color:var(--muted)}
 
-/* TURNUVA */
+/* TOURNAMENTS */
 .tournaments-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 .tournament-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;position:relative;overflow:hidden;cursor:pointer;transition:all .3s;animation:cardStagger .5s backwards}
 .tournament-card:hover{transform:translateY(-6px);border-color:rgba(255,176,32,.5);box-shadow:0 20px 40px rgba(0,0,0,.5)}
@@ -378,6 +413,16 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .stat-card-num{font-family:'Space Mono',monospace;font-size:1.8rem;font-weight:800;background:linear-gradient(115deg,var(--neon),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1.1}
 .stat-card-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
 
+/* ADMIN TABS */
+.admin-tabs{display:flex;gap:6px;margin-bottom:24px;overflow-x:auto;padding-bottom:6px;border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch}
+.admin-tabs::-webkit-scrollbar{height:4px}
+.admin-tabs::-webkit-scrollbar-thumb{background:linear-gradient(90deg,var(--neon),var(--cyan));border-radius:100px}
+.admin-tab{padding:11px 18px;background:transparent;border:none;color:var(--muted);font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;border-bottom:2px solid transparent;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:6px}
+.admin-tab:hover{background:rgba(124,92,255,.06);color:var(--text)}
+.admin-tab.active{color:var(--text);border-bottom-color:var(--neon);background:rgba(124,92,255,.1)}
+.admin-tab-content{display:none}
+.admin-tab-content.active{display:block;animation:viewSlideIn .4s}
+
 /* ADMIN */
 .table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;margin:0 -4px;padding:0 4px 4px}
 .table-wrap::-webkit-scrollbar{height:6px}
@@ -405,8 +450,9 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .form-field input,.form-field textarea,.form-field select{padding:11px 14px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--text);font-size:.9rem;transition:all .2s}
 .form-field input:focus,.form-field textarea:focus,.form-field select:focus{outline:none;border-color:var(--neon);box-shadow:0 0 0 3px rgba(124,92,255,.1)}
 .form-field textarea{resize:vertical;min-height:80px;font-family:inherit}
+.terms-yes{color:var(--green);font-weight:700}
+.terms-no{color:var(--pink);font-weight:700}
 
-/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
 .modal-bg.active{display:flex}
 .modal{background:var(--card);border:1px solid var(--line);border-radius:22px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:32px;box-shadow:0 40px 100px rgba(0,0,0,.7);animation:modalIn .35s}
@@ -422,17 +468,14 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 .empty h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:6px}
 .mobile-menu-btn{display:none;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);cursor:pointer;align-items:center;justify-content:center;font-size:1.2rem;margin-right:10px}
 
-/* RIPPLE */
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rippleAnim .6s linear;pointer-events:none}
 @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
 
-/* BAŞARI CHECKMARK */
 .login-success{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:120px;height:120px;border-radius:50%;background:linear-gradient(115deg,#2bff88,#00e5ff);z-index:9999;display:flex;align-items:center;justify-content:center;box-shadow:0 0 80px rgba(43,255,136,.6);animation:successPop .8s forwards}
 .login-success svg{width:60px;height:60px;stroke:#07070d;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;animation:drawCheck .5s .3s ease forwards}
 @keyframes successPop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.15);opacity:1}70%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
 @keyframes drawCheck{to{stroke-dashoffset:0}}
 
-/* MOBİL ALT NAV */
 .mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(13,13,24,.97);backdrop-filter:blur(20px);border-top:1px solid var(--line);z-index:90;padding:8px 4px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.5)}
 .mobile-bottom-nav-inner{display:flex;justify-content:space-around;align-items:center;max-width:520px;margin:0 auto}
 .mobile-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:12px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.65rem;font-weight:600;transition:all .25s;position:relative}
@@ -483,6 +526,12 @@ input,button,textarea,select{font-family:inherit;color:inherit}
   .stat-card{padding:16px 12px}
   .stat-card-num{font-size:1.4rem}
   .stat-card-icon{font-size:1.4rem}
+  .terms-box{padding:22px 18px;border-radius:20px;max-height:95vh}
+  .terms-header-text h1{font-size:1.1rem}
+  .terms-actions{flex-direction:column}
+  .terms-actions .btn{width:100%}
+  .admin-tabs{gap:4px}
+  .admin-tab{padding:9px 12px;font-size:.78rem}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
@@ -491,7 +540,6 @@ input,button,textarea,select{font-family:inherit;color:inherit}
 
 <div id="loading"><div class="spinner"></div><p>Yukleniyor...</p></div>
 
-<!-- BILDIRIM PANELI -->
 <div class="notif-panel" id="notifPanel">
   <div class="notif-head">
     <h3>🔔 Bildirimler</h3>
@@ -521,6 +569,113 @@ input,button,textarea,select{font-family:inherit;color:inherit}
   </div>
 </div>
 
+<!-- TERMS / KVKK SCREEN -->
+<div id="terms-screen">
+  <div class="terms-box">
+    <div class="terms-header">
+      <div class="auth-logo-mark">N</div>
+      <div class="terms-header-text">
+        <h1>Kullanim Sartlari ve KVKK</h1>
+        <p>Devam etmek icin lutfen asagidaki metinleri okuyup onaylayin</p>
+      </div>
+    </div>
+    <div class="terms-body">
+      <h2>📋 1. Kullanim Sartlari</h2>
+      <h3>1.1 Taraflar ve Kabul</h3>
+      <p>Bu platform (<strong>Noama Games</strong>), Noama Games tarafindan isletilmektedir. Siteye erisim ve kullanim, asagidaki sartlari kayitsiz sartsiz kabul ettiginiz anlamina gelir. Sartlari kabul etmiyorsaniz platformu kullanmayiniz.</p>
+      <h3>1.2 Hizmet Tanimi</h3>
+      <p>Noama Games, bagimsiz oyun gelistiricilerinin oyunlarini ucretsiz yayinlayabildigi, kullanicilarin oyunlari kesfedip yorum yapabildigi, turnuvalara katilabildigi bir platformdur. Hizmet ucretsizdir.</p>
+      <h3>1.3 Hesap Sorumlulugu</h3>
+      <ul>
+        <li>Hesap guvenliginden kullanici sorumludur.</li>
+        <li>Baskasinin hesabini kullanmak yasaktir.</li>
+        <li>Sahte bilgi vermek, kimlik taklidi yapmak yasaktir.</li>
+        <li>18 yasindan kucuk kullanicilar veli izniyle kullanabilir.</li>
+      </ul>
+      <h3>1.4 Icerik Kurallari</h3>
+      <ul>
+        <li>Hakaret, kufur, tehdit, nefret soylemi yasaktir.</li>
+        <li>Spam, reklam, yaniltici icerik yasaktir.</li>
+        <li>Telif hakki ihlali yasaktir.</li>
+        <li>Yasa disi icerik paylasilamaz.</li>
+        <li>Bu tur icerikler silinir ve hesap askiya alinabilir.</li>
+      </ul>
+      <h3>1.5 Fikri Mulkiyet</h3>
+      <p>Yuklediginiz oyun, yorum ve icerikler <strong>size aittir</strong>. Noama Games, bu icerikleri platformda sergileme, tanitma ve dagitma konusunda <strong>ucretsiz, dunya capinda, geri alinamaz lisans</strong> alir. Oyunlarinizin telif hakki sizde kalir.</p>
+      <h3>1.6 Sorumluluk Reddi</h3>
+      <p>Platform "oldugu gibi" sunulur. Noama Games, kesintisiz hizmet, hatasizlik veya belirli bir amaca uygunluk garantisi vermez. Kullanicilarin yukledigi iceriklerden ilgili kullanici sorumludur.</p>
+      <h3>1.7 Degisiklikler</h3>
+      <p>Noama Games, bu sartlari onceden bildirimde bulunmaksizin degistirme hakkini sakli tutar. Onemli degisikliklerde tekrar onayiniz istenir.</p>
+
+      <h2>🔒 2. KVKK Aydinlatma Metni</h2>
+      <p>6698 sayili Kisisel Verilerin Korunmasi Kanunu ("KVKK") kapsaminda, veri sorumlusu <strong>Noama Games</strong> tarafindan hazirlanmistir.</p>
+      <h3>2.1 Islenen Kisisel Veriler</h3>
+      <ul>
+        <li><strong>Kimlik:</strong> Ad, soyad (Google hesabinizdan)</li>
+        <li><strong>Iletisim:</strong> E-posta adresi</li>
+        <li><strong>Gorsel:</strong> Profil fotografi (Google URL)</li>
+        <li><strong>Islem Guvenligi:</strong> IP adresi, oturum bilgileri, cihaz bilgisi</li>
+        <li><strong>Kullanim Verileri:</strong> Yorumlar, oyunlar, istek listesi, aktiflik</li>
+      </ul>
+      <h3>2.2 Isleme Amaclari</h3>
+      <ul>
+        <li>Hesap olusturma ve yonetimi</li>
+        <li>Hizmet sunumu (oyun oynama, yorum yapma, turnuva katilimi)</li>
+        <li>Iletisim ve bildirimler</li>
+        <li>Istatistik ve iyilestirme</li>
+        <li>Yasal yukumluluklerin yerine getirilmesi</li>
+      </ul>
+      <h3>2.3 Hukuki Sebep</h3>
+      <p>Kisisel verileriniz <strong>acik rizaniz</strong> (KVKK md. 5/1) ve <strong>sozlesmenin ifasi</strong> (md. 5/2-c) hukuki sebeplerine dayanilarak islenmektedir.</p>
+      <h3>2.4 Veri Aktarimi</h3>
+      <p>Verileriniz asagidaki 3. taraf hizmet saglayicilarla paylasilir:</p>
+      <ul>
+        <li><strong>Google Firebase:</strong> Kimlik dogrulama ve veritabani</li>
+        <li><strong>Google Analytics:</strong> Anonim kullanim istatistikleri</li>
+        <li><strong>Cloudflare:</strong> Guvenlik ve DDoS korumasi</li>
+      </ul>
+      <p>Bu hizmetlerin sunuculari yurt disinda bulunabilir. Aktarim, KVKK md. 9 kapsaminda acik rizaniza dayanmaktadir.</p>
+      <h3>2.5 Saklama Suresi</h3>
+      <p>Verileriniz hesabiniz aktif oldugu surece saklanir. Hesabinizi sildiginizde 30 gun icinde tum verileriniz silinir.</p>
+      <h3>2.6 KVKK Haklariniz (Md. 11)</h3>
+      <ul>
+        <li>Kisisel verilerinizin islenip islenmedigini ogrenme</li>
+        <li>Islenmisse buna iliskin bilgi talep etme</li>
+        <li>Islenme amacini ogrenme</li>
+        <li>Eksik/yanlis islenmisse duzeltilmesini isteme</li>
+        <li>Silinmesini veya yok edilmesini isteme</li>
+        <li>Otomatik sistemlerle analiz sonucu aleyhinize cikan sonuca itiraz etme</li>
+        <li>Zarara ugramaniz halinde tazminat talep etme</li>
+      </ul>
+      <p>Haklarinizi kullanmak icin: <strong>nomail</strong></p>
+
+      <h2>🛡️ 3. Gizlilik Politikasi</h2>
+      <h3>3.1 Cerezler</h3>
+      <p>Platform, oturum yonetimi icin zorunlu cerezler kullanir. Google Analytics icin anonim istatistik cerezleri de kullanilir.</p>
+      <h3>3.2 Guvenlik</h3>
+      <p>Verileriniz SSL/HTTPS ile sifreli olarak iletilir. Firestore guvenlik kurallari ile yetkisiz erisim engellenir.</p>
+      <h3>3.3 Ucuncu Taraf Baglantilari</h3>
+      <p>Platform, Google, YouTube, Twitter gibi 3. taraf sitelere baglantilar icerebilir. Bu sitelerin gizlilik politikalarindan Noama Games sorumlu degildir.</p>
+      <h3>3.4 Cocuklarin Gizliligi</h3>
+      <p>Platform 13 yas alti cocuklardan bilerek veri toplamaz. 13 yas alti kullanicilar veli izniyle kullanmalidir.</p>
+    </div>
+    <div class="terms-checkboxes">
+      <label class="terms-check">
+        <input type="checkbox" id="acceptTerms">
+        <span><strong>Kullanim Sartlari</strong> ve <strong>KVKK Aydinlatma Metni</strong>'ni okudum, anladim ve kabul ediyorum.</span>
+      </label>
+      <label class="terms-check">
+        <input type="checkbox" id="acceptPrivacy">
+        <span><strong>Gizlilik Politikasi</strong>'ni ve kisisel verilerimin islenmesine iliskin <strong>acik riza</strong> verdigimi kabul ediyorum.</span>
+      </label>
+    </div>
+    <div class="terms-actions">
+      <button class="btn terms-reject" id="termsReject">Reddet ve Cikis Yap</button>
+      <button class="btn terms-accept" id="termsAccept" disabled>Kabul Et ve Devam Et</button>
+    </div>
+  </div>
+</div>
+
 <!-- APP -->
 <div id="app-screen">
   <aside class="sidebar">
@@ -545,14 +700,12 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <button class="nav-item" data-view="library"><span class="icon">📚</span><span>Kutuphanem</span></button>
       <button class="nav-item" data-view="wishlist"><span class="icon">❤️</span><span>Istek Listem</span><span class="badge" id="wishlistBadge" style="display:none">0</span></button>
       <button class="nav-item" data-view="achievements"><span class="icon">🏆</span><span>Basarimlar</span></button>
+      
       <div class="nav-label" id="devLabel" style="display:none">Gelistirici</div>
       <button class="nav-item" data-view="admin-add" id="devAddNav" style="display:none"><span class="icon">➕</span><span>Oyun Yukle</span><span class="badge dev">DEV</span></button>
+      
       <div class="nav-label" id="adminLabel" style="display:none">Yonetim</div>
-      <button class="nav-item" data-view="dashboard" id="dashboardNav" style="display:none"><span class="icon">📊</span><span>Dashboard</span><span class="badge admin">ADMIN</span></button>
       <button class="nav-item" data-view="admin" id="adminNav" style="display:none"><span class="icon">⚙️</span><span>Admin Panel</span><span class="badge admin">ADMIN</span></button>
-      <button class="nav-item" data-view="dev-manager" id="devManagerNav" style="display:none"><span class="icon">🛠️</span><span>Gelistirici Yonetimi</span></button>
-      <button class="nav-item" data-view="admin-applications" id="appsNav" style="display:none"><span class="icon">📨</span><span>Basvurular</span><span class="badge red" id="appsCount" style="display:none">0</span></button>
-      <button class="nav-item" data-view="reports" id="reportsNav" style="display:none"><span class="icon">🚨</span><span>Raporlar</span><span class="badge red" id="reportsCount" style="display:none">0</span></button>
     </nav>
     <div class="sidebar-user">
       <div class="user-card" id="userCard">
@@ -579,6 +732,12 @@ input,button,textarea,select{font-family:inherit;color:inherit}
         <h1 class="view-title">Oyunlar</h1>
         <p class="view-desc">Noama Games'te yayinlanan tum oyunlar.</p>
       </div></div>
+      
+      <div class="recent-strip" id="recentStrip" style="display:none">
+        <div class="recent-label">🕒 Son Gezdigin Oyunlar</div>
+        <div class="recent-games" id="recentGames"></div>
+      </div>
+
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Oyun, gelistirici veya etiket ara..." autocomplete="off">
         <div class="search-suggestions" id="searchSuggestions"></div>
@@ -698,6 +857,7 @@ input,button,textarea,select{font-family:inherit;color:inherit}
               <div class="profile-stat"><span class="profile-stat-num" id="profileWishlistCount">0</span><span class="profile-stat-label">Istek</span></div>
               <div class="profile-stat"><span class="profile-stat-num" id="profileFollowCount">0</span><span class="profile-stat-label">Takip</span></div>
             </div>
+            <div class="terms-info-badge">✅ Kullanim Sartlari Kabul Edildi</div>
           </div>
         </div>
         <div>
@@ -740,116 +900,120 @@ input,button,textarea,select{font-family:inherit;color:inherit}
       <div class="achievements-grid" id="achievementsGrid"></div>
     </section>
 
-    <!-- DASHBOARD -->
-    <section class="view" id="view-dashboard">
-      <div class="view-head"><div>
-        <span class="view-tag">// Yonetim</span>
-        <h1 class="view-title">Dashboard</h1>
-        <p class="view-desc">Platformun genel istatistikleri.</p>
-      </div></div>
-      <div class="stats-grid" id="statsGrid"></div>
-      <div class="admin-panel">
-        <h2>👑 En Aktif Kullanicilar</h2>
-        <div class="table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>#</th><th>Kullanici</th><th>Yorum</th><th>Post</th><th>Skor</th></tr></thead>
-            <tbody id="topUsersBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="admin-panel">
-        <h2>🔥 En Populer Oyunlar</h2>
-        <div class="table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>#</th><th>Oyun</th><th>Yorum</th><th>Puan</th><th>Begeni</th></tr></thead>
-            <tbody id="topGamesBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ADMIN -->
+    <!-- ADMIN PANEL (BİRLEŞTİRİLMİŞ) -->
     <section class="view" id="view-admin">
       <div class="view-head"><div>
         <span class="view-tag">// Yonetim</span>
         <h1 class="view-title">Admin Panel</h1>
+        <p class="view-desc">Platformun tum yonetim islemleri burada.</p>
       </div></div>
-      <div class="admin-panel">
-        <h2>🎮 Oyun Yonetimi</h2>
-        <div class="table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>Oyun</th><th>Durum</th><th>Fiyat</th><th>Yilin</th><th style="text-align:right">Islem</th></tr></thead>
-            <tbody id="adminGamesBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="admin-panel">
-        <h2>📢 Duyuru Yonetimi</h2>
-        <div class="form-grid" style="margin-bottom:18px">
-          <div class="form-field"><label>Etiket</label><select id="annTag"><option value="Duyuru">Duyuru</option><option value="Karar">Karar</option><option value="Guncelleme">Guncelleme</option><option value="Onemli">Onemli</option></select></div>
-          <div class="form-field"><label>Tarih</label><input type="date" id="annDate"></div>
-          <div class="form-field full"><label>Baslik</label><input type="text" id="annTitle"></div>
-          <div class="form-field full"><label>Mesaj</label><textarea id="annMessage"></textarea></div>
-        </div>
-        <button class="mini-btn gold" id="addAnnBtn">+ Duyuru Ekle</button>
-        <div id="adminAnnList" style="margin-top:20px"></div>
-      </div>
-    </section>
 
-    <!-- GELISTIRICI YONETIMI -->
-    <section class="view" id="view-dev-manager">
-      <div class="view-head"><div>
-        <span class="view-tag">// Yonetim</span>
-        <h1 class="view-title">Gelistirici Yonetimi</h1>
-      </div></div>
-      <div class="admin-panel">
-        <h2>➕ Yeni Gelistirici Ekle</h2>
-        <div class="form-grid">
-          <div class="form-field full"><label>E-posta</label><input type="email" id="devEmailInput" placeholder="ornek@gmail.com"></div>
-          <div class="form-field"><label>Etiketler</label><input type="text" id="devTagsInput" placeholder="Unity, 3D Sanatci"></div>
-          <div class="form-field"><label>Noama Calisani mi?</label><select id="devStaffSelect"><option value="no">Hayir</option><option value="yes">Evet</option></select></div>
-        </div>
-        <button class="mini-btn green" id="addDevBtn" style="margin-top:14px">+ Gelistirici Yap</button>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-atab="dashboard">📊 Dashboard</button>
+        <button class="admin-tab" data-atab="games">🎮 Oyunlar</button>
+        <button class="admin-tab" data-atab="announcements">📢 Duyurular</button>
+        <button class="admin-tab" data-atab="users">👥 Kullanicilar</button>
+        <button class="admin-tab" data-atab="applications">📨 Basvurular <span class="badge red" id="appsCount" style="display:none">0</span></button>
+        <button class="admin-tab" data-atab="reports">🚨 Raporlar <span class="badge red" id="reportsCount" style="display:none">0</span></button>
       </div>
-      <div class="admin-panel">
-        <h2>👥 Tum Gelistiriciler</h2>
-        <div class="table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>Kullanici</th><th>E-posta</th><th>Etiketler</th><th>Skor</th><th>Durum</th><th style="text-align:right">Islem</th></tr></thead>
-            <tbody id="devListBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
 
-    <!-- BASVURULAR -->
-    <section class="view" id="view-admin-applications">
-      <div class="view-head"><div>
-        <span class="view-tag">// Yonetim</span>
-        <h1 class="view-title">Gelistirici Basvurulari</h1>
-      </div></div>
-      <div class="admin-panel">
-        <div class="table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>Kullanici</th><th>Deneyim</th><th>Link</th><th>Tarih</th><th style="text-align:right">Islem</th></tr></thead>
-            <tbody id="applicationsBody"></tbody>
-          </table>
+      <!-- Dashboard Tab -->
+      <div class="admin-tab-content active" id="atab-dashboard">
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="admin-panel">
+          <h2>👑 En Aktif Kullanicilar</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>#</th><th>Kullanici</th><th>Yorum</th><th>Post</th><th>Skor</th></tr></thead>
+              <tbody id="topUsersBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="admin-panel">
+          <h2>🔥 En Populer Oyunlar</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>#</th><th>Oyun</th><th>Yorum</th><th>Puan</th><th>Begeni</th></tr></thead>
+              <tbody id="topGamesBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- RAPORLAR -->
-    <section class="view" id="view-reports">
-      <div class="view-head"><div>
-        <span class="view-tag">// Yonetim</span>
-        <h1 class="view-title">Raporlar</h1>
-      </div></div>
-      <div class="admin-panel">
-        <div class="table-wrap">
-          <table class="admin-table">
-            <thead><tr><th>Tip</th><th>Icerik</th><th>Sebep</th><th>Bildiren</th><th>Tarih</th><th style="text-align:right">Islem</th></tr></thead>
-            <tbody id="reportsBody"></tbody>
-          </table>
+      <!-- Games Tab -->
+      <div class="admin-tab-content" id="atab-games">
+        <div class="admin-panel">
+          <h2>🎮 Oyun Yonetimi</h2>
+          <p>Oyunlari duzenleyebilir, silebilir veya Yilin Oyunu secebilirsin.</p>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Oyun</th><th>Durum</th><th>Fiyat</th><th>Yilin</th><th style="text-align:right">Islem</th></tr></thead>
+              <tbody id="adminGamesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Announcements Tab -->
+      <div class="admin-tab-content" id="atab-announcements">
+        <div class="admin-panel">
+          <h2>📢 Duyuru Yonetimi</h2>
+          <div class="form-grid" style="margin-bottom:18px">
+            <div class="form-field"><label>Etiket</label><select id="annTag"><option value="Duyuru">Duyuru</option><option value="Karar">Karar</option><option value="Guncelleme">Guncelleme</option><option value="Onemli">Onemli</option></select></div>
+            <div class="form-field"><label>Tarih</label><input type="date" id="annDate"></div>
+            <div class="form-field full"><label>Baslik</label><input type="text" id="annTitle"></div>
+            <div class="form-field full"><label>Mesaj</label><textarea id="annMessage"></textarea></div>
+          </div>
+          <button class="mini-btn gold" id="addAnnBtn">+ Duyuru Ekle</button>
+          <div id="adminAnnList" style="margin-top:20px"></div>
+        </div>
+      </div>
+
+      <!-- Users Tab -->
+      <div class="admin-tab-content" id="atab-users">
+        <div class="admin-panel">
+          <h2>👥 Gelistirici Yonetimi</h2>
+          <div class="form-grid">
+            <div class="form-field full"><label>Kullanici E-posta</label><input type="email" id="devEmailInput" placeholder="ornek@gmail.com"></div>
+            <div class="form-field"><label>Etiketler</label><input type="text" id="devTagsInput" placeholder="Unity, 3D Sanatci"></div>
+            <div class="form-field"><label>Noama Calisani mi?</label><select id="devStaffSelect"><option value="no">Hayir</option><option value="yes">Evet</option></select></div>
+          </div>
+          <button class="mini-btn green" id="addDevBtn" style="margin-top:14px">+ Gelistirici Yap</button>
+        </div>
+        <div class="admin-panel">
+          <h2>👥 Tum Gelistiriciler</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Kullanici</th><th>E-posta</th><th>Etiketler</th><th>Skor</th><th>Durum</th><th style="text-align:right">Islem</th></tr></thead>
+              <tbody id="devListBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Applications Tab -->
+      <div class="admin-tab-content" id="atab-applications">
+        <div class="admin-panel">
+          <h2>📨 Gelistirici Basvurulari</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Kullanici</th><th>Deneyim</th><th>Link</th><th>Tarih</th><th style="text-align:right">Islem</th></tr></thead>
+              <tbody id="applicationsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports Tab -->
+      <div class="admin-tab-content" id="atab-reports">
+        <div class="admin-panel">
+          <h2>🚨 Raporlar</h2>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Tip</th><th>Icerik</th><th>Sebep</th><th>Bildiren</th><th>Tarih</th><th style="text-align:right">Islem</th></tr></thead>
+              <tbody id="reportsBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
@@ -1003,7 +1167,7 @@ let notifications = [], reports = [], follows = [], library = [];
 let tournaments = [], tournamentEntries = [], devApplications = [];
 let wishlistIds = [], libraryIds = [], myFollowing = [];
 let currentDevFilter = 'all', currentFilter = 'all', currentSearch = '';
-let currentTournamentFilter = 'all', currentDevFilterState = 'all';
+let currentTournamentFilter = 'all';
 let subsStarted = false;
 const $ = id => document.getElementById(id);
 const unsubs = {};
@@ -1038,6 +1202,37 @@ themeToggle.addEventListener('click', () => {
   gtag('config', 'G-52Q9KTZNHN', { anonymize_ip: true });
 })();
 
+// TERMS (KVKK) LOGIC
+let pendingUser = null;
+let termsChecked = { terms: false, privacy: false };
+
+function updateTermsButton(){
+  $('termsAccept').disabled = !(termsChecked.terms && termsChecked.privacy);
+}
+$('acceptTerms').addEventListener('change', e => { termsChecked.terms = e.target.checked; updateTermsButton(); });
+$('acceptPrivacy').addEventListener('change', e => { termsChecked.privacy = e.target.checked; updateTermsButton(); });
+
+$('termsAccept').addEventListener('click', async () => {
+  if (!pendingUser) return;
+  try {
+    await updateDoc(doc(db, 'users', pendingUser.uid), {
+      acceptedTerms: true,
+      acceptedTermsAt: new Date().toISOString()
+    });
+    $('terms-screen').classList.remove('active');
+    $('app-screen').classList.add('active');
+    enterApp(pendingUser);
+  } catch(e){ alert('Hata: ' + e.message); }
+});
+
+$('termsReject').addEventListener('click', () => {
+  if (confirm('Kullanim sartlarini kabul etmediginiz icin platforma giris yapamiyorsunuz. Cikis yapmak istiyor musunuz?')) {
+    signOut(auth);
+    $('terms-screen').classList.remove('active');
+    $('auth-screen').classList.add('active');
+  }
+});
+
 // LOGIN
 $('googleSignInBtn').addEventListener('click', async () => {
   const btn = $('googleSignInBtn');
@@ -1066,50 +1261,73 @@ function showLoginSuccess(){
 onAuthStateChanged(auth, async (user) => {
   $('loading').classList.add('hide');
   if (user){
-    currentUser = user;
-    showLoginSuccess();
-    const authScr = $('auth-screen');
-    authScr.classList.add('fade-out');
-    setTimeout(() => { authScr.classList.remove('active'); authScr.classList.remove('fade-out'); }, 500);
-
     const userRef = doc(db, 'users', user.uid);
+    let userData = null;
+    
     try {
       const snap = await getDoc(userRef);
       if (!snap.exists()){
+        // Yeni kullanici, terms kabul etmemis olarak olustur
         await setDoc(userRef, {
           email: user.email, username: user.displayName || user.email.split('@')[0],
           photoURL: user.photoURL || '', role: user.email === ADMIN_EMAIL ? 'admin' : 'user',
           isStaff: user.email === ADMIN_EMAIL, isVerified: user.email === ADMIN_EMAIL,
           tags: [], bio: '', website: '', twitter: '', youtube: '', insta: '', discord: '',
+          acceptedTerms: false,
           createdAt: new Date().toISOString()
         });
-      } else if (user.email === ADMIN_EMAIL && snap.data().role !== 'admin'){
-        await updateDoc(userRef, { role: 'admin', isStaff: true, isVerified: true });
+        userData = { acceptedTerms: false };
+      } else {
+        userData = snap.data();
+        if (user.email === ADMIN_EMAIL && userData.role !== 'admin'){
+          await updateDoc(userRef, { role: 'admin', isStaff: true, isVerified: true });
+          userData.role = 'admin';
+        }
       }
-      if (unsubs.user) unsubs.user();
-      unsubs.user = onSnapshot(userRef, (s) => {
-        currentUserDoc = s.exists() ? { uid: s.id, ...s.data() } : null;
-        updateUserUI();
-      });
     } catch(e){ console.error(e); }
 
-    $('app-screen').classList.add('active');
-    if (!subsStarted){
-      subsStarted = true;
-      subscribeGames(); subscribeAnnouncements(); subscribeReviews(); subscribePosts();
-      subscribeUsers(); subscribeWishlist(); subscribeNotifications(); subscribeLibrary();
-      subscribeFollows(); subscribeReports(); subscribeTournaments();
-      subscribeTournamentEntries(); subscribeDevApplications();
+    // TERMS KONTROLU
+    if (userData && userData.acceptedTerms === true) {
+      showLoginSuccess();
+      $('auth-screen').classList.add('fade-out');
+      setTimeout(() => { $('auth-screen').classList.remove('active'); $('auth-screen').classList.remove('fade-out'); }, 500);
+      enterApp(user);
+    } else {
+      // Terms ekranini goster
+      pendingUser = user;
+      $('auth-screen').classList.remove('active');
+      $('terms-screen').classList.add('active');
     }
   } else {
-    currentUser = null; currentUserDoc = null;
+    currentUser = null; currentUserDoc = null; pendingUser = null;
     Object.values(unsubs).forEach(fn => fn && fn());
     subsStarted = false;
     $('auth-screen').classList.remove('fade-out');
     $('auth-screen').classList.add('active');
     $('app-screen').classList.remove('active');
+    $('terms-screen').classList.remove('active');
   }
 });
+
+async function enterApp(user){
+  currentUser = user;
+  const userRef = doc(db, 'users', user.uid);
+  
+  if (unsubs.user) unsubs.user();
+  unsubs.user = onSnapshot(userRef, (s) => {
+    currentUserDoc = s.exists() ? { uid: s.id, ...s.data() } : null;
+    updateUserUI();
+  });
+
+  $('app-screen').classList.add('active');
+  if (!subsStarted){
+    subsStarted = true;
+    subscribeGames(); subscribeAnnouncements(); subscribeReviews(); subscribePosts();
+    subscribeUsers(); subscribeWishlist(); subscribeNotifications(); subscribeLibrary();
+    subscribeFollows(); subscribeReports(); subscribeTournaments();
+    subscribeTournamentEntries(); subscribeDevApplications();
+  }
+}
 
 setPersistence(auth, browserLocalPersistence).catch(e => console.warn(e));
 $('logoutBtn').addEventListener('click', async () => {
@@ -1127,21 +1345,20 @@ function updateUserUI(){
   $('devApplyNav').style.display = isDeveloper() ? 'none' : 'flex';
   $('adminNav').style.display = isAdmin() ? 'flex' : 'none';
   $('adminLabel').style.display = isAdmin() ? 'block' : 'none';
-  $('devManagerNav').style.display = isAdmin() ? 'flex' : 'none';
-  $('reportsNav').style.display = isAdmin() ? 'flex' : 'none';
-  $('dashboardNav').style.display = isAdmin() ? 'flex' : 'none';
-  $('appsNav').style.display = isAdmin() ? 'flex' : 'none';
   if ($('view-dev-apply').classList.contains('active')) renderDevApplyPanel();
+  if ($('view-admin').classList.contains('active')) renderAdminCurrentTab();
 }
 
+// ============================================
 // SUBSCRIBERS
+// ============================================
 function subscribeGames(){
   if (unsubs.games) unsubs.games();
   unsubs.games = onSnapshot(collection(db, 'games'), async (snap) => {
     games = []; snap.forEach(d => games.push({ id: d.id, ...d.data() }));
     if (games.length === 0 && isAdmin()){ await seedDefaults(); return; }
-    renderGames(); renderLibrary(); renderAchievements();
-    if ($('view-admin').classList.contains('active')) renderAdmin();
+    renderGames(); renderLibrary(); renderAchievements(); renderRecent();
+    if ($('view-admin').classList.contains('active')) renderAdminCurrentTab();
     if ($('view-game-detail').classList.contains('active')){
       const id = $('gameDetailContent').querySelector('[data-game-id]')?.dataset.gameId;
       if (id) openGameDetail(id);
@@ -1151,7 +1368,6 @@ function subscribeGames(){
       const id = $('tournamentDetailContent')?.dataset.tournamentId;
       if (id) openTournamentDetail(id);
     }
-    if ($('view-dashboard').classList.contains('active')) renderDashboard();
   });
 }
 async function seedDefaults(){
@@ -1171,7 +1387,7 @@ function subscribeAnnouncements(){
   unsubs.ann = onSnapshot(collection(db, 'announcements'), (snap) => {
     announcements = []; snap.forEach(d => announcements.push({ id: d.id, ...d.data() }));
     renderAnnouncements();
-    if ($('view-admin').classList.contains('active')) renderAdmin();
+    if ($('view-admin').classList.contains('active')) renderAdminCurrentTab();
   });
 }
 function subscribeReviews(){
@@ -1188,7 +1404,6 @@ function subscribeReviews(){
       const id = $('tournamentDetailContent')?.dataset.tournamentId;
       if (id) openTournamentDetail(id);
     }
-    if ($('view-dashboard').classList.contains('active')) renderDashboard();
   });
 }
 function subscribePosts(){
@@ -1204,9 +1419,8 @@ function subscribeUsers(){
   unsubs.users = onSnapshot(collection(db, 'users'), (snap) => {
     users = []; snap.forEach(d => users.push({ uid: d.id, ...d.data() }));
     renderDevelopers();
-    if ($('view-dev-manager').classList.contains('active')) renderDevManager();
+    if ($('view-admin').classList.contains('active')) renderAdminCurrentTab();
     if ($('view-profile').classList.contains('active')) renderProfile();
-    if ($('view-dashboard').classList.contains('active')) renderDashboard();
     renderPosts();
   });
 }
@@ -1257,7 +1471,7 @@ function subscribeReports(){
     reports = []; snap.forEach(d => reports.push({ id: d.id, ...d.data() }));
     const badge = $('reportsCount');
     if (badge){ if (reports.length > 0){ badge.style.display = 'inline-block'; badge.textContent = reports.length; } else badge.style.display = 'none'; }
-    if ($('view-reports').classList.contains('active')) renderReports();
+    if ($('view-admin').classList.contains('active')) renderAdminCurrentTab();
   });
 }
 function subscribeTournaments(){
@@ -1293,13 +1507,14 @@ function subscribeDevApplications(){
       const badge = $('appsCount');
       if (badge){ if (pending > 0){ badge.style.display = 'inline-block'; badge.textContent = pending; } else badge.style.display = 'none'; }
     }
-    if ($('view-admin-applications').classList.contains('active')) renderApplications();
+    if ($('view-admin').classList.contains('active')) renderAdminCurrentTab();
     if ($('view-dev-apply').classList.contains('active')) renderDevApplyPanel();
-    if ($('view-dashboard').classList.contains('active')) renderDashboard();
   });
 }
 
+// ============================================
 // BILDIRIM
+// ============================================
 async function createNotification(userId, type, message, link = null){
   if (!userId || userId === currentUser?.uid) return;
   try { await addDoc(collection(db, 'notifications'), { userId, type, message, link, read: false, createdAt: new Date().toISOString() }); }
@@ -1341,7 +1556,9 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('#notifPanel') && !e.target.closest('#notifBell')) $('notifPanel').classList.remove('open');
 });
 
+// ============================================
 // NAVIGASYON
+// ============================================
 document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -1354,14 +1571,10 @@ document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
     if (v === 'wishlist') renderWishlist();
     if (v === 'library') renderLibrary();
     if (v === 'achievements') renderAchievements();
-    if (v === 'admin') renderAdmin();
+    if (v === 'admin') renderAdminCurrentTab();
     if (v === 'developers') renderDevelopers();
-    if (v === 'dev-manager') renderDevManager();
-    if (v === 'reports') renderReports();
     if (v === 'tournaments') renderTournaments();
     if (v === 'dev-apply') renderDevApplyPanel();
-    if (v === 'admin-applications') renderApplications();
-    if (v === 'dashboard') renderDashboard();
   });
 });
 function showView(name){
@@ -1416,7 +1629,9 @@ window.addEventListener('popstate', (e) => {
   }
 });
 
+// ============================================
 // YARDIMCILAR
+// ============================================
 const statusText = s => s === 'beta' ? 'Acik Beta' : s === 'dev' ? 'Gelistiriliyor' : 'Yayinda';
 const priceText = g => g.price > 0 ? g.price + ' TL' : (g.status === 'dev' ? 'Yakinda' : 'Ucretsiz');
 function avgRating(id){ const rs = reviews.filter(r => r.gameId === id); return rs.length ? rs.reduce((s, r) => s + r.rating, 0) / rs.length : 0; }
@@ -1436,7 +1651,9 @@ function timeAgo(iso){
   return new Date(iso).toLocaleDateString('tr-TR');
 }
 
+// ============================================
 // ARAMA
+// ============================================
 $('searchInput').addEventListener('input', (e) => { currentSearch = e.target.value; renderGames(); showSuggestions(currentSearch); });
 $('searchInput').addEventListener('focus', () => { if (currentSearch) showSuggestions(currentSearch); });
 document.addEventListener('click', (e) => { if (!e.target.closest('.search-bar')) $('searchSuggestions').classList.remove('show'); });
@@ -1464,7 +1681,39 @@ function showSuggestions(q){
   }));
 }
 
+// ============================================
+// SON GEZİLENLER
+// ============================================
+function renderRecent(){
+  const strip = $('recentStrip');
+  const grid = $('recentGames');
+  if (!strip || !grid) return;
+  let recent = JSON.parse(localStorage.getItem('noama_recent') || '[]');
+  recent = recent.filter(id => games.some(g => g.id === id)).slice(0, 6);
+  if (!recent.length){ strip.style.display = 'none'; return; }
+  strip.style.display = 'block';
+  grid.innerHTML = recent.map(id => {
+    const g = games.find(x => x.id === id);
+    if (!g) return '';
+    return `<div class="recent-game" data-recent-id="${g.id}">
+      <div class="rg-cover" style="background:linear-gradient(135deg,${g.coverFrom || '#7c5cff'},${g.coverTo || '#0d0d18'})">${g.emoji || '🎮'}</div>
+      <div class="rg-title">${escapeHtml(g.title)}</div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('[data-recent-id]').forEach(el => el.addEventListener('click', () => openGameDetail(el.dataset.recentId)));
+}
+function addToRecent(gameId){
+  let recent = JSON.parse(localStorage.getItem('noama_recent') || '[]');
+  recent = recent.filter(id => id !== gameId);
+  recent.unshift(gameId);
+  recent = recent.slice(0, 8);
+  localStorage.setItem('noama_recent', JSON.stringify(recent));
+  renderRecent();
+}
+
+// ============================================
 // FİLTRELER
+// ============================================
 document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
@@ -1503,7 +1752,9 @@ function getFilteredGames(){
   return list;
 }
 
+// ============================================
 // OYUN KARTLARI
+// ============================================
 function renderGames(){
   const row = $('gamesRow');
   if (!row) return;
@@ -1558,10 +1809,13 @@ async function toggleWishlist(gameId){
   }
 }
 
+// ============================================
 // OYUN DETAY
+// ============================================
 function openGameDetail(id){
   const g = games.find(x => x.id === id);
   if (!g) return;
+  addToRecent(id);
   const rating = avgRating(g.id);
   const gameReviews = reviews.filter(r => r.gameId === id).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   const reviewCount = gameReviews.length;
@@ -1766,7 +2020,9 @@ function attachReviewEvents(g){
   });
 }
 
+// ============================================
 // KÜTÜPHANE
+// ============================================
 async function toggleLibrary(gameId){
   if (!currentUser) return;
   const ex = library.find(l => l.userId === currentUser.uid && l.gameId === gameId);
@@ -1798,7 +2054,9 @@ function renderLibrary(){
   grid.querySelectorAll('[data-lib-id]').forEach(el => el.addEventListener('click', () => openGameDetail(el.dataset.libId)));
 }
 
+// ============================================
 // TAKIP
+// ============================================
 async function toggleFollow(userId){
   if (!currentUser || userId === currentUser.uid) return;
   const ex = follows.find(f => f.followerId === currentUser.uid && f.followingId === userId);
@@ -1809,7 +2067,9 @@ async function toggleFollow(userId){
   }
 }
 
+// ============================================
 // GELİŞTİRİCİLER
+// ============================================
 const devScore = (u) => {
   const ug = games.filter(g => g.ownerId === u.uid);
   const rs = reviews.filter(r => ug.some(g => g.id === r.gameId));
@@ -1853,7 +2113,9 @@ function renderDevelopers(){
   grid.querySelectorAll('[data-follow]').forEach(btn => btn.addEventListener('click', () => toggleFollow(btn.dataset.follow)));
 }
 
+// ============================================
 // TURNUVA RENDER
+// ============================================
 function renderTournaments(){
   const grid = $('tournamentsGrid');
   if (!grid) return;
@@ -1880,7 +2142,6 @@ function renderTournaments(){
   }).join('');
   grid.querySelectorAll('[data-tid]').forEach(el => el.addEventListener('click', () => openTournamentDetail(el.dataset.tid)));
 
-  // Admin butonu
   const head = $('view-tournaments')?.querySelector('.view-head');
   if (head && isAdmin() && !head.querySelector('#createTournamentBtn')){
     const btn = document.createElement('button');
@@ -2035,7 +2296,9 @@ function openTournamentDetail(id){
   });
 }
 
+// ============================================
 // BAŞVURU
+// ============================================
 function renderDevApplyPanel(){
   const panel = $('devApplyPanel');
   if (!panel || !currentUser) return;
@@ -2080,50 +2343,94 @@ function renderDevApplyPanel(){
   });
 }
 
-function renderApplications(){
-  if (!isAdmin()) return;
-  const tbody = $('applicationsBody');
-  if (!tbody) return;
-  if (!devApplications.length){
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">Basvuru yok</td></tr>';
-    return;
-  }
-  tbody.innerHTML = devApplications.map(a => `
-    <tr>
-      <td><strong>${escapeHtml(a.username)}</strong><br><span style="font-size:.75rem;color:var(--muted)">${escapeHtml(a.email || '')}</span></td>
-      <td style="max-width:220px"><div style="font-size:.82rem">${escapeHtml(a.experience || '-')}</div>${a.portfolio ? `<a href="${a.portfolio}" target="_blank" style="color:var(--cyan);font-size:.75rem">Portfolio</a>` : ''}</td>
-      <td>${a.portfolio ? '✅' : '-'}</td>
-      <td style="font-size:.75rem;color:var(--muted)">${timeAgo(a.appliedAt)}</td>
-      <td style="text-align:right">
-        ${a.status === 'pending' ? `
-          <div class="admin-actions" style="justify-content:flex-end">
-            <button class="mini-btn green" data-app-approve="${a.id}">✓ Onayla</button>
-            <button class="mini-btn danger" data-app-reject="${a.id}">✗ Reddet</button>
-          </div>
-        ` : `<span class="mini-tag ${a.status === 'approved' ? 'beta' : 'dev'}">${a.status === 'approved' ? 'Onayli' : 'Reddedildi'}</span>`}
-      </td>
-    </tr>`).join('');
-  tbody.querySelectorAll('[data-app-approve]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const app = devApplications.find(x => x.id === btn.dataset.appApprove);
-      if (!app) return;
-      await updateDoc(doc(db, 'users', app.userId), { role: 'developer', isVerified: true });
-      await updateDoc(doc(db, 'devApplications', app.id), { status: 'approved', reviewedAt: new Date().toISOString() });
-      await createNotification(app.userId, 'system', 'Gelistirici basvurun onaylandi! Artik oyun yukleyebilirsin.', 'profile');
-      alert('Onaylandi! ✅');
-    });
+// ============================================
+// ADMIN TABS LOGIC
+// ============================================
+document.querySelectorAll('.admin-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    const content = $('atab-' + tab.dataset.atab);
+    if (content) content.classList.add('active');
+    
+    // Render content based on tab
+    if (tab.dataset.atab === 'dashboard') renderDashboard();
+    if (tab.dataset.atab === 'games') renderAdminGames();
+    if (tab.dataset.atab === 'announcements') renderAdminAnnouncements();
+    if (tab.dataset.atab === 'users') renderDevManager();
+    if (tab.dataset.atab === 'applications') renderApplications();
+    if (tab.dataset.atab === 'reports') renderReports();
   });
-  tbody.querySelectorAll('[data-app-reject]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      if (!confirm('Reddet?')) return;
-      const app = devApplications.find(x => x.id === btn.dataset.appReject);
-      await updateDoc(doc(db, 'devApplications', app.id), { status: 'rejected', reviewedAt: new Date().toISOString() });
-      await createNotification(app.userId, 'system', 'Gelistirici basvurun reddedildi.', 'profile');
-    });
-  });
+});
+
+function renderAdminCurrentTab(){
+  const activeTab = document.querySelector('.admin-tab.active');
+  if (!activeTab) return;
+  const atab = activeTab.dataset.atab;
+  if (atab === 'dashboard') renderDashboard();
+  if (atab === 'games') renderAdminGames();
+  if (atab === 'announcements') renderAdminAnnouncements();
+  if (atab === 'users') renderDevManager();
+  if (atab === 'applications') renderApplications();
+  if (atab === 'reports') renderReports();
 }
 
-// DASHBOARD
+function renderAdminGames(){
+  if (!isAdmin()) return;
+  const tbody = $('adminGamesBody');
+  if (!tbody) return;
+  tbody.innerHTML = games.map(g => `
+    <tr>
+      <td><strong>${g.emoji} ${escapeHtml(g.title)}</strong></td>
+      <td>${statusText(g.status)}</td>
+      <td>${priceText(g)}</td>
+      <td><button class="mini-btn ${g.gameOfYear ? 'active' : 'gold'}" data-toggle-year="${g.id}">${g.gameOfYear ? '🏆' : 'Sec'}</button></td>
+      <td style="text-align:right"><div class="admin-actions" style="justify-content:flex-end">
+        <button class="mini-btn" data-edit="${g.id}">✏️</button>
+        <button class="mini-btn danger" data-del-game="${g.id}">🗑️</button>
+      </div></td>
+    </tr>`).join('');
+  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditModal(b.dataset.edit)));
+  tbody.querySelectorAll('[data-toggle-year]').forEach(b => b.addEventListener('click', async () => {
+    const id = b.dataset.toggleYear;
+    const nv = !games.find(g => g.id === id).gameOfYear;
+    for (const g of games) if (g.gameOfYear && g.id !== id) await updateDoc(doc(db, 'games', g.id), { gameOfYear: false });
+    await updateDoc(doc(db, 'games', id), { gameOfYear: nv });
+  }));
+  tbody.querySelectorAll('[data-del-game]').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Oyunu sil?')) return;
+    await deleteDoc(doc(db, 'games', b.dataset.delGame));
+  }));
+}
+
+function renderAdminAnnouncements(){
+  if (!isAdmin()) return;
+  const annList = $('adminAnnList');
+  if (!annList) return;
+  const sorted = [...announcements].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  annList.innerHTML = sorted.map(a => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:8px">
+      <span class="mini-tag">${escapeHtml(a.tag)}</span>
+      <span style="flex:1;font-size:.88rem;font-weight:600">${escapeHtml(a.title)}</span>
+      <span style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted)">${a.date}</span>
+      <button class="mini-btn danger" data-del-ann="${a.id}">🗑️</button>
+    </div>`).join('');
+  annList.querySelectorAll('[data-del-ann]').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Duyuruyu sil?')) return;
+    await deleteDoc(doc(db, 'announcements', b.dataset.delAnn));
+  }));
+  if (!$('annDate').value) $('annDate').value = new Date().toISOString().slice(0, 10);
+}
+
+$('addAnnBtn').addEventListener('click', async () => {
+  if (!isAdmin()) return;
+  const tag = $('annTag').value, date = $('annDate').value, title = $('annTitle').value.trim(), message = $('annMessage').value.trim();
+  if (!title || !message || !date) return alert('Doldur hepsini.');
+  await addDoc(collection(db, 'announcements'), { date, tag, title, message, createdAt: new Date().toISOString() });
+  $('annTitle').value = ''; $('annMessage').value = '';
+});
+
 function renderDashboard(){
   if (!isAdmin()) return;
   const stats = $('statsGrid');
@@ -2176,7 +2483,75 @@ function renderDashboard(){
     </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">Veri yok</td></tr>';
 }
 
+function renderApplications(){
+  if (!isAdmin()) return;
+  const tbody = $('applicationsBody');
+  if (!tbody) return;
+  if (!devApplications.length){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">Basvuru yok</td></tr>';
+    return;
+  }
+  tbody.innerHTML = devApplications.map(a => `
+    <tr>
+      <td><strong>${escapeHtml(a.username)}</strong><br><span style="font-size:.75rem;color:var(--muted)">${escapeHtml(a.email || '')}</span></td>
+      <td style="max-width:220px"><div style="font-size:.82rem">${escapeHtml(a.experience || '-')}</div>${a.portfolio ? `<a href="${a.portfolio}" target="_blank" style="color:var(--cyan);font-size:.75rem">Portfolio</a>` : ''}</td>
+      <td>${a.portfolio ? '✅' : '-'}</td>
+      <td style="font-size:.75rem;color:var(--muted)">${timeAgo(a.appliedAt)}</td>
+      <td style="text-align:right">
+        ${a.status === 'pending' ? `
+          <div class="admin-actions" style="justify-content:flex-end">
+            <button class="mini-btn green" data-app-approve="${a.id}">✓ Onayla</button>
+            <button class="mini-btn danger" data-app-reject="${a.id}">✗ Reddet</button>
+          </div>
+        ` : `<span class="mini-tag ${a.status === 'approved' ? 'beta' : 'dev'}">${a.status === 'approved' ? 'Onayli' : 'Reddedildi'}</span>`}
+      </td>
+    </tr>`).join('');
+  tbody.querySelectorAll('[data-app-approve]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const app = devApplications.find(x => x.id === btn.dataset.appApprove);
+      if (!app) return;
+      await updateDoc(doc(db, 'users', app.userId), { role: 'developer', isVerified: true });
+      await updateDoc(doc(db, 'devApplications', app.id), { status: 'approved', reviewedAt: new Date().toISOString() });
+      await createNotification(app.userId, 'system', 'Gelistirici basvurun onaylandi! Artik oyun yukleyebilirsin.', 'profile');
+      alert('Onaylandi! ✅');
+    });
+  });
+  tbody.querySelectorAll('[data-app-reject]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Reddet?')) return;
+      const app = devApplications.find(x => x.id === btn.dataset.appReject);
+      await updateDoc(doc(db, 'devApplications', app.id), { status: 'rejected', reviewedAt: new Date().toISOString() });
+      await createNotification(app.userId, 'system', 'Gelistirici basvurun reddedildi.', 'profile');
+    });
+  });
+}
+
+function renderReports(){
+  if (!isAdmin()) return;
+  const tbody = $('reportsBody');
+  if (!tbody) return;
+  if (!reports.length){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Rapor yok</td></tr>'; return; }
+  const reasons = { spam: 'Spam', kufur: 'Kufur', yanlis: 'Yanlis bilgi', telif: 'Telif', diger: 'Diger' };
+  tbody.innerHTML = reports.map(r => {
+    let content = '-';
+    if (r.type === 'review'){ const rev = reviews.find(x => x.id === r.targetId); content = rev ? `"${escapeHtml(rev.text.slice(0, 40))}..."` : '(silinmis)'; }
+    return `<tr>
+      <td><span class="mini-tag">${r.type}</span></td>
+      <td>${content}</td>
+      <td>${reasons[r.reason] || r.reason}</td>
+      <td>${escapeHtml(r.reporterName || '-')}</td>
+      <td style="font-size:.75rem;color:var(--muted)">${timeAgo(r.createdAt)}</td>
+      <td style="text-align:right"><button class="mini-btn danger" data-del-report="${r.id}">🗑️</button></td>
+    </tr>`;
+  }).join('');
+  tbody.querySelectorAll('[data-del-report]').forEach(btn => btn.addEventListener('click', async () => {
+    await deleteDoc(doc(db, 'reports', btn.dataset.delReport));
+  }));
+}
+
+// ============================================
 // PROFİL
+// ============================================
 function renderProfile(){
   if (!currentUser || !currentUserDoc) return;
   $('profileBigAvatar').innerHTML = currentUser.photoURL ? `<img src="${currentUser.photoURL}">` : myUsername()[0].toUpperCase();
@@ -2237,7 +2612,9 @@ $('editProfileSave').addEventListener('click', async () => {
   alert('Profil guncellendi! ✅');
 });
 
+// ============================================
 // BAŞARIMLAR
+// ============================================
 function renderAchievements(){
   const grid = $('achievementsGrid');
   if (!grid || !currentUser) return;
@@ -2289,28 +2666,6 @@ $('reportSave').addEventListener('click', async () => {
   reportTarget = null;
   alert('Rapor gonderildi! 🚨');
 });
-function renderReports(){
-  if (!isAdmin()) return;
-  const tbody = $('reportsBody');
-  if (!tbody) return;
-  if (!reports.length){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Rapor yok</td></tr>'; return; }
-  const reasons = { spam: 'Spam', kufur: 'Kufur', yanlis: 'Yanlis bilgi', telif: 'Telif', diger: 'Diger' };
-  tbody.innerHTML = reports.map(r => {
-    let content = '-';
-    if (r.type === 'review'){ const rev = reviews.find(x => x.id === r.targetId); content = rev ? `"${escapeHtml(rev.text.slice(0, 40))}..."` : '(silinmis)'; }
-    return `<tr>
-      <td><span class="mini-tag">${r.type}</span></td>
-      <td>${content}</td>
-      <td>${reasons[r.reason] || r.reason}</td>
-      <td>${escapeHtml(r.reporterName || '-')}</td>
-      <td style="font-size:.75rem;color:var(--muted)">${timeAgo(r.createdAt)}</td>
-      <td style="text-align:right"><button class="mini-btn danger" data-del-report="${r.id}">🗑️</button></td>
-    </tr>`;
-  }).join('');
-  tbody.querySelectorAll('[data-del-report]').forEach(btn => btn.addEventListener('click', async () => {
-    await deleteDoc(doc(db, 'reports', btn.dataset.delReport));
-  }));
-}
 
 // POSTS
 $('postText').addEventListener('input', e => {
@@ -2440,56 +2795,7 @@ function renderWishlist(){
   row.querySelectorAll('[data-wish]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); toggleWishlist(b.dataset.wish); }));
 }
 
-// ADMIN
-function renderAdmin(){
-  if (!isAdmin()) return;
-  const tbody = $('adminGamesBody');
-  tbody.innerHTML = games.map(g => `
-    <tr>
-      <td><strong>${g.emoji} ${escapeHtml(g.title)}</strong></td>
-      <td>${statusText(g.status)}</td>
-      <td>${priceText(g)}</td>
-      <td><button class="mini-btn ${g.gameOfYear ? 'active' : 'gold'}" data-toggle-year="${g.id}">${g.gameOfYear ? '🏆' : 'Sec'}</button></td>
-      <td style="text-align:right"><div class="admin-actions" style="justify-content:flex-end">
-        <button class="mini-btn" data-edit="${g.id}">✏️</button>
-        <button class="mini-btn danger" data-del-game="${g.id}">🗑️</button>
-      </div></td>
-    </tr>`).join('');
-  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditModal(b.dataset.edit)));
-  tbody.querySelectorAll('[data-toggle-year]').forEach(b => b.addEventListener('click', async () => {
-    const id = b.dataset.toggleYear;
-    const nv = !games.find(g => g.id === id).gameOfYear;
-    for (const g of games) if (g.gameOfYear && g.id !== id) await updateDoc(doc(db, 'games', g.id), { gameOfYear: false });
-    await updateDoc(doc(db, 'games', id), { gameOfYear: nv });
-  }));
-  tbody.querySelectorAll('[data-del-game]').forEach(b => b.addEventListener('click', async () => {
-    if (!confirm('Oyunu sil?')) return;
-    await deleteDoc(doc(db, 'games', b.dataset.delGame));
-  }));
-  const annList = $('adminAnnList');
-  const sorted = [...announcements].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-  annList.innerHTML = sorted.map(a => `
-    <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:8px">
-      <span class="mini-tag">${escapeHtml(a.tag)}</span>
-      <span style="flex:1;font-size:.88rem;font-weight:600">${escapeHtml(a.title)}</span>
-      <span style="font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted)">${a.date}</span>
-      <button class="mini-btn danger" data-del-ann="${a.id}">🗑️</button>
-    </div>`).join('');
-  annList.querySelectorAll('[data-del-ann]').forEach(b => b.addEventListener('click', async () => {
-    if (!confirm('Duyuruyu sil?')) return;
-    await deleteDoc(doc(db, 'announcements', b.dataset.delAnn));
-  }));
-  if (!$('annDate').value) $('annDate').value = new Date().toISOString().slice(0, 10);
-}
-$('addAnnBtn').addEventListener('click', async () => {
-  if (!isAdmin()) return;
-  const tag = $('annTag').value, date = $('annDate').value, title = $('annTitle').value.trim(), message = $('annMessage').value.trim();
-  if (!title || !message || !date) return alert('Doldur hepsini.');
-  await addDoc(collection(db, 'announcements'), { date, tag, title, message, createdAt: new Date().toISOString() });
-  $('annTitle').value = ''; $('annMessage').value = '';
-});
-
-// Geliştirici yönetimi
+// GELİŞTİRİCİ YÖNETİMİ & ADMIN FONKSİYONLARI
 $('addDevBtn').addEventListener('click', async () => {
   if (!isAdmin()) return;
   const email = $('devEmailInput').value.trim().toLowerCase();
@@ -2502,9 +2808,11 @@ $('addDevBtn').addEventListener('click', async () => {
   alert('Gelistirici yapildi! ✅');
   $('devEmailInput').value = ''; $('devTagsInput').value = '';
 });
+
 function renderDevManager(){
   if (!isAdmin()) return;
   const tbody = $('devListBody');
+  if (!tbody) return;
   const devs = users.filter(u => u.role === 'developer' || u.role === 'admin');
   if (!devs.length){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Gelistirici yok</td></tr>'; return; }
   tbody.innerHTML = devs.map(u => {
@@ -2537,7 +2845,6 @@ function renderDevManager(){
   }));
 }
 
-// OYUN EKLE
 $('createGameBtn').addEventListener('click', async () => {
   if (!isDeveloper()) return alert('Yetkin yok.');
   const title = $('newTitle').value.trim();
@@ -2565,7 +2872,6 @@ $('createGameBtn').addEventListener('click', async () => {
   document.querySelector('[data-view="games"]').click();
 });
 
-// OYUN DÜZENLE
 let editingGameId = null;
 function openEditModal(id){
   const g = games.find(x => x.id === id);
@@ -2597,7 +2903,7 @@ $('editSave').addEventListener('click', async () => {
 });
 $('editGameModal').addEventListener('click', e => { if (e.target.id === 'editGameModal'){ e.target.classList.remove('active'); editingGameId = null; } });
 
-// RIPPLE
+// RIPPLE EFEKTİ
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.btn,.mini-btn,.buy-btn,.post-btn,.filter-btn,.google-btn');
   if (!btn) return;
@@ -2612,7 +2918,7 @@ document.addEventListener('click', (e) => {
   setTimeout(() => ripple.remove(), 600);
 });
 
-// PWA
+// PWA MANIFEST & SERVICE WORKER
 const manifest = {
   name: 'Noama Games', short_name: 'Noama', start_url: './', display: 'standalone',
   background_color: '#07070d', theme_color: '#07070d', orientation: 'portrait',
@@ -2641,7 +2947,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:'){
   } catch(e){}
 }
 
-// GÜVENLİK AĞI
+// GÜVENLİK AĞI (8 saniye sonra hala yüklenmediyse)
 setTimeout(() => {
   if (!$('loading').classList.contains('hide') && !$('app-screen').classList.contains('active')){
     $('loading').classList.add('hide');
